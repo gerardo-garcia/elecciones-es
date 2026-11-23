@@ -1,1 +1,11 @@
 CLAUDE.local.md
+node_modules/
+dist/
+.astro/
+coverage/
+*.log
+.DS_Store
+# Datos brutos descargados a mano (Infoelectoral bloquea clientes no navegador)
+data/raw/
+# Snapshots del escrutinio en vivo
+data/snapshots/

@@ -1,0 +1,7 @@
+packages:
+  - 'packages/*'
+  - 'apps/*'
+
+# pnpm 12 exige aprobar de forma explícita los scripts de instalación.
+allowBuilds:
+  esbuild: true
