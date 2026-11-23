@@ -1,0 +1,2245 @@
+{
+ "_fuente": "Candidaturas proclamadas al Congreso, web oficial 29neleccionesgenerales.es (consulta 2026-11-23). Solo denominación y siglas.",
+ "provincias": {
+  "01": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA DE EUSKADI-EUSKADIKO EZKERRA",
+    "siglas": "PSE-EE (PSOE)"
+   },
+   {
+    "denominacion": "EUSKAL HERRIA BILDU",
+    "siglas": "EH BILDU"
+   },
+   {
+    "denominacion": "EUZKO ALDERDI JELTZALEA-PARTIDO NACIONALISTA VASCO",
+    "siglas": "EAJ-PNV"
+   },
+   {
+    "denominacion": "ESCAÑOS EN BLANCO PARA DEJAR ESCAÑOS VACÍOS",
+    "siglas": "ESCAÑOS EN BLANCO"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE EUSKADI/EUSKADIKO LANGILEEN ALDERDI KOMUNISTA",
+    "siglas": "PCTE/ELAK"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "FRENTE AMPLIO-FRONTE ZABALA",
+    "siglas": "FRENTE AMPLIO-FRONTE ZABALA"
+   },
+   {
+    "denominacion": "FEMINISTAS AL CONGRESO",
+    "siglas": "PFAC"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   }
+  ],
+  "02": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   }
+  ],
+  "03": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO AUTÓNOMOS",
+    "siglas": "PARTIDO AUTÓNOMOS"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "COMPROMÍS: FRONT VALENCIÀ",
+    "siglas": "COMPROMIS-EUPV-PODEM-ERPV"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   }
+  ],
+  "04": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "ADELANTE ANDALUCÍA",
+    "siglas": "ADELANTE ANDALUCÍA"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "ESCAÑOS EN BLANCO PARA DEJAR ESCAÑOS VACÍOS",
+    "siglas": "ESCAÑOS EN BLANCO"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   }
+  ],
+  "05": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "PARTIDO DEMÓCRATA SOCIAL JUBILADOS EUROPEOS",
+    "siglas": "P.D.S.J.E."
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   }
+  ],
+  "06": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "NUEVO EXTREMEÑISMO - ADELANTE EXTREMADURA",
+    "siglas": "NEX"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   }
+  ],
+  "07": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA DE LAS ISLAS BALEARES",
+    "siglas": "PSIB-PSOE"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "ARAMÉS-FRONT AMPLI",
+    "siglas": "ARAMÉS-EU-MS"
+   }
+  ],
+  "08": [
+   {
+    "denominacion": "PARTIT DELS SOCIALISTES DE CATALUNYA (PSC-PSOE)",
+    "siglas": "PSC"
+   },
+   {
+    "denominacion": "JUNTS PER CATALUNYA",
+    "siglas": "JxCat"
+   },
+   {
+    "denominacion": "ESQUERRA REPUBLICANA DE CATALUNYA",
+    "siglas": "ERC"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIT COMUNISTA DELS TREBALLADORS DE CATALUNYA",
+    "siglas": "PCTC"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "Comuns-Front Ampli",
+    "siglas": "COMUNS-FRONT AMPLI"
+   },
+   {
+    "denominacion": "PARTIT POPULAR / PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "DEMOCRACIA para el siglo 21",
+    "siglas": "D21"
+   },
+   {
+    "denominacion": "ALHORA",
+    "siglas": "ALHORA"
+   }
+  ],
+  "09": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   }
+  ],
+  "10": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "NUEVO EXTREMEÑISMO - ADELANTE EXTREMADURA",
+    "siglas": "NEX"
+   }
+  ],
+  "11": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "ADELANTE ANDALUCÍA",
+    "siglas": "ADELANTE ANDALUCÍA"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "Frente Amplio Andaluz",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   }
+  ],
+  "12": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "PARTIDO AUTÓNOMOS",
+    "siglas": "PARTIDO AUTÓNOMOS"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "FALANGE ESPAÑOLA DE LAS JONS",
+    "siglas": "FE de las JONS"
+   },
+   {
+    "denominacion": "COMPROMÍS: FRONT VALENCIÀ",
+    "siglas": "COMPROMIS-EUPV-PODEM-ERPV"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   }
+  ],
+  "13": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   }
+  ],
+  "14": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "ADELANTE ANDALUCÍA",
+    "siglas": "ADELANTE ANDALUCÍA"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "FALANGE ESPAÑOLA DE LAS JONS",
+    "siglas": "FE de las JONS"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "FRENTE AMPLIO ANDALUZ",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "ESCAÑOS EN BLANCO PARA DEJAR ESCAÑOS VACÍOS",
+    "siglas": "ESCAÑOS EN BLANCO"
+   }
+  ],
+  "15": [
+   {
+    "denominacion": "Partido dos Socialistas de Galicia-PSOE",
+    "siglas": "PSdeG-PSOE"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DOS TRABALLADORES DA GALIZA",
+    "siglas": "PCTG"
+   },
+   {
+    "denominacion": "BLOQUE NACIONALISTA GALEGO",
+    "siglas": "B.N.G."
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "Frente Amplio-Fronte Ampla",
+    "siglas": "FRENTE AMPLIO-FRONTE AMPLA"
+   }
+  ],
+  "16": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "FRENTE AMPLIO",
+    "siglas": "FA"
+   }
+  ],
+  "17": [
+   {
+    "denominacion": "PARTIT DELS SOCIALISTES DE CATALUNYA (PSC-PSOE)",
+    "siglas": "PSC"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "JUNTS PER CATALUNYA",
+    "siglas": "JxCat"
+   },
+   {
+    "denominacion": "ESQUERRA REPUBLICANA DE CATALUNYA",
+    "siglas": "ERC"
+   },
+   {
+    "denominacion": "Comuns-Front Ampli",
+    "siglas": "COMUNS-FRONT AMPLI"
+   },
+   {
+    "denominacion": "PARTIT COMUNISTA DELS TREBALLADORS DE CATALUNYA",
+    "siglas": "PCTC"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "ALHORA",
+    "siglas": "ALHORA"
+   },
+   {
+    "denominacion": "PARTIT POPULAR / PARTIDO POPULAR",
+    "siglas": "PP"
+   }
+  ],
+  "18": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "ADELANTE ANDALUCÍA",
+    "siglas": "ADELANTE ANDALUCÍA"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "Frente Amplio Andaluz",
+    "siglas": "FA"
+   }
+  ],
+  "19": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE AMPLIO",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "FALANGE ESPAÑOLA DE LAS J.O.N.S.",
+    "siglas": "FE de las JONS"
+   }
+  ],
+  "20": [
+   {
+    "denominacion": "EUSKAL HERRIA BILDU",
+    "siglas": "EH BILDU"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA DE EUSKADI-EUSKADIKO EZKERRA",
+    "siglas": "PSE-EE (PSOE)"
+   },
+   {
+    "denominacion": "EUZKO ALDERDI JELTZALEA-PARTIDO NACIONALISTA VASCO",
+    "siglas": "EAJ-PNV"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "ESCAÑOS EN BLANCO PARA DEJAR ESCAÑOS VACÍOS",
+    "siglas": "ESCAÑOS EN BLANCO"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "EUSKADIKO LANGILEEN ALDERDI KOMUNISTA/PARTIDO COMUNISTA DE LOS TRABAJADORES DE EUSKADI",
+    "siglas": "ELAK/PCTE"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   }
+  ],
+  "21": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA DE HUELVA",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "ADELANTE ANDALUCÍA",
+    "siglas": "ADELANTE ANDALUCÍA"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "Frente Amplio Andaluz",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   }
+  ],
+  "22": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "CHUNTA ARAGONESISTA-FRENTE AMPLIO ARAGÓN",
+    "siglas": "CHA-IU-MS-FRENTE AMPLIO"
+   },
+   {
+    "denominacion": "FEDERACION DE LOS INDEPENDIENTES DE ARAGON",
+    "siglas": "FIA"
+   }
+  ],
+  "23": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "ADELANTE ANDALUCÍA",
+    "siglas": "ADELANTE ANDALUCÍA"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "FRENTE AMPLIO",
+    "siglas": "FA"
+   }
+  ],
+  "24": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PROYECTO ALANTRE",
+    "siglas": "P. ALANTRE"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO REGIONALISTA DEL PAIS LEONES",
+    "siglas": "PREPAL"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "ESCAÑOS EN BLANCO PARA DEJAR ESCAÑOS VACÍOS",
+    "siglas": "ESCAÑOS EN BLANCO"
+   }
+  ],
+  "25": [
+   {
+    "denominacion": "PARTIT DELS SOCIALISTES DE CATALUNYA (PSC-PSOE)",
+    "siglas": "PSC"
+   },
+   {
+    "denominacion": "JUNTS PER CATALUNYA",
+    "siglas": "JxCat"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "ESQUERRA REPUBLICANA DE CATALUNYA",
+    "siglas": "ERC"
+   },
+   {
+    "denominacion": "Comuns-Front Ampli",
+    "siglas": "COMUNS-FRONT AMPLI"
+   },
+   {
+    "denominacion": "PARTIT COMUNISTA DELS TREBALLADORS DE CATALUNYA",
+    "siglas": "PCTC"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIT ANIMALISTA AMB EL MEDI AMBIENT",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "ALHORA",
+    "siglas": "ALHORA"
+   }
+  ],
+  "26": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "SE ACABO LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "FRENTE AMPLIO",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "ESCAÑOS EN BLANCO PARA DEJAR ESCAÑOS VACIOS",
+    "siglas": "ESCAÑOS EN BLANCO"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   }
+  ],
+  "27": [
+   {
+    "denominacion": "PARTIDO DOS SOCIALISTAS DE GALICIA-PSOE",
+    "siglas": "PSdeG-PSOE"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "BLOQUE NACIONALISTA GALEGO",
+    "siglas": "BNG"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "FRENTE AMPLIO-FRONTE AMPLA",
+    "siglas": "FRENTE AMPLIO-FRONTE AMPLA"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   }
+  ],
+  "28": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FALANGE ESPAÑOLA DE LAS J.O.N.S.",
+    "siglas": "FE de las JONS"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PARTIDO HUMANISTA",
+    "siglas": "PH"
+   },
+   {
+    "denominacion": "DEMOCRACIA PARA EL SIGLO 21",
+    "siglas": "D21"
+   },
+   {
+    "denominacion": "IUSTITIA EUROPA",
+    "siglas": "IE"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   }
+  ],
+  "29": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "ADELANTE ANDALUCÍA",
+    "siglas": "ADELANTE ANDALUCÍA"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "ALTERNATIVA MALAGUEÑA",
+    "siglas": "29"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   }
+  ],
+  "30": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "TERCERA EDAD EN ACCIÓN",
+    "siglas": "3e"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "ESCAÑOS EN BLANCO PARA DEJAR ESCAÑOS VACÍOS",
+    "siglas": "ESCAÑOS EN BLANCO"
+   }
+  ],
+  "31": [
+   {
+    "denominacion": "EUSKAL HERRIA BILDU",
+    "siglas": "EH BILDU"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA DE NAVARRA-PSOE",
+    "siglas": "PSN-PSOE"
+   },
+   {
+    "denominacion": "EGUZKILORE",
+    "siglas": "EGUZKILORE"
+   },
+   {
+    "denominacion": "GEROA BAI",
+    "siglas": "GBAI"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "UNIÓN DEL PUEBLO NAVARRO EN COALICIÓN CON EL PARTIDO POPULAR",
+    "siglas": "UPN-PP"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "FRENTE AMPLIO-FRONTE ZABALA",
+    "siglas": "FRENTE AMPLIO-FRONTE ZABALA"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   }
+  ],
+  "32": [
+   {
+    "denominacion": "Partido dos Socialistas de Galicia-PSOE",
+    "siglas": "PSdeG-PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DOS TRABALLADORES DA GALIZA",
+    "siglas": "PCTG"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "BLOQUE NACIONALISTA GALEGO",
+    "siglas": "BNG"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAIS XUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "Frente Amplio-Fronte Ampla",
+    "siglas": "FRENTE AMPLIO-FRONTE AMPLA"
+   }
+  ],
+  "33": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO UNIONISTA ESTADO DE ESPAÑA",
+    "siglas": "PUEDE"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "FRENTE AMPLIU POR ASTURIES",
+    "siglas": "FA"
+   }
+  ],
+  "34": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "FALANGE ESPAÑOLA DE LAS J.O.N.S.",
+    "siglas": "FE de las JONS"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "ESCAÑOS EN BLANCO PARA DEJAR ESCAÑOS VACÍOS",
+    "siglas": "ESCAÑOS EN BLANCO"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   }
+  ],
+  "35": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "LIBERACIÓN CANARIA",
+    "siglas": "LIB"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "PARTIDO DRAGO CANARIAS",
+    "siglas": "D.R.G"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "MUNICIPALISTAS PRIMERO CANARIAS-COALICIÓN CANARIA",
+    "siglas": "1.ºCAN-CCa"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "POR UN MUNDO MÁS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "UNIDAD DEL PUEBLO CANARIO UPC",
+    "siglas": "NC-BC, PODEMOS, IU, SUMAR"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DEL PUEBLO CANARIO",
+    "siglas": "PCPC"
+   },
+   {
+    "denominacion": "ESCAÑOS EN BLANCO PARA DEJAR ESCAÑOS VACÍOS",
+    "siglas": "ESCAÑOS EN BLANCO"
+   }
+  ],
+  "36": [
+   {
+    "denominacion": "Frente Obrero",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "Partido Comunista dos Traballadores da Galiza",
+    "siglas": "PCTG"
+   },
+   {
+    "denominacion": "Partido dos Socialistas de Galicia-PSOE",
+    "siglas": "PSdeG-PSOE"
+   },
+   {
+    "denominacion": "Escanos en Branco para deixar Escanos Baleiros",
+    "siglas": "ESCAÑOS EN BLANCO"
+   },
+   {
+    "denominacion": "Partido Popular",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "Frente Amplio - Fronte Ampla",
+    "siglas": "FRENTE AMPLIO - FRONTE AMPLA"
+   },
+   {
+    "denominacion": "BLOQUE NACIONALISTA GALEGO",
+    "siglas": "BNG"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   }
+  ],
+  "37": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO REGIONALISTA DEL PAIS LEONES",
+    "siglas": "PREPAL"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   }
+  ],
+  "38": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "Coalición Canaria-Municipalistas Primero Canarias",
+    "siglas": "CCa-1.ºCAN"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "PARTIDO DRAGO CANARIAS",
+    "siglas": "D.R.G"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "UNIDAD DEL PUEBLO CANARIO UPC",
+    "siglas": "NC-BC, PODEMOS, IU, SUMAR"
+   },
+   {
+    "denominacion": "LIBERACIÓN CANARIA",
+    "siglas": "LIB"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PARTIDO AUTÓNOMOS",
+    "siglas": "PARTIDO AUTÓNOMOS"
+   }
+  ],
+  "39": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "FRENTE AMPLIO",
+    "siglas": "FA"
+   }
+  ],
+  "40": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   }
+  ],
+  "41": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "ADELANTE ANDALUCÍA",
+    "siglas": "ADELANTE ANDALUCÍA"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "Frente Amplio Andaluz",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   }
+  ],
+  "42": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "SORIA ¡YA!",
+    "siglas": "SY"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "ESCAÑOS EN BLANCO PARA DEJAR ESCAÑOS VACÍOS",
+    "siglas": "ESCAÑOS EN BLANCO"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   }
+  ],
+  "43": [
+   {
+    "denominacion": "PARTIT DELS SOCIALISTES DE CATALUNYA (PSC-PSOE)",
+    "siglas": "PSC"
+   },
+   {
+    "denominacion": "ESQUERRA REPUBLICANA DE CATALUNYA",
+    "siglas": "ERC"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "JUNTS PER CATALUNYA",
+    "siglas": "JxCat"
+   },
+   {
+    "denominacion": "PARTIT COMUNISTA DELS TREBALLADORS DE CATALUNYA",
+    "siglas": "PCTC"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "Comuns-Front Ampli",
+    "siglas": "COMUNS-FRONT AMPLI"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "CONVERGENTS",
+    "siglas": "CNV"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "PARTIT POPULAR / PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "ALHORA",
+    "siglas": "ALHORA"
+   }
+  ],
+  "44": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "TERUEL EXISTE",
+    "siglas": "TERUEL EXISTE"
+   },
+   {
+    "denominacion": "FALANGE ESPAÑOLA DE LAS J.O.N.S.",
+    "siglas": "FE de las JONS"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   }
+  ],
+  "45": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "FALANGE ESPAÑOLA DE LAS J.O.N.S.",
+    "siglas": "FE de las JONS"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   }
+  ],
+  "46": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "COMPROMÍS: FRONT VALENCIÀ",
+    "siglas": "COMPROMIS-EUPV-PODEM-ERPV"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "VALENCIA UNIDA",
+    "siglas": "VLC"
+   },
+   {
+    "denominacion": "RENACER RENAIXER",
+    "siglas": "RRB"
+   },
+   {
+    "denominacion": "FALANGE ESPAÑOLA DE LAS J.O.N.S.",
+    "siglas": "FE de las JONS"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "AGENDA VALENCIANA",
+    "siglas": "AGENDA VALENCIANA"
+   }
+  ],
+  "47": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "PARTIDO NACIONALISTA DE CASTILLA Y LEÓN - UNION REFORMISTA CIUDADANA",
+    "siglas": "PANCAL-URCI"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "FALANGE ESPAÑOLA DE LAS J.O.N.S.",
+    "siglas": "FE de las JONS"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "ESCAÑOS EN BLANCO PARA DEJAR ESCAÑOS VACÍOS",
+    "siglas": "ESCAÑOS EN BLANCO"
+   }
+  ],
+  "48": [
+   {
+    "denominacion": "EUZKO ALDERDI JELTZALEA-PARTIDO NACIONALISTA VASCO",
+    "siglas": "EAJ-PNV"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA DE EUSKADI-EUSKADIKO EZKERRA",
+    "siglas": "PSE-EE (PSOE)"
+   },
+   {
+    "denominacion": "EUSKAL HERRIA BILDU",
+    "siglas": "EH Bildu"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE EUSKADI/EUSKADIKO LANGILEEN ALDERDI KOMUNISTA",
+    "siglas": "PCTE/ELAK"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "FRENTE AMPLIO",
+    "siglas": "FA"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO ANIMALISTA CON EL MEDIO AMBIENTE",
+    "siglas": "PACMA"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   }
+  ],
+  "49": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "PARTIDO REGIONALISTA DEL PAIS LEONES",
+    "siglas": "PREPAL"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "Frente Amplio",
+    "siglas": "FA"
+   }
+  ],
+  "50": [
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "PARTIDO COMUNISTA DE LOS TRABAJADORES DE ESPAÑA",
+    "siglas": "PCTE"
+   },
+   {
+    "denominacion": "POR UN MUNDO MAS JUSTO",
+    "siglas": "MUNDO+JUSTO"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PODEMOS"
+   },
+   {
+    "denominacion": "FEDERACION DE LOS INDEPENDIENTES DE ARAGON",
+    "siglas": "F.I.A."
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "Chunta Aragonesista-Frente Amplio Aragón",
+    "siglas": "CHA-IU-MS-FRENTE AMPLIO"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   }
+  ],
+  "51": [
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   },
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PODEMOS",
+    "siglas": "PAZ,CASA Y TRABAJO"
+   },
+   {
+    "denominacion": "SE ACABO LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FRENTE OBRERO"
+   }
+  ],
+  "52": [
+   {
+    "denominacion": "PARTIDO SOCIALISTA OBRERO ESPAÑOL",
+    "siglas": "PSOE"
+   },
+   {
+    "denominacion": "FRENTE OBRERO",
+    "siglas": "FO"
+   },
+   {
+    "denominacion": "SE ACABÓ LA FIESTA",
+    "siglas": "SALF"
+   },
+   {
+    "denominacion": "VOX",
+    "siglas": "VOX"
+   },
+   {
+    "denominacion": "PARTIDO POPULAR",
+    "siglas": "PP"
+   }
+  ]
+ }
+}
