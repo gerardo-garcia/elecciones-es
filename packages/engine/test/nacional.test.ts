@@ -87,6 +87,42 @@ describe('calcularNacional', () => {
     expect((psoe?.escanos ?? 0) + (pp?.escanos ?? 0)).toBe(32 + 38 + 12);
   });
 
+  it('UPN-PP suma con el PP; Compromís y UPC suman en FA+COMP+UPC; la leyenda dice qué incluye cada grupo', () => {
+    const por = (codigo: string) => circunscripciones.find((c) => c.codigo === codigo) as Circunscripcion;
+    const unico = (codigo: string, siglas: string): Escrutinio => ({
+      codigo,
+      censo: 500_000,
+      censoEscrutado: 500_000,
+      blancos: 0,
+      candidaturas: [{ siglas, votos: 100_000 }],
+    });
+    // Con una sola candidatura con votos, se lleva todos los escaños de la circunscripción.
+    const resultados = [
+      calcularCircunscripcion(por('31'), unico('31', 'UPN-PP')), // Navarra
+      calcularCircunscripcion(por('28'), unico('28', 'PP')), // Madrid
+      calcularCircunscripcion(por('46'), unico('46', 'COMPROMIS-EUPV-PODEM-ERPV')), // Valencia
+      calcularCircunscripcion(por('35'), unico('35', 'NC-BC, PODEMOS, IU, SUMAR')), // Las Palmas
+      calcularCircunscripcion(por('08'), unico('08', 'COMUNS-FRONT AMPLI')), // Barcelona
+    ];
+    const nacional = calcularNacional(resultados, agrupar);
+    const escanos = (...codigos: string[]) => codigos.reduce((s, c) => s + por(c).escanos, 0);
+
+    const pp = nacional.porGrupo.find((g) => g.id === 'pp');
+    expect(pp).toMatchObject({ nombre: 'PP', agrupada: true, escanos: escanos('31', '28') });
+    expect(pp?.incluye).toMatch(/UPN-PP/);
+
+    const fa = nacional.porGrupo.find((g) => g.id === 'fa-comp-upc');
+    expect(fa).toMatchObject({ nombre: 'FA+COMP+UPC', agrupada: true, escanos: escanos('46', '35', '08') });
+    expect(fa?.incluye).toMatch(/Compromís/);
+
+    // Sin agrupar siguen apareciendo como candidaturas distintas.
+    expect(nacional.porCandidatura.map((c) => c.siglas).sort()).toEqual(
+      ['COMPROMIS-EUPV-PODEM-ERPV', 'COMUNS-FRONT AMPLI', 'NC-BC, PODEMOS, IU, SUMAR', 'PP', 'UPN-PP'].sort(),
+    );
+    expect(nacional.porGrupo).toHaveLength(2);
+    expect(nacional.escanosAsignados).toBe(escanos('31', '28', '46', '35', '08'));
+  });
+
   it('las siglas sin grupo aparecen por separado y marcadas como no agrupadas', () => {
     const c = circunscripciones.find((x) => x.codigo === '42') as Circunscripcion; // Soria (2)
     const r = calcularCircunscripcion(c, {

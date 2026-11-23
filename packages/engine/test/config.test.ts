@@ -71,17 +71,37 @@ describe('data/config/agrupaciones.json', () => {
     for (const s of ['PCTE', 'PCTC', 'PCTG', 'PCTE/ELAK', 'ELAK/PCTE']) expect(grupoDe(s).id).toBe('pcte');
   });
 
-  it('las coaliciones territoriales con marca Frente Amplio van juntas', () => {
-    for (const s of ['FA', 'COMUNS-FRONT AMPLI', 'ARAMÉS-EU-MS', 'CHA-IU-MS-FRENTE AMPLIO']) {
-      expect(grupoDe(s).id).toBe('frente-amplio');
+  it('Frente Amplio (con Comuns, Aramés y CHA), Compromís y UPC van juntos bajo FA+COMP+UPC', () => {
+    const siglas = [
+      'FA',
+      'FRENTE AMPLIO-FRONTE AMPLA',
+      'COMUNS-FRONT AMPLI',
+      'ARAMÉS-EU-MS',
+      'CHA-IU-MS-FRENTE AMPLIO',
+      'COMPROMIS-EUPV-PODEM-ERPV',
+      'NC-BC, PODEMOS, IU, SUMAR',
+    ];
+    for (const s of siglas) {
+      expect(grupoDe(s), s).toMatchObject({ id: 'fa-comp-upc', nombre: 'FA+COMP+UPC', agrupada: true });
     }
   });
 
-  it('las coaliciones dudosas quedan aparte y marcadas para decidir', () => {
-    expect(grupoDe('UPN-PP').id).toBe('upn-pp');
-    expect(grupoDe('COMPROMIS-EUPV-PODEM-ERPV').id).toBe('compromis');
-    const pendientes = grupos.filter((g) => g.pendienteDecision).map((g) => g.id);
-    expect(pendientes).toEqual(expect.arrayContaining(['frente-amplio', 'compromis', 'upc', 'upn-pp']));
+  it('UPN-PP se suma al PP y la leyenda lo dice', () => {
+    expect(grupoDe('UPN-PP')).toMatchObject({ id: 'pp', nombre: 'PP', agrupada: true });
+    expect(grupoDe('PP').id).toBe('pp');
+    expect(grupoDe('UPN-PP').incluye).toMatch(/UPN-PP/);
+  });
+
+  it('no queda ninguna decisión pendiente', () => {
+    expect(grupos.filter((g) => g.pendienteDecision).map((g) => g.id)).toEqual([]);
+  });
+
+  it('los grupos que suman partidos distintos llevan el texto de lo que incluyen', () => {
+    for (const id of ['fa-comp-upc', 'pp']) {
+      expect(grupos.find((g) => g.id === id)?.incluye?.length ?? 0, id).toBeGreaterThan(10);
+    }
+    // Y solo ellos: el resto no necesita aclaración.
+    expect(grupos.filter((g) => g.incluye !== undefined).map((g) => g.id).sort()).toEqual(['fa-comp-upc', 'pp']);
   });
 
   it('las siglas desconocidas no se pierden: cuentan por separado', () => {

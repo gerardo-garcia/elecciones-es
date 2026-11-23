@@ -1,6 +1,6 @@
 {
-  "_nota": "PRIMERA PROPUESTA, pendiente de revisión. Construida sobre las siglas de las 534 listas proclamadas al Congreso para el 29N (candidaturas-proclamadas-2026.json). Las siglas que no aparecen aquí no se pierden: cuentan por separado. 'confianza' indica cuánto seguro estoy de que son el mismo partido; 'pendienteDecision' marca lo que debe decidir una persona. Las siglas reales del feed de resultados pueden diferir de las del BOE: se comprobará cuando haya datos.",
-  "version": 1,
+  "_nota": "Agrupación de siglas de formaciones territoriales del mismo partido, y de coaliciones que se presentan juntas. Revisada y aprobada el 23-nov-2026. Construida sobre las siglas de las 534 listas proclamadas al Congreso para el 29N (candidaturas-proclamadas-2026.json). Las siglas que no aparecen aquí no se pierden: cuentan por separado. 'confianza' indica cuánto seguro estoy de que son el mismo partido; 'incluye' es el texto que debe acompañar al grupo en gráficos y tablas cuando agrupa partidos distintos; 'pendienteDecision' marcaría lo que debe decidir una persona (ahora no hay nada pendiente). Las siglas reales del feed de resultados pueden diferir de las del BOE: se comprobará cuando haya datos.",
+  "version": 2,
   "grupos": [
     {
       "id": "psoe",
@@ -13,8 +13,9 @@
       "id": "pp",
       "nombre": "PP",
       "confianza": "alta",
-      "alias": ["PP"],
-      "notas": "En Navarra concurre en coalición con UPN (ver grupo upn-pp)."
+      "alias": ["PP", "UPN-PP"],
+      "notas": "Decisión del 23-nov-2026: UPN-PP, la coalición del PP con UPN en Navarra, se suma al PP. Son partidos distintos: la etiqueta dice qué incluye.",
+      "incluye": "PP y UPN-PP (coalición con UPN en Navarra)"
     },
     {
       "id": "vox",
@@ -23,36 +24,12 @@
       "alias": ["VOX"]
     },
     {
-      "id": "frente-amplio",
-      "nombre": "Frente Amplio",
+      "id": "fa-comp-upc",
+      "nombre": "FA+COMP+UPC",
       "confianza": "media",
-      "alias": [
-        "FA",
-        "FRENTE AMPLIO-FRONTE AMPLA",
-        "FRENTE AMPLIO - FRONTE AMPLA",
-        "FRENTE AMPLIO-FRONTE ZABALA",
-        "COMUNS-FRONT AMPLI",
-        "ARAMÉS-EU-MS",
-        "CHA-IU-MS-FRENTE AMPLIO"
-      ],
-      "pendienteDecision": true,
-      "notas": "Agrupo por la marca 'Frente Amplio / Front Ampli' en la denominación. Comuns (Cataluña), Aramés (Baleares) y CHA (Aragón) son partidos distintos que concurren con esa marca: decidir si se cuentan aquí o aparte."
-    },
-    {
-      "id": "compromis",
-      "nombre": "Compromís",
-      "confianza": "media",
-      "alias": ["COMPROMIS-EUPV-PODEM-ERPV"],
-      "pendienteDecision": true,
-      "notas": "Coalición valenciana (Compromís, EUPV, Podem, ERPV). Lo dejo aparte: decidir si va con Frente Amplio."
-    },
-    {
-      "id": "upc",
-      "nombre": "Unidad del Pueblo Canario",
-      "confianza": "media",
-      "alias": ["NC-BC, PODEMOS, IU, SUMAR"],
-      "pendienteDecision": true,
-      "notas": "Coalición canaria (NC-BC, Podemos, IU, Sumar). Lo dejo aparte: decidir si va con Frente Amplio."
+      "alias": ["FA", "FRENTE AMPLIO-FRONTE AMPLA", "FRENTE AMPLIO - FRONTE AMPLA", "FRENTE AMPLIO-FRONTE ZABALA", "COMUNS-FRONT AMPLI", "ARAMÉS-EU-MS", "CHA-IU-MS-FRENTE AMPLIO", "COMPROMIS-EUPV-PODEM-ERPV", "NC-BC, PODEMOS, IU, SUMAR"],
+      "incluye": "Frente Amplio y sus marcas territoriales (Comuns, Aramés, CHA), Compromís y Unidad del Pueblo Canario",
+      "notas": "Decisión del 23-nov-2026: se suman bajo una sola etiqueta las marcas del Frente Amplio (Comuns en Cataluña, Aramés en Baleares, CHA en Aragón), Compromís (coalición valenciana con EUPV, Podem y ERPV) y la Unidad del Pueblo Canario (NC-BC, Podemos, IU, Sumar). Son partidos distintos: la etiqueta dice qué incluye."
     },
     {
       "id": "podemos",
@@ -103,14 +80,6 @@
       "confianza": "media",
       "alias": ["1.ºCAN-CCa", "CCa-1.ºCAN"],
       "notas": "Municipalistas Primero Canarias - Coalición Canaria; las siglas cambian de orden según la isla."
-    },
-    {
-      "id": "upn-pp",
-      "nombre": "UPN-PP",
-      "confianza": "media",
-      "alias": ["UPN-PP"],
-      "pendienteDecision": true,
-      "notas": "Coalición en Navarra entre dos partidos distintos. Lo dejo aparte del PP: decidir si se suma."
     },
     {
       "id": "pcte",

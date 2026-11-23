@@ -11,6 +11,8 @@ export interface TotalCandidatura {
 export interface TotalGrupo {
   id: string;
   nombre: string;
+  /** Qué partidos suma el grupo, si hay que decirlo en la leyenda. */
+  incluye?: string;
   escanos: number;
   /** false: siglas sin grupo asignado (cuentan por separado). */
   agrupada: boolean;
@@ -56,7 +58,11 @@ export function calcularNacional(
       candidaturas.set(clave, c);
 
       const a = agrupador(e.siglas);
-      const g = grupos.get(a.id) ?? { id: a.id, nombre: a.nombre, escanos: 0, agrupada: a.agrupada };
+      const g =
+        grupos.get(a.id) ??
+        (a.incluye === undefined
+          ? { id: a.id, nombre: a.nombre, escanos: 0, agrupada: a.agrupada }
+          : { id: a.id, nombre: a.nombre, incluye: a.incluye, escanos: 0, agrupada: a.agrupada });
       g.escanos += e.escanos;
       grupos.set(a.id, g);
     }

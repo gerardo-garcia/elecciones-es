@@ -9,6 +9,11 @@ export interface GrupoConfig {
   confianza: Confianza;
   /** Siglas (o denominaciones cortas) que pertenecen al grupo. Se comparan ya normalizadas. */
   alias: string[];
+  /**
+   * Texto que debe acompañar al grupo en gráficos y tablas cuando suma partidos distintos
+   * (p. ej. "PP y UPN-PP (coalición con UPN en Navarra)").
+   */
+  incluye?: string;
   /** Marca los grupos cuya composición debe decidir una persona. */
   pendienteDecision?: boolean;
   notas?: string;
@@ -17,6 +22,8 @@ export interface GrupoConfig {
 export interface Agrupacion {
   id: string;
   nombre: string;
+  /** Qué partidos suma el grupo, si hay que decirlo (ver `GrupoConfig.incluye`). */
+  incluye?: string;
   /** false si las siglas no están en ningún grupo: cuentan por separado. */
   agrupada: boolean;
 }
@@ -57,7 +64,11 @@ export function crearAgrupador(grupos: GrupoConfig[]): Agrupador {
   return (siglas: string): Agrupacion => {
     const clave = normalizarSiglas(siglas);
     const grupo = porAlias.get(clave);
-    if (grupo) return { id: grupo.id, nombre: grupo.nombre, agrupada: true };
+    if (grupo) {
+      return grupo.incluye === undefined
+        ? { id: grupo.id, nombre: grupo.nombre, agrupada: true }
+        : { id: grupo.id, nombre: grupo.nombre, incluye: grupo.incluye, agrupada: true };
+    }
     return { id: `sin-agrupar:${clave}`, nombre: siglas, agrupada: false };
   };
 }
