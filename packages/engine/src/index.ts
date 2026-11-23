@@ -7,3 +7,4 @@ export * from './nacional';
 export * from './disputa';
 export * from './cera';
 export * from './simulacion';
+export * from './backtest';
