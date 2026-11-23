@@ -65,6 +65,63 @@ cambie, y se muestran las 10 con el porcentaje más bajo.
   para cambiar el reparto, los esperados y si el CERA podría decidirlo. Es una cota inferior: con menos votos CERA
   que la cota es imposible; con más, solo es posible.
 
+## Simulación de una noche electoral y backtest
+
+Para construir y probar la web sin la fuente en vivo (`simulacion.ts`) y para medir cuánto se equivoca la proyección
+(`backtest.ts`), el motor reproduce una noche electoral a partir de los resultados oficiales de las generales de 2023
+por municipio (`data/simulacion/generales-2023-municipios.json`: 8.131 municipios, 60.314 mesas, solo voto residente).
+Produce lo mismo que entregará la fuente real: un `Escrutinio` por circunscripción (censo, censo escrutado, blancos y
+votos por candidatura) en cada instante. Es **un modelo, no una reconstrucción de lo que pasó esa noche**:
+
+- **Los datos oficiales no llegan al nivel de mesa** (no los hemos encontrado). Cada municipio se reparte a partes
+  iguales entre sus mesas, con enteros y sin perder ni inventar ni un voto. Dentro de un municipio no hay diferencias
+  entre mesas, así que la proyección sale **más fácil que la real**: las cifras de abajo son un suelo optimista.
+- **El orden de llegada de los municipios de cada provincia es una hipótesis:** `aleatorio` (una muestra al azar),
+  `rurales-primero` (de menor a mayor población, con ruido) o `urbanos-primero` (al revés, prueba de estrés).
+- **La velocidad del escrutinio es una curva inventada** (Weibull): cada provincia empieza con un retraso y una
+  velocidad propios. Con los valores por defecto el escrutinio ronda el 45 % del censo a las 21:30, el 94 % a las
+  23:00 y el 99 % a medianoche. No es una medición de ninguna noche real; se cambiará cuando haya datos reales.
+- Todo es determinista: misma semilla, misma noche (`crearAzar`, mulberry32).
+- El escrutinio final de la simulación reproduce los votos oficiales de cada circunscripción; con el CERA sumado, los
+  350 escaños de 2023 (test).
+
+**Backtest.** Compara la proyección de cada instante con el resultado final **de la misma simulación** (100 % del
+censo residente, sin CERA): mide el error de la extrapolación, no el del voto exterior que llega después. Resultados
+con 20 noches simuladas (semillas 1-20) por orden de llegada; se regenera con
+`INFORME_BACKTEST=1 pnpm --filter @elecciones/engine exec vitest run test/informe-backtest.test.ts`:
+
+| Orden de llegada | Censo escrutado | Circunscripciones con reparto distinto del final (mediana / máx.) | De ellas, fuera de la tabla de disputa (máx.) | Minuto en que se estabiliza (mediana / máx.) |
+|---|---|---|---|---|
+| aleatorio | 50 % | 10 / 15 | 9 | 240 / 285 |
+|  | 75 % | 6 / 13 | 7 |  |
+|  | 90 % | 3 / 5 | 1 |  |
+|  | 95 % | 1 / 4 | 0 |  |
+|  | 99 % | 1 / 2 | 0 |  |
+| rurales-primero | 50 % | 12 / 15 | 10 | 182,5 / 250 |
+|  | 75 % | 6 / 9 | 5 |  |
+|  | 90 % | 1 / 4 | 2 |  |
+|  | 95 % | 0 / 2 | 0 |  |
+|  | 99 % | 0 / 1 | 0 |  |
+| urbanos-primero | 50 % | 17,5 / 20 | 13 | 240 / 285 |
+|  | 75 % | 11 / 12 | 6 |  |
+|  | 90 % | 5 / 6 | 1 |  |
+|  | 95 % | 2 / 3 | 1 |  |
+|  | 99 % | 1 / 2 | 0 |  |
+
+(«Minuto» = minutos desde las 20:00, cuando ya están todas las circunscripciones con datos y ningún reparto cambia
+después. «Censo escrutado» es el nacional, con las 52 circunscripciones dando datos.)
+
+Qué se desprende, **sobre la simulación**:
+
+- Hasta que se supera el 90 % del censo, el reparto de bastantes circunscripciones todavía cambia (hasta 15-20 de 52 a
+  mitad de escrutinio). La web tiene que enseñar siempre el % escrutado y no presentar esas cifras como firmes.
+- **La tabla de las 10 circunscripciones en disputa se queda corta al principio:** con el 50 % del censo deja fuera
+  hasta 9-13 de las que acabarán cambiando y con el 75 %, hasta 5-7, porque ordena por votos a mover sin tener en
+  cuenta que, con poco censo escrutado, la proyección es menos fiable. A partir del 90-95 % ya las recoge casi todas
+  (se le escapan 0-2). Sería razonable ordenar también por distancia relativa a la incertidumbre de la muestra
+  (pendiente de decidir).
+- Si los municipios grandes llegan antes, la proyección a mitad de noche es peor que con orden aleatorio.
+
 ## Limitaciones conocidas
 
 - **La extrapolación lineal supone que lo pendiente se parece a lo escrutado.** Al principio de la noche puede fallar

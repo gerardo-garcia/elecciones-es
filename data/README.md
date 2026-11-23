@@ -9,6 +9,15 @@
 | `cera-2023.json` | Peso del voto exterior (CERA) en 2023 por circunscripción: censo, votantes y votos válidos | Infoelectoral, generales de julio de 2023. Se regenera con `scripts/generales2023_a_json.py` (ver abajo) |
 | `agrupaciones.json` | Agrupación de siglas de formaciones territoriales del mismo partido | Revisada y aprobada el 23-nov-2026. `incluye` es el texto que acompaña al grupo en gráficos y tablas cuando suma partidos distintos; `pendienteDecision` marcaría lo que debe decidir una persona (ahora nada) |
 
+## `simulacion/` (versionado)
+
+| Fichero | Contenido | Origen |
+|---|---|---|
+| `generales-2023-municipios.json` | Un registro por municipio (8.131) de las generales de julio de 2023, solo voto residente: provincia, mesas, censo, blancos y votos por partido (índice en la lista `partidos`). 417 KB | Infoelectoral, resultados por municipio. Se regenera con `scripts/generales2023_a_json.py` |
+
+Sirve para simular una noche electoral y para el backtest del motor (ver `docs/metodologia.md`). No hay datos a nivel de
+mesa: cada municipio se reparte a partes iguales entre sus mesas.
+
 ## `encuestas/` (versionado)
 
 Registro de encuestas con su fuente, fechas de campo, muestra y cifras, y el estado de cada enlace cuando se recogieron
@@ -33,7 +42,8 @@ Para el contraste de 2023 hacen falta dos ficheros de las generales de julio de 
 python3 -I scripts/generales2023_a_json.py RUTA/PROV_02_202307_1.xlsx RUTA/02_202307_1.xlsx
 ```
 
-Genera `packages/engine/test/fixtures/generales-2023.json` y `data/config/cera-2023.json`. Requiere `openpyxl`. El CERA
+Genera `packages/engine/test/fixtures/generales-2023.json`, `data/config/cera-2023.json` y
+`data/simulacion/generales-2023-municipios.json`. Requiere `openpyxl`. El CERA
 de cada circunscripción no se publica por separado: es el total provincial menos la suma de sus municipios.
 
 ## `snapshots/` (ignorado por git)
