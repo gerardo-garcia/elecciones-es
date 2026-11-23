@@ -54,11 +54,8 @@ cambie, y se muestran las 10 con el porcentaje más bajo.
 | Fase | Desde | Qué muestra |
 |---|---|---|
 | `previa` | siempre | encuestas, noticias y aviso del recuento en directo |
-| `recuento` | 28-nov 00:00 (día de reflexión) | estado del recuento |
+| `recuento` | 29-nov 20:00 (cierre de colegios) | recuento en directo |
 | `analisis` | se fija a mano (`inicioAnalisis`) | análisis, ya estático |
-
-**Decisión pendiente:** el recuento arranca en el día de reflexión (como en el planteamiento inicial). Si se prefiere
-el 29-nov, basta con cambiar `inicioRecuento` en `apps/web/src/lib/calendario.ts`.
 
 `inicioAnalisis` no se activa solo: se rellena cuando el recuento sea efectivo.
 

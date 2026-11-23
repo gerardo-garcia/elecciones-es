@@ -8,7 +8,7 @@ export type Fase = 'previa' | 'recuento' | 'analisis';
 export interface Calendario {
   /** Domingo de votación (informativo). */
   votacion: string;
-  /** Desde cuándo la portada muestra el recuento: el día de reflexión. */
+  /** Desde cuándo la portada muestra el recuento: el cierre de colegios. */
   inicioRecuento: string;
   /** Cierre de colegios (20:00 hora peninsular). */
   cierreColegios: string;

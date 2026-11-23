@@ -9,11 +9,11 @@ on:
   workflow_dispatch:
   schedule:
     # El HTML estático depende de la fecha de construcción (fase de la portada y veda de encuestas).
-    # Se reconstruye justo después de cada cambio de fase, y cada 3 horas entre medias.
+    # Se reconstruye justo después de cada cambio de fase (24/11 y 29/11), y cada 3 horas entre medias.
     # El script de cliente cubre el hueco hasta que termine la reconstrucción. Horas en UTC (CET = UTC+1).
     - cron: '7 23 23 11 *' # 24-nov 00:07 CET: empieza la veda de encuestas
-    - cron: '7 23 27 11 *' # 28-nov 00:07 CET: día de reflexión, la portada pasa a recuento
-    - cron: '7 19 29 11 *' # 29-nov 20:07 CET: cierre de colegios, termina la veda
+    - cron: '2 19 29 11 *' # 29-nov 20:02 CET: cierre de colegios, la portada pasa a recuento y termina la veda
+    - cron: '12 19 29 11 *' # 29-nov 20:12 CET: repetición (GitHub puede retrasar o saltarse ejecuciones)
     - cron: '17 */3 23-30 11 *'
     - cron: '17 */3 1-8 12 *'
 

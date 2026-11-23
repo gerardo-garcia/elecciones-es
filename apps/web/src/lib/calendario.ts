@@ -7,8 +7,8 @@ import { validarCalendario, type Calendario } from './fase';
  */
 export const CALENDARIO: Calendario = {
   votacion: '2026-11-29',
-  // Día de reflexión (sábado 28). Decisión pendiente de confirmar: ver docs/metodologia.md.
-  inicioRecuento: '2026-11-28T00:00:00+01:00',
+  // El recuento se muestra desde el cierre de colegios (20:00 del domingo 29).
+  inicioRecuento: '2026-11-29T20:00:00+01:00',
   cierreColegios: '2026-11-29T20:00:00+01:00',
   // Se rellena a mano (p. ej. '2026-12-07T23:59:59+01:00') cuando el recuento sea efectivo.
   inicioAnalisis: null,

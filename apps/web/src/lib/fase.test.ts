@@ -5,13 +5,14 @@ import { enVeda, faseEn, validarCalendario, type Calendario } from './fase';
 const en = (iso: string) => new Date(iso);
 
 describe('faseEn', () => {
-  it('antes del día de reflexión es "previa"', () => {
+  it('hasta el cierre de colegios es "previa", también el día de reflexión y la votación', () => {
     expect(faseEn(en('2026-11-23T12:00:00+01:00'), CALENDARIO)).toBe('previa');
-    expect(faseEn(en('2026-11-27T23:59:59+01:00'), CALENDARIO)).toBe('previa');
+    expect(faseEn(en('2026-11-28T12:00:00+01:00'), CALENDARIO)).toBe('previa');
+    expect(faseEn(en('2026-11-29T19:59:59+01:00'), CALENDARIO)).toBe('previa');
   });
 
-  it('desde el día de reflexión y durante los días posteriores es "recuento"', () => {
-    expect(faseEn(en('2026-11-28T00:00:00+01:00'), CALENDARIO)).toBe('recuento');
+  it('desde el cierre de colegios (20:00 del 29) y los días posteriores es "recuento"', () => {
+    expect(faseEn(en('2026-11-29T20:00:00+01:00'), CALENDARIO)).toBe('recuento');
     expect(faseEn(en('2026-11-29T21:30:00+01:00'), CALENDARIO)).toBe('recuento');
     expect(faseEn(en('2026-12-05T10:00:00+01:00'), CALENDARIO)).toBe('recuento');
   });
@@ -26,8 +27,9 @@ describe('faseEn', () => {
     expect(faseEn(en('2026-12-07T23:59:59+01:00'), cal)).toBe('analisis');
   });
 
-  it('interpreta bien la zona horaria: 23:30 UTC del 27 ya es 28 en España', () => {
-    expect(faseEn(en('2026-11-27T23:30:00Z'), CALENDARIO)).toBe('recuento');
+  it('interpreta bien la zona horaria: 19:00 UTC del 29 ya son las 20:00 en España', () => {
+    expect(faseEn(en('2026-11-29T18:59:59Z'), CALENDARIO)).toBe('previa');
+    expect(faseEn(en('2026-11-29T19:00:00Z'), CALENDARIO)).toBe('recuento');
   });
 });
 

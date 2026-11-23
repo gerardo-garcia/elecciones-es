@@ -3,8 +3,8 @@
 Seguimiento de las elecciones en España. Primer hito: **elecciones generales del 29 de noviembre de 2026**.
 
 - **Antes de las elecciones:** encuestas, noticias y aviso del recuento en directo.
-- **Del día de reflexión al fin del recuento:** escaños, mapas por circunscripción y las 10 circunscripciones donde un
-  escaño puede cambiar de manos.
+- **Desde el cierre de colegios (20:00 del 29N) hasta el fin del recuento:** escaños, mapas por circunscripción y las 10
+  circunscripciones donde un escaño puede cambiar de manos.
 - **Después:** análisis de resultados, que pasa al histórico.
 
 La portada cambia sola de fase según la fecha. Método y decisiones: [`docs/metodologia.md`](docs/metodologia.md).
@@ -35,7 +35,7 @@ Previsualizar la portada en otro momento:
 
 ```sh
 AHORA_FORZADA=2026-11-25T12:00:00+01:00 pnpm build   # en plena veda de encuestas
-AHORA_FORZADA=2026-11-28T12:00:00+01:00 pnpm build   # fase de recuento
+AHORA_FORZADA=2026-11-29T21:00:00+01:00 pnpm build   # fase de recuento
 ```
 
 ## Publicación
