@@ -1,0 +1,59 @@
+name: Publicar en GitHub Pages
+
+# Requiere activar Pages en la repo: Settings → Pages → Source: "GitHub Actions".
+# Al asociar un dominio propio, definir las variables de repo SITE_URL (https://midominio.es) y BASE_PATH (/).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # El HTML estático depende de la fecha de construcción (fase de la portada y veda de encuestas).
+    # Se reconstruye justo después de cada cambio de fase, y cada 3 horas entre medias.
+    # El script de cliente cubre el hueco hasta que termine la reconstrucción. Horas en UTC (CET = UTC+1).
+    - cron: '7 23 23 11 *' # 24-nov 00:07 CET: empieza la veda de encuestas
+    - cron: '7 23 27 11 *' # 28-nov 00:07 CET: día de reflexión, la portada pasa a recuento
+    - cron: '7 19 29 11 *' # 29-nov 20:07 CET: cierre de colegios, termina la veda
+    - cron: '17 */3 23-30 11 *'
+    - cron: '17 */3 1-8 12 *'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    env:
+      ASTRO_TELEMETRY_DISABLED: '1'
+      SITE_URL: ${{ vars.SITE_URL }}
+      BASE_PATH: ${{ vars.BASE_PATH }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm build
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: apps/web/dist
+
+  desplegar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - id: despliegue
+        uses: actions/deploy-pages@v5

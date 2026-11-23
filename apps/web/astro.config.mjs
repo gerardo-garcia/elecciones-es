@@ -6,8 +6,9 @@ const propietario = process.env.GITHUB_REPOSITORY_OWNER;
 const repo = process.env.GITHUB_REPOSITORY?.split('/')[1];
 
 export default defineConfig({
-  site: process.env.SITE_URL ?? (propietario ? `https://${propietario}.github.io` : 'http://localhost:4321'),
-  base: process.env.BASE_PATH ?? (repo ? `/${repo}` : '/'),
+  // `||` y no `??`: en Actions una variable de repositorio sin definir llega como cadena vacía.
+  site: process.env.SITE_URL || (propietario ? `https://${propietario}.github.io` : 'http://localhost:4321'),
+  base: process.env.BASE_PATH || (repo ? `/${repo}` : '/'),
   trailingSlash: 'always',
   build: { format: 'directory' },
 });
