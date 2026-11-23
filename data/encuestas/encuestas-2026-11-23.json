@@ -1,0 +1,142 @@
+{
+  "_nota": "Encuestas de las últimas semanas, con su fuente y los datos que figuran en ellas, recogidas el 23-nov-2026, antes de la veda (que empieza el 24-nov a las 00:00). No están enlazadas en la portada. Sirven para comprobar en los días de veda (python3 -I scripts/comprobar_enlaces.py) si las fuentes siguen disponibles. Ojo: que sigan disponibles es solo un indicio, no prueba que la LOREG (art. 69.7) permita enlazarlas. 'leidoEn' dice dónde se han leído las cifras: 'original' = en el documento de la fuente; 'secundaria' = en la página de Demócrata que las recoge (la noticia original, aunque responde, no se ha podido leer o no muestra la ficha completa). Los porcentajes son sobre voto válido salvo que se indique. null = no figura en lo leído. 'noConcluyente' lista los enlaces cuyo estado no se puede comprobar de forma fiable con curl.",
+  "comprobacion": {
+    "fecha": "2026-11-23T23:07:47+01:00",
+    "metodo": "curl con el agente de usuario por defecto, siguiendo redirecciones",
+    "estado": 200
+  },
+  "encuestas": [
+    {
+      "id": "cis-3584-2026-10",
+      "instituto": "CIS (Centro de Investigaciones Sociológicas)",
+      "encargadoPor": null,
+      "titulo": "Estimación de voto preelectoral, elecciones generales 2026. Estudio nº 3584",
+      "url": "https://www.cis.es/documents/d/guest/3584_estimacion-pdf",
+      "urlDatos": "https://www.cis.es/documents/d/guest/3584_estimacion-pdf",
+      "leidoEn": "original",
+      "publicada": "2026-10",
+      "campo": null,
+      "muestra": 45074,
+      "metodo": null,
+      "margenError": "±0,4 (PSOE) a ±0,1 según partido, intervalo de confianza del 95 %; las horquillas de escaños son percentiles 5-95 de las simulaciones, no intervalos de confianza",
+      "estimacionVoto": {
+        "PSOE": 33.3,
+        "PP": 25.5,
+        "VOX": 18.4,
+        "Frente Amplio": 4.7,
+        "ERC-Podemos": 3.1
+      },
+      "escanos": {
+        "PSOE": "134-143",
+        "PP": "98-106",
+        "VOX": "57-65",
+        "Frente Amplio": "7-11",
+        "ERC-Podemos": "10-14"
+      },
+      "notas": "El documento solo indica 'Octubre 2026': no da día de publicación ni fechas de campo. El 17,2 % que aparece junto al PP es el voto directo sobre censo, no la estimación (25,5 %).",
+      "comprobacion": {
+        "fecha": "2026-11-23T23:07:47+01:00",
+        "estado": 200
+      }
+    },
+    {
+      "id": "40db-2026-11-09",
+      "instituto": "40dB",
+      "encargadoPor": "El País y Cadena SER",
+      "titulo": "El bloque de la derecha mantiene su ventaja, pero el PSOE se acerca al PP",
+      "url": "https://elpais.com/espana/elecciones-generales/2026-11-09/el-bloque-de-la-derecha-mantiene-su-ventaja-pero-el-psoe-se-acerca-al-pp.html",
+      "urlDatos": "https://www.democrata.es/encuestas/elecciones-generales/40db-9-noviembre-2026-psoe-recorta-pp-vox/",
+      "leidoEn": "secundaria",
+      "publicada": "2026-11-09",
+      "campo": {
+        "desde": "2026-11-02",
+        "hasta": "2026-11-04"
+      },
+      "muestra": 2000,
+      "metodo": "entrevistas online",
+      "margenError": null,
+      "estimacionVoto": {
+        "PP": 31.9,
+        "PSOE": 29.9,
+        "Vox": 18.0,
+        "Frente Amplio": 5.0,
+        "Podemos": 1.2
+      },
+      "escanos": {
+        "PP": "129 (124-137)",
+        "PSOE": "119 (115-123)",
+        "Vox": "61 (58-64)",
+        "Frente Amplio y coaliciones regionales": "10 (7-11)"
+      },
+      "notas": "El título de la noticia se ha tomado de su dirección web: la página de El País responde 200 pero no muestra título a un cliente sin navegador. La URL de El País la enlaza Demócrata. La web de El País usa protección anti-bot (DataDome): a curl le responde 200 o 403 de forma intermitente (6 pruebas seguidas: 403 200 200 403 403 403), así que comprobar su disponibilidad con curl no es concluyente; basta con abrirla en un navegador.",
+      "comprobacion": {
+        "fecha": "2026-11-23T23:07:47+01:00",
+        "estado": 200
+      },
+      "noConcluyente": [
+        "url"
+      ]
+    },
+    {
+      "id": "sigmados-2026-11-09",
+      "instituto": "Sigma Dos",
+      "encargadoPor": "El Mundo",
+      "titulo": "Barómetro de Sigma Dos para El Mundo (9 de noviembre)",
+      "url": "https://www.elmundo.es/espana/encuestas/2026/11/08/6af066bee85eceae5a8b4598.html",
+      "urlDatos": "https://www.democrata.es/encuestas/elecciones-generales/sigma-dos-9-noviembre-2026-psoe-recupera-pp-vox-mayoria/",
+      "leidoEn": "secundaria",
+      "publicada": "2026-11-08",
+      "campo": {
+        "desde": "2026-10-30",
+        "hasta": "2026-11-06"
+      },
+      "muestra": 4172,
+      "metodo": null,
+      "margenError": null,
+      "estimacionVoto": {
+        "PP": 31.0,
+        "PSOE": 25.2,
+        "Vox": 19.4
+      },
+      "escanos": {
+        "PP": "131 (131-137)",
+        "PSOE": "105 (101-106)",
+        "Vox": "68 (62-70)"
+      },
+      "notas": "El Mundo publicó el 8-nov a las 21:43 UTC (23:43 hora peninsular), según los metadatos de su página; Demócrata lo presenta como 'barómetro del 9 de noviembre'. Demócrata da para Frente Amplio cifras distintas en el texto (8,1 %, 15 escaños) y en su gráfico (6,5 %, 9-11): no se recogen.",
+      "comprobacion": {
+        "fecha": "2026-11-23T23:07:47+01:00",
+        "estado": 200
+      }
+    },
+    {
+      "id": "imop-2026-11-23",
+      "instituto": "IMOP",
+      "encargadoPor": "El Confidencial",
+      "titulo": "PP y Vox afrontan la recta final con un margen de 19 escaños (195) y el bloque de investidura de 2023 se desploma a 152 (quinta oleada)",
+      "url": "https://www.elconfidencial.com/espana/2026-11-23/pp-vox-recta-final-margen-19-escanos-investidura-2023_4470100/",
+      "urlDatos": "https://www.democrata.es/encuestas/elecciones-generales/imop-pp-vox-195-escanos-29n/",
+      "leidoEn": "secundaria",
+      "publicada": "2026-11-23",
+      "campo": null,
+      "muestra": null,
+      "metodo": null,
+      "margenError": null,
+      "estimacionVoto": {
+        "PP (incluye UPN)": 31.7,
+        "PSOE": 27.4,
+        "Vox": 18.3
+      },
+      "escanos": {
+        "PP (incluye UPN)": "131",
+        "PSOE": "110",
+        "Vox": "64"
+      },
+      "notas": "El título y la fecha de publicación (23-nov 05:00) se han leído en la página de El Confidencial. Sus cifras y su ficha técnica no se han podido leer (las cifras vienen de Demócrata, sin ficha de campo ni de muestra).",
+      "comprobacion": {
+        "fecha": "2026-11-23T23:07:47+01:00",
+        "estado": 200
+      }
+    }
+  ]
+}
