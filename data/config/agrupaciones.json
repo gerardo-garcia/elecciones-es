@@ -1,0 +1,135 @@
+{
+  "_nota": "PRIMERA PROPUESTA, pendiente de revisión. Construida sobre las siglas de las 534 listas proclamadas al Congreso para el 29N (candidaturas-proclamadas-2026.json). Las siglas que no aparecen aquí no se pierden: cuentan por separado. 'confianza' indica cuánto seguro estoy de que son el mismo partido; 'pendienteDecision' marca lo que debe decidir una persona. Las siglas reales del feed de resultados pueden diferir de las del BOE: se comprobará cuando haya datos.",
+  "version": 1,
+  "grupos": [
+    {
+      "id": "psoe",
+      "nombre": "PSOE",
+      "confianza": "alta",
+      "alias": ["PSOE", "PSC", "PSC-PSOE", "PSE-EE (PSOE)", "PSE-EE", "PSdeG-PSOE", "PSIB-PSOE", "PSN-PSOE"],
+      "notas": "Incluye PSC (Cataluña), PSE-EE (País Vasco), PSdeG (Galicia), PSIB (Baleares) y PSN (Navarra), federaciones del mismo partido."
+    },
+    {
+      "id": "pp",
+      "nombre": "PP",
+      "confianza": "alta",
+      "alias": ["PP"],
+      "notas": "En Navarra concurre en coalición con UPN (ver grupo upn-pp)."
+    },
+    {
+      "id": "vox",
+      "nombre": "Vox",
+      "confianza": "alta",
+      "alias": ["VOX"]
+    },
+    {
+      "id": "frente-amplio",
+      "nombre": "Frente Amplio",
+      "confianza": "media",
+      "alias": [
+        "FA",
+        "FRENTE AMPLIO-FRONTE AMPLA",
+        "FRENTE AMPLIO - FRONTE AMPLA",
+        "FRENTE AMPLIO-FRONTE ZABALA",
+        "COMUNS-FRONT AMPLI",
+        "ARAMÉS-EU-MS",
+        "CHA-IU-MS-FRENTE AMPLIO"
+      ],
+      "pendienteDecision": true,
+      "notas": "Agrupo por la marca 'Frente Amplio / Front Ampli' en la denominación. Comuns (Cataluña), Aramés (Baleares) y CHA (Aragón) son partidos distintos que concurren con esa marca: decidir si se cuentan aquí o aparte."
+    },
+    {
+      "id": "compromis",
+      "nombre": "Compromís",
+      "confianza": "media",
+      "alias": ["COMPROMIS-EUPV-PODEM-ERPV"],
+      "pendienteDecision": true,
+      "notas": "Coalición valenciana (Compromís, EUPV, Podem, ERPV). Lo dejo aparte: decidir si va con Frente Amplio."
+    },
+    {
+      "id": "upc",
+      "nombre": "Unidad del Pueblo Canario",
+      "confianza": "media",
+      "alias": ["NC-BC, PODEMOS, IU, SUMAR"],
+      "pendienteDecision": true,
+      "notas": "Coalición canaria (NC-BC, Podemos, IU, Sumar). Lo dejo aparte: decidir si va con Frente Amplio."
+    },
+    {
+      "id": "podemos",
+      "nombre": "Podemos",
+      "confianza": "alta",
+      "alias": ["PODEMOS", "PAZ,CASA Y TRABAJO"],
+      "notas": "En Ceuta la lista de Podemos figura con las siglas 'PAZ,CASA Y TRABAJO'."
+    },
+    {
+      "id": "adelante-andalucia",
+      "nombre": "Adelante Andalucía",
+      "confianza": "alta",
+      "alias": ["ADELANTE ANDALUCÍA"]
+    },
+    {
+      "id": "erc",
+      "nombre": "ERC",
+      "confianza": "alta",
+      "alias": ["ERC"]
+    },
+    {
+      "id": "junts",
+      "nombre": "Junts",
+      "confianza": "alta",
+      "alias": ["JxCat"]
+    },
+    {
+      "id": "eh-bildu",
+      "nombre": "EH Bildu",
+      "confianza": "alta",
+      "alias": ["EH BILDU"]
+    },
+    {
+      "id": "pnv",
+      "nombre": "PNV",
+      "confianza": "alta",
+      "alias": ["EAJ-PNV"]
+    },
+    {
+      "id": "bng",
+      "nombre": "BNG",
+      "confianza": "alta",
+      "alias": ["BNG", "B.N.G."]
+    },
+    {
+      "id": "cc",
+      "nombre": "Coalición Canaria",
+      "confianza": "media",
+      "alias": ["1.ºCAN-CCa", "CCa-1.ºCAN"],
+      "notas": "Municipalistas Primero Canarias - Coalición Canaria; las siglas cambian de orden según la isla."
+    },
+    {
+      "id": "upn-pp",
+      "nombre": "UPN-PP",
+      "confianza": "media",
+      "alias": ["UPN-PP"],
+      "pendienteDecision": true,
+      "notas": "Coalición en Navarra entre dos partidos distintos. Lo dejo aparte del PP: decidir si se suma."
+    },
+    {
+      "id": "pcte",
+      "nombre": "PCTE",
+      "confianza": "alta",
+      "alias": ["PCTE", "PCTC", "PCTG", "PCTE/ELAK", "ELAK/PCTE"],
+      "notas": "Partido Comunista de los Trabajadores de España y sus ramas de Cataluña, Galicia y Euskadi."
+    },
+    {
+      "id": "frente-obrero",
+      "nombre": "Frente Obrero",
+      "confianza": "alta",
+      "alias": ["FO", "FRENTE OBRERO"]
+    },
+    {
+      "id": "fia",
+      "nombre": "Federación de los Independientes de Aragón",
+      "confianza": "alta",
+      "alias": ["FIA", "F.I.A."]
+    }
+  ]
+}

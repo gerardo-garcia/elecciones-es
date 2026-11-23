@@ -1,0 +1,6 @@
+export * from './tipos';
+export * from './umbral';
+export * from './dhondt';
+export * from './agrupacion';
+export * from './proyeccion';
+export * from './nacional';
