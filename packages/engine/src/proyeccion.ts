@@ -5,6 +5,7 @@ import {
   type Circunscripcion,
   type Escrutinio,
   type VotosCandidatura,
+  type VotosCera,
 } from './tipos';
 
 export type EstadoEscrutinio = 'sin-datos' | 'parcial' | 'completo';
@@ -37,6 +38,8 @@ export interface ResultadoCircunscripcion {
   escanos: EscanosCandidatura[];
   reparto: ResultadoReparto | null;
   empateSorteo: boolean;
+  /** true si la proyección ya suma el voto CERA real (no una estimación). */
+  ceraIncluido: boolean;
 }
 
 function esNumeroValido(n: number): boolean {
@@ -58,6 +61,16 @@ export function validarEscrutinio(e: Escrutinio): void {
   }
 }
 
+export function validarCera(c: VotosCera, codigo: string): void {
+  if (!esNumeroValido(c.blancos)) throw new ErrorDatos(`Blancos CERA inválidos en ${codigo}: ${c.blancos}`);
+  const vistas = new Set<string>();
+  for (const v of c.candidaturas) {
+    if (!esNumeroValido(v.votos)) throw new ErrorDatos(`Votos CERA inválidos para ${v.siglas} en ${codigo}: ${v.votos}`);
+    if (vistas.has(v.siglas)) throw new ErrorDatos(`Candidatura CERA duplicada en ${codigo}: ${v.siglas}`);
+    vistas.add(v.siglas);
+  }
+}
+
 function sinDatos(circunscripcion: Circunscripcion): ResultadoCircunscripcion {
   return {
     circunscripcion,
@@ -69,6 +82,7 @@ function sinDatos(circunscripcion: Circunscripcion): ResultadoCircunscripcion {
     escanos: [],
     reparto: null,
     empateSorteo: false,
+    ceraIncluido: false,
   };
 }
 
@@ -81,12 +95,17 @@ function sinDatos(circunscripcion: Circunscripcion): ResultadoCircunscripcion {
  *    Ceuta y Melilla: gana el más votado (D'Hondt de un escaño, sin barrera).
  *
  * D'Hondt y el 3 % son invariantes a multiplicar todos los votos por la misma constante,
- * así que el reparto coincide con el de los votos escrutados; el factor solo cambia los
- * votos absolutos que se muestran.
+ * así que, sin CERA, el reparto coincide con el de los votos escrutados; el factor solo cambia
+ * los votos absolutos que se muestran.
+ *
+ * 3. Voto CERA (opcional): cuando ya se ha escrutado, se suma sin extrapolar a los votos proyectados
+ *    antes de la barrera y el reparto. Con CERA la invariancia de escala deja de valer, porque se
+ *    mezclan votos extrapolados con votos reales.
  */
 export function calcularCircunscripcion(
   circunscripcion: Circunscripcion,
   escrutinio: Escrutinio | null,
+  cera: VotosCera | null = null,
 ): ResultadoCircunscripcion {
   if (!escrutinio) return sinDatos(circunscripcion);
   if (escrutinio.codigo !== circunscripcion.codigo) {
@@ -95,9 +114,14 @@ export function calcularCircunscripcion(
   validarEscrutinio(escrutinio);
   if (escrutinio.censoEscrutado === 0) return sinDatos(circunscripcion);
 
+  if (cera) validarCera(cera, escrutinio.codigo);
+
   const factor = escrutinio.censo / escrutinio.censoEscrutado;
-  const candidaturas = escrutinio.candidaturas.map((c) => ({ siglas: c.siglas, votos: c.votos * factor }));
-  const blancos = escrutinio.blancos * factor;
+  const votos = new Map<string, number>();
+  for (const c of escrutinio.candidaturas) votos.set(c.siglas, c.votos * factor);
+  for (const c of cera?.candidaturas ?? []) votos.set(c.siglas, (votos.get(c.siglas) ?? 0) + c.votos);
+  const candidaturas = [...votos].map(([siglas, v]) => ({ siglas, votos: v }));
+  const blancos = escrutinio.blancos * factor + (cera?.blancos ?? 0);
   const validos = candidaturas.reduce((suma, c) => suma + c.votos, blancos);
   const proyeccion: Proyeccion = { candidaturas, blancos, validos };
 
@@ -126,5 +150,6 @@ export function calcularCircunscripcion(
     escanos,
     reparto,
     empateSorteo: reparto.empateSorteo,
+    ceraIncluido: cera !== null,
   };
 }

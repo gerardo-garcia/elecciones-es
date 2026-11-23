@@ -16,6 +16,19 @@ import { UMBRAL_CONGRESO_PORCIENTO } from './umbral';
  *
  * Como se mide sobre votos válidos, el resultado no depende del factor de extrapolación.
  */
+export interface RiesgoCera {
+  /**
+   * Votos CERA mínimos con los que podría cambiar el reparto, en el mejor caso para quien aspira
+   * (todos a una sola candidatura y ninguno a las demás). Es una cota inferior: que haya tantos
+   * votos CERA no implica que el reparto cambie, pero con menos es imposible.
+   */
+  votosNecesarios: number;
+  /** Votos válidos CERA que se esperan (ver `estimarVotosCera`). */
+  votosEsperados: number;
+  /** votosNecesarios <= votosEsperados: el voto exterior podría decidirlo. */
+  puedeDecidir: boolean;
+}
+
 export interface FilaDisputa {
   codigo: string;
   nombre: string;
@@ -31,6 +44,11 @@ export interface FilaDisputa {
   porcentajeCenso: number;
   /** El reparto actual ya depende de un sorteo. */
   empateSorteo: boolean;
+  /**
+   * Papel del voto CERA, que aún no está escrutado. null si ya está incluido en la proyección
+   * o si no se ha pedido la estimación.
+   */
+  cera: RiesgoCera | null;
 }
 
 /** Disputa por el último escaño entre A (lo tiene) y B (primero que se queda fuera). */
@@ -57,6 +75,7 @@ export function disputaPorEscano(r: ResultadoCircunscripcion): FilaDisputa | nul
     porcentajeVotosAMover: x / proyeccion.validos,
     porcentajeCenso: r.porcentajeCenso,
     empateSorteo: r.empateSorteo,
+    cera: null,
   };
 }
 
@@ -90,23 +109,92 @@ export function disputaPorUmbral(r: ResultadoCircunscripcion): FilaDisputa | nul
       porcentajeVotosAMover: x / proyeccion.validos,
       porcentajeCenso: r.porcentajeCenso,
       empateSorteo: r.empateSorteo,
+      cera: null,
     };
   }
   return mejor;
 }
 
-/** La fila más cercana a cambiar en esa circunscripción, o null si no hay disputa posible. */
-export function disputaCircunscripcion(r: ResultadoCircunscripcion): FilaDisputa | null {
+/**
+ * Votos CERA mínimos con los que el reparto de la circunscripción podría cambiar, o null si no hay
+ * contendientes. Cota inferior rigurosa (se contrasta en los tests con datos reales de 2023 y con
+ * escenarios aleatorios): supone que todos los votos CERA van a una sola candidatura.
+ *
+ *  - El último escaño lo tiene A (cociente c = vA/sA). Una candidatura k ≠ A solo se lo quita si
+ *    (vk + N)/(sk+1) > c, es decir, N > vA·(sk+1)/sA − vk. Si k está bajo el 3 %, además necesita
+ *    llegar a la barrera: vk + N ≥ 3 % · (V + N), es decir, N ≥ (3 % V − vk) / 0,97.
+ *  - Una candidatura con escaños pierde todos si los votos CERA de otras la dejan bajo el 3 %:
+ *    N > vk / 3 % − V.
+ *
+ * (V = votos válidos proyectados, sin CERA.) Ceuta y Melilla no tienen barrera.
+ */
+export function votosCeraNecesarios(r: ResultadoCircunscripcion): number | null {
+  const { reparto, proyeccion, circunscripcion } = r;
+  if (!reparto || !proyeccion || !(proyeccion.validos > 0)) return null;
+  const n = circunscripcion.escanos;
+  const proporcional = circunscripcion.tipo === 'proporcional';
+  const V = proyeccion.validos;
+  const umbral = UMBRAL_CONGRESO_PORCIENTO / 100;
+  let minimo: number | null = null;
+  const probar = (x: number) => {
+    const v = Math.max(0, x);
+    if (minimo === null || v < minimo) minimo = v;
+  };
+
+  const ultimo = reparto.clasificacion[n - 1];
+  if (ultimo && reparto.adjudicados >= n) {
+    const sA = reparto.escanos[ultimo.id] ?? 0;
+    for (const k of proyeccion.candidaturas) {
+      if (k.siglas === ultimo.id) continue;
+      const sK = reparto.escanos[k.siglas] ?? 0;
+      let necesarios = (ultimo.votos * (sK + 1)) / sA - k.votos;
+      if (proporcional && !r.elegibles.includes(k.siglas)) {
+        necesarios = Math.max(necesarios, (umbral * V - k.votos) / (1 - umbral));
+      }
+      probar(necesarios);
+    }
+  }
+  if (proporcional) {
+    for (const k of proyeccion.candidaturas) {
+      if ((reparto.escanos[k.siglas] ?? 0) > 0) probar(k.votos / umbral - V);
+    }
+  }
+  return minimo;
+}
+
+/**
+ * La fila más cercana a cambiar en esa circunscripción, o null si no hay disputa posible.
+ * Con `votosCeraEsperados` (votos válidos CERA que se esperan en esta circunscripción) añade el riesgo CERA.
+ */
+export function disputaCircunscripcion(
+  r: ResultadoCircunscripcion,
+  votosCeraEsperados?: number,
+): FilaDisputa | null {
   if (r.estado === 'sin-datos') return null;
   const filas = [disputaPorEscano(r), disputaPorUmbral(r)].filter((f): f is FilaDisputa => f !== null);
   filas.sort((a, b) => a.porcentajeVotosAMover - b.porcentajeVotosAMover);
-  return filas[0] ?? null;
+  const fila = filas[0];
+  if (!fila) return null;
+  if (r.ceraIncluido || votosCeraEsperados === undefined) return fila;
+  const necesarios = votosCeraNecesarios(r);
+  if (necesarios === null) return fila;
+  return {
+    ...fila,
+    cera: { votosNecesarios: necesarios, votosEsperados: votosCeraEsperados, puedeDecidir: necesarios <= votosCeraEsperados },
+  };
 }
 
-/** Las `n` circunscripciones con menor porcentaje de votos a mover (por defecto, 10). */
-export function tablaDisputa(resultados: ResultadoCircunscripcion[], n = 10): FilaDisputa[] {
+/**
+ * Las `n` circunscripciones con menor porcentaje de votos a mover (por defecto, 10).
+ * `ceraEsperados` (código de circunscripción → votos válidos CERA esperados) activa el riesgo CERA de cada fila.
+ */
+export function tablaDisputa(
+  resultados: ResultadoCircunscripcion[],
+  n = 10,
+  ceraEsperados?: Record<string, number>,
+): FilaDisputa[] {
   return resultados
-    .map(disputaCircunscripcion)
+    .map((r) => disputaCircunscripcion(r, ceraEsperados?.[r.circunscripcion.codigo]))
     .filter((f): f is FilaDisputa => f !== null)
     .sort((a, b) => a.porcentajeVotosAMover - b.porcentajeVotosAMover || (a.codigo < b.codigo ? -1 : 1))
     .slice(0, n);

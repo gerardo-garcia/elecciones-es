@@ -24,10 +24,24 @@ export interface VotosCandidatura {
 export interface Escrutinio {
   /** Código INE de la circunscripción. */
   codigo: string;
-  /** Censo electoral total de la circunscripción. */
+  /**
+   * Censo de la circunscripción SIN el voto exterior (CER: residentes en España, el que vota en las mesas).
+   * El censo CERA no entra aquí: se escruta aparte, ver `VotosCera`.
+   */
   censo: number;
   /** Censo de las mesas ya escrutadas. */
   censoEscrutado: number;
+  blancos: number;
+  candidaturas: VotosCandidatura[];
+}
+
+/**
+ * Voto de los residentes ausentes (CERA) de una circunscripción.
+ * No se cuenta la noche electoral: llega con el escrutinio general de las Juntas Electorales, días después,
+ * y de una sola vez. Por eso se suma tal cual, sin extrapolar. El voto por correo de los residentes en
+ * España NO va aquí: se cuenta en su mesa junto al resto y ya está en el escrutinio normal.
+ */
+export interface VotosCera {
   blancos: number;
   candidaturas: VotosCandidatura[];
 }

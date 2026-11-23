@@ -5,3 +5,4 @@ export * from './agrupacion';
 export * from './proyeccion';
 export * from './nacional';
 export * from './disputa';
+export * from './cera';
