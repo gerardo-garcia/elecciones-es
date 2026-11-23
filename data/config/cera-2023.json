@@ -1,0 +1,266 @@
+{
+  "_fuente": "Ministerio del Interior, Infoelectoral: Congreso, julio 2023, resultados por circunscripción y por municipio (https://infoelectoral.interior.gob.es/es/elecciones-celebradas/area-de-descargas/). Reutilización autorizada citando el origen.",
+  "_nota": "Peso del voto exterior (CERA) en 2023 por circunscripción: censo CERA, votantes CERA y votos válidos CERA (candidaturas + blancos). Se usa para estimar cuántos votos CERA llegarán en 2026.",
+  "circunscripciones": {
+    "04": {
+      "censoCera": 44687,
+      "votantesCera": 2981,
+      "votosValidosCera": 2796
+    },
+    "11": {
+      "censoCera": 31101,
+      "votantesCera": 2868,
+      "votosValidosCera": 2844
+    },
+    "14": {
+      "censoCera": 19165,
+      "votantesCera": 2132,
+      "votosValidosCera": 2114
+    },
+    "18": {
+      "censoCera": 53300,
+      "votantesCera": 4656,
+      "votosValidosCera": 4608
+    },
+    "21": {
+      "censoCera": 8194,
+      "votantesCera": 689,
+      "votosValidosCera": 686
+    },
+    "23": {
+      "censoCera": 13546,
+      "votantesCera": 1560,
+      "votosValidosCera": 1535
+    },
+    "29": {
+      "censoCera": 60853,
+      "votantesCera": 5615,
+      "votosValidosCera": 5587
+    },
+    "41": {
+      "censoCera": 38534,
+      "votantesCera": 4697,
+      "votosValidosCera": 4643
+    },
+    "22": {
+      "censoCera": 8142,
+      "votantesCera": 958,
+      "votosValidosCera": 947
+    },
+    "44": {
+      "censoCera": 5103,
+      "votantesCera": 443,
+      "votosValidosCera": 432
+    },
+    "50": {
+      "censoCera": 26555,
+      "votantesCera": 4071,
+      "votosValidosCera": 4032
+    },
+    "33": {
+      "censoCera": 123430,
+      "votantesCera": 8766,
+      "votosValidosCera": 8673
+    },
+    "07": {
+      "censoCera": 32840,
+      "votantesCera": 2382,
+      "votosValidosCera": 2346
+    },
+    "35": {
+      "censoCera": 55641,
+      "votantesCera": 2627,
+      "votosValidosCera": 2533
+    },
+    "38": {
+      "censoCera": 107213,
+      "votantesCera": 4658,
+      "votosValidosCera": 4478
+    },
+    "39": {
+      "censoCera": 41229,
+      "votantesCera": 3463,
+      "votosValidosCera": 3408
+    },
+    "02": {
+      "censoCera": 8064,
+      "votantesCera": 860,
+      "votosValidosCera": 858
+    },
+    "13": {
+      "censoCera": 7016,
+      "votantesCera": 952,
+      "votosValidosCera": 947
+    },
+    "16": {
+      "censoCera": 3256,
+      "votantesCera": 370,
+      "votosValidosCera": 369
+    },
+    "19": {
+      "censoCera": 5187,
+      "votantesCera": 757,
+      "votosValidosCera": 743
+    },
+    "45": {
+      "censoCera": 13256,
+      "votantesCera": 1711,
+      "votosValidosCera": 1496
+    },
+    "05": {
+      "censoCera": 8369,
+      "votantesCera": 883,
+      "votosValidosCera": 866
+    },
+    "09": {
+      "censoCera": 18864,
+      "votantesCera": 2146,
+      "votosValidosCera": 2118
+    },
+    "24": {
+      "censoCera": 48645,
+      "votantesCera": 3984,
+      "votosValidosCera": 3938
+    },
+    "34": {
+      "censoCera": 7513,
+      "votantesCera": 770,
+      "votosValidosCera": 758
+    },
+    "37": {
+      "censoCera": 31638,
+      "votantesCera": 2522,
+      "votosValidosCera": 2485
+    },
+    "40": {
+      "censoCera": 3645,
+      "votantesCera": 564,
+      "votosValidosCera": 546
+    },
+    "42": {
+      "censoCera": 7305,
+      "votantesCera": 678,
+      "votosValidosCera": 664
+    },
+    "47": {
+      "censoCera": 14735,
+      "votantesCera": 2165,
+      "votosValidosCera": 2159
+    },
+    "49": {
+      "censoCera": 20839,
+      "votantesCera": 1746,
+      "votosValidosCera": 1732
+    },
+    "08": {
+      "censoCera": 217682,
+      "votantesCera": 21434,
+      "votosValidosCera": 21176
+    },
+    "17": {
+      "censoCera": 24016,
+      "votantesCera": 2335,
+      "votosValidosCera": 2283
+    },
+    "25": {
+      "censoCera": 18277,
+      "votantesCera": 1758,
+      "votosValidosCera": 1725
+    },
+    "43": {
+      "censoCera": 21576,
+      "votantesCera": 1992,
+      "votosValidosCera": 1971
+    },
+    "06": {
+      "censoCera": 12128,
+      "votantesCera": 1512,
+      "votosValidosCera": 1402
+    },
+    "10": {
+      "censoCera": 16726,
+      "votantesCera": 1536,
+      "votosValidosCera": 1522
+    },
+    "15": {
+      "censoCera": 163367,
+      "votantesCera": 10402,
+      "votosValidosCera": 10243
+    },
+    "27": {
+      "censoCera": 69098,
+      "votantesCera": 3737,
+      "votosValidosCera": 3643
+    },
+    "32": {
+      "censoCera": 102938,
+      "votantesCera": 5849,
+      "votosValidosCera": 5731
+    },
+    "36": {
+      "censoCera": 136739,
+      "votantesCera": 9830,
+      "votosValidosCera": 9682
+    },
+    "28": {
+      "censoCera": 376504,
+      "votantesCera": 44807,
+      "votosValidosCera": 44224
+    },
+    "31": {
+      "censoCera": 29940,
+      "votantesCera": 2811,
+      "votosValidosCera": 2789
+    },
+    "01": {
+      "censoCera": 8156,
+      "votantesCera": 1097,
+      "votosValidosCera": 1088
+    },
+    "20": {
+      "censoCera": 29798,
+      "votantesCera": 4337,
+      "votosValidosCera": 4312
+    },
+    "48": {
+      "censoCera": 42420,
+      "votantesCera": 3596,
+      "votosValidosCera": 3516
+    },
+    "30": {
+      "censoCera": 37760,
+      "votantesCera": 3544,
+      "votosValidosCera": 3469
+    },
+    "26": {
+      "censoCera": 17708,
+      "votantesCera": 1487,
+      "votosValidosCera": 1478
+    },
+    "03": {
+      "censoCera": 45301,
+      "votantesCera": 4461,
+      "votosValidosCera": 4003
+    },
+    "12": {
+      "censoCera": 10927,
+      "votantesCera": 1447,
+      "votosValidosCera": 1415
+    },
+    "46": {
+      "censoCera": 70391,
+      "votantesCera": 7519,
+      "votosValidosCera": 7377
+    },
+    "51": {
+      "censoCera": 2975,
+      "votantesCera": 89,
+      "votosValidosCera": 88
+    },
+    "52": {
+      "censoCera": 5968,
+      "votantesCera": 177,
+      "votosValidosCera": 171
+    }
+  }
+}
