@@ -9,6 +9,13 @@
 | `cera-2023.json` | Peso del voto exterior (CERA) en 2023 por circunscripción: censo, votantes y votos válidos | Infoelectoral, generales de julio de 2023. Se regenera con `scripts/generales2023_a_json.py` (ver abajo) |
 | `agrupaciones.json` | Agrupación de siglas de formaciones territoriales del mismo partido | **Primera propuesta, pendiente de revisión.** `pendienteDecision` marca lo que debe decidir una persona |
 
+## `encuestas/` (versionado)
+
+Registro de encuestas con su fuente, fechas de campo, muestra y cifras, y el estado de cada enlace cuando se recogieron
+(`encuestas-2026-11-23.json`). Indica en cada una si las cifras se leyeron en el documento original o en una página que
+las recoge. Las que se enlazan en la portada están en `apps/web/src/data/enlaces.json`, donde toda encuesta lleva fecha.
+`python3 -I scripts/comprobar_enlaces.py data/encuestas/encuestas-2026-11-23.json` vuelve a pedir los enlaces y compara.
+
 ## `raw/` (ignorado por git)
 
 Datos brutos descargados a mano, por ejemplo los ficheros de Infoelectoral de elecciones anteriores. El portal de

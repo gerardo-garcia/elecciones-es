@@ -91,7 +91,9 @@ cambie, y se muestran las 10 con el porcentaje más bajo.
 
 La LOREG (art. 69.7) prohíbe publicar, difundir o reproducir sondeos en los 5 días anteriores a la votación, hasta el
 cierre de los colegios. Al ser domingo, empieza el martes 24 a las 00:00. La portada no enlaza encuestas durante la veda:
-se omiten al construir y el script de cliente las retira si la página se construyó antes. Esto es una lectura
+se omiten al construir y el script de cliente las retira si la página se construyó antes. Antes de la veda se enlazan
+encuestas ya publicadas, siempre con su fecha (un test lo exige); no hay ninguna URL de encuesta en el HTML de la veda.
+Que una fuente siga en línea durante la veda no prueba que la norma permita enlazarla. Esto es una lectura
 razonable de la norma, no asesoramiento jurídico: conviene revisarla.
 
 ## Fuentes
