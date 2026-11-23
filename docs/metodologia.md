@@ -21,7 +21,31 @@ Para cada una de las 52 circunscripciones y en cada actualización del escrutini
 
 > **Propiedad útil.** D'Hondt y la barrera son invariantes a multiplicar todos los votos por la misma constante. Por eso
 > los escaños proyectados son exactamente los de D'Hondt sobre los votos ya escrutados; el factor solo cambia los votos
-> absolutos que se muestran. Hay un test que lo comprueba.
+> absolutos que se muestran. Hay un test que lo comprueba. (Deja de valer en cuanto se suma el voto CERA, que no se
+> extrapola: ver más abajo.)
+
+## Voto por correo y voto exterior (CERA)
+
+- **Voto por correo de los residentes en España: ya está en el escrutinio de las mesas.** Los sobres llegan a la mesa de
+  cada elector, se introducen en la urna al cierre de colegios (20:00) y se cuentan junto con el resto, sin distinción.
+  No hay nada que sumar aparte. Los votos por correo que llegan tarde no se cuentan.
+- **Voto exterior (CERA, residentes ausentes): se escruta después y de golpe.** No pasa por las mesas de la noche
+  electoral: lo cuentan las Juntas Electorales Provinciales en el escrutinio general (según la guía de La Moncloa, del 4
+  al 7 de diciembre; fechas por confirmar con la Junta Electoral Central). Mientras tanto la proyección **no lo
+  incluye** y la web debe decirlo.
+- **Cuando llega, se suma tal cual, sin extrapolar** (`calcularCircunscripcion(..., cera)`), a los votos extrapolados de
+  la circunscripción antes de aplicar la barrera y D'Hondt. `ceraIncluido` indica en qué situación está cada resultado.
+- **Cuánto pesa (generales de julio de 2023).** 204.649 votos válidos CERA: el 0,83 % del total, con una participación
+  del 8,95 % de su censo. Al sumarlo a los resultados de las mesas, el reparto solo cambia en **Madrid** (PSOE → PP:
+  de 15/11 a 16/10, que es el resultado oficial). En las otras 51 circunscripciones no cambia nada.
+- **Qué se hace con él antes de que llegue.** No se estima a quién votarán (los nombres de las candidaturas cambian de
+  una elección a otra). Se calcula una cota de riesgo, `votosCeraNecesarios`: los votos CERA mínimos con los que el
+  reparto de esa circunscripción podría cambiar si **todos** fueran a una sola candidatura. Si es mayor que los votos
+  CERA esperados (`estimarVotosCera`: votos válidos CERA de 2023 × crecimiento del censo CERA × margen de 1,5 por si
+  sube la participación), el CERA no puede decidir ese escaño. La tabla de disputa marca las filas donde sí podría.
+- **Contraste.** Los tests reproducen con los votos oficiales de 2023 (residentes + CERA) los escaños de las **52
+  circunscripciones** y los 350 escaños. Los datos se obtienen de Infoelectoral y el CERA de cada circunscripción sale de
+  restar a su total la suma de sus municipios; ver `scripts/generales2023_a_json.py` y `data/README.md`.
 
 ## Tabla de las 10 circunscripciones en disputa
 
@@ -37,13 +61,17 @@ cambie, y se muestran las 10 con el porcentaje más bajo.
 - **Una fila por circunscripción:** la de menor porcentaje de las dos.
 - Se mide sobre votos válidos, así que **no depende del factor de extrapolación**.
 - La fórmula se contrasta en los tests con una búsqueda por fuerza bruta que mueve votos de uno en uno.
+- **Riesgo CERA** (opcional, mientras el voto exterior no esté escrutado): cada fila indica los votos CERA necesarios
+  para cambiar el reparto, los esperados y si el CERA podría decidirlo. Es una cota inferior: con menos votos CERA
+  que la cota es imposible; con más, solo es posible.
 
 ## Limitaciones conocidas
 
 - **La extrapolación lineal supone que lo pendiente se parece a lo escrutado.** Al principio de la noche puede fallar
   (el orden del escrutinio no es aleatorio). Por eso cada panel debe mostrar el % de censo escrutado.
-- **Voto exterior (CERA).** Está por verificar cómo y cuándo se incorpora al escrutinio y si puede mover el último
-  escaño. Hasta entonces, la web debe avisar de que la proyección no lo incluye.
+- **Voto exterior (CERA).** Hasta el escrutinio general la proyección no lo incluye y puede mover algún escaño
+  (en 2023 movió uno, en Madrid). La web debe avisarlo y marcar las circunscripciones donde podría decidir.
+  Las fechas del escrutinio general son las de la guía de La Moncloa, sin confirmar oficialmente.
 - **Fuente en vivo sin definir.** Interior distribuye el escrutinio provisional a medios acreditados (URL, usuario y
   contraseña por correo, ficheros ASCII con separadores). No se ha encontrado una API pública documentada.
 - **Siglas.** `data/config/agrupaciones.json` usa las siglas de las listas proclamadas (BOE). Las del feed de
@@ -71,3 +99,6 @@ razonable de la norma, no asesoramiento jurídico: conviene revisarla.
 - RD 806/2026, de 5 de octubre (BOE-A-2026-20742): convocatoria y escaños por circunscripción.
 - Guía de La Moncloa sobre el 29N (06/11/2026): horarios, escrutinio general (4–7 dic), constitución de las Cortes.
 - Web oficial de las elecciones, <https://29neleccionesgenerales.es/>: candidaturas proclamadas al Congreso.
+- Ministerio del Interior, Infoelectoral, <https://infoelectoral.interior.gob.es/>: resultados oficiales de las generales
+  de julio de 2023 (por circunscripción y por municipio), con los que se contrasta el motor. Reutilización autorizada
+  citando el origen (Ley 37/2007).
