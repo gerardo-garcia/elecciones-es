@@ -9,3 +9,5 @@ coverage/
 data/raw/
 # Snapshots del escrutinio en vivo
 data/snapshots/
+# Borradores personales (correos, notas): no se versionan; el repositorio es público
+borradores/
