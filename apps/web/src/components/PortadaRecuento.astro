@@ -1,0 +1,29 @@
+---
+// PLACEHOLDER: aquí irán los paneles del recuento en directo (sectores, mapas y tabla de disputa).
+// Se construirán sobre @elecciones/engine cuando esté definida la fuente de datos en vivo.
+---
+
+<section class="hero">
+  <p class="etiqueta">Recuento en directo · elecciones generales del 29N</p>
+  <h1>Recuento de las elecciones generales</h1>
+  <p class="lead">
+    Escaños, mapas por circunscripción y las 10 circunscripciones donde un escaño puede cambiar de manos, actualizados
+    con cada dato nuevo del escrutinio.
+  </p>
+</section>
+
+<div class="estado" data-estado="esperando" role="status">
+  <strong>Estamos preparando esta pantalla.</strong> En cuanto haya datos del escrutinio aparecerán aquí los paneles del
+  recuento.
+</div>
+
+<h2>Cómo calculamos</h2>
+<ol class="lista-simple">
+  <li>
+    Extrapolamos <strong>de forma lineal</strong> los votos escrutados de cada circunscripción al total de su censo
+    (votos × censo ÷ censo escrutado).
+  </li>
+  <li>Aplicamos la <strong>barrera del 3 %</strong> de los votos válidos de la circunscripción, blancos incluidos.</li>
+  <li>Repartimos los escaños de cada circunscripción con la <strong>ley D'Hondt</strong>.</li>
+  <li>El resultado general es la suma de los escaños de las 52 circunscripciones.</li>
+</ol>

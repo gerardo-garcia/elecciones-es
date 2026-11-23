@@ -1,0 +1,18 @@
+---
+import Portada from '../components/Portada.astro';
+import Base from '../layouts/Base.astro';
+import { contexto } from '../lib/contexto';
+
+// La portada muestra la fase vigente en el momento del build; el script de cliente la corrige
+// si el visitante llega cuando ya ha cambiado (ver scripts/cliente.ts).
+const { fase } = contexto();
+const titulos = {
+  previa: 'Elecciones generales 29N: encuestas, noticias y recuento en directo',
+  recuento: 'Recuento en directo de las elecciones generales del 29N',
+  analisis: 'Análisis de las elecciones generales del 29N',
+} as const;
+---
+
+<Base titulo={titulos[fase]} fase={fase} portada>
+  <Portada fase={fase} />
+</Base>

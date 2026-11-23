@@ -1,0 +1,29 @@
+{
+  "_nota": "Enlaces de la portada. Tipos: 'oficial', 'noticia', 'encuesta'. Las encuestas desaparecen solas durante la veda (24 nov – cierre de colegios del 29 nov, LOREG art. 69.7). Formato de cada entrada: { tipo, titulo, medio, url, fecha (AAAA-MM-DD) }.",
+  "enlaces": [
+    {
+      "tipo": "oficial",
+      "titulo": "Web oficial de las elecciones generales 29N",
+      "medio": "Ministerio del Interior",
+      "url": "https://29neleccionesgenerales.es/"
+    },
+    {
+      "tipo": "oficial",
+      "titulo": "Elecciones Generales 29-N en Infoelectoral",
+      "medio": "Ministerio del Interior",
+      "url": "https://infoelectoral.interior.gob.es/es/proceso-electoral/Elecciones-Generales-29-N/"
+    },
+    {
+      "tipo": "oficial",
+      "titulo": "Calendario electoral (PDF)",
+      "medio": "Junta Electoral Central",
+      "url": "https://www.juntaelectoralcentral.es/cs/jec/documentos/eg2026_calendario.pdf"
+    },
+    {
+      "tipo": "oficial",
+      "titulo": "Real Decreto 806/2026 de convocatoria de elecciones",
+      "medio": "BOE",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20742"
+    }
+  ]
+}

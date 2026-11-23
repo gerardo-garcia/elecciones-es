@@ -1,0 +1,148 @@
+---
+import enlacesJson from '../data/enlaces.json';
+import { CALENDARIO } from '../lib/calendario';
+import { contexto } from '../lib/contexto';
+import { textoCuentaAtras } from '../lib/cuentaatras';
+import { enlacesVisibles, type Enlace } from '../lib/enlaces';
+import { formatoFechaCorta, formatoFechaLarga, formatoHora } from '../lib/formato';
+
+const { ahora, veda } = contexto();
+const enlaces = enlacesJson.enlaces as Enlace[];
+const encuestas = enlacesVisibles(enlaces, ahora, veda, 'encuesta');
+const noticias = enlacesVisibles(enlaces, ahora, veda, 'noticia');
+const oficiales = enlacesVisibles(enlaces, ahora, veda, 'oficial');
+
+const cierre = new Date(CALENDARIO.cierreColegios);
+const cuentaInicial = textoCuentaAtras(cierre.getTime() - ahora.getTime()) ?? 'El recuento está en marcha';
+const textoVeda = `Desde el ${formatoFechaCorta(CALENDARIO.vedaEncuestas.desde)} hasta el cierre de los colegios (${formatoHora(CALENDARIO.vedaEncuestas.hasta)} del ${formatoFechaCorta(CALENDARIO.vedaEncuestas.hasta)}) la ley electoral prohíbe publicar y difundir encuestas. Por eso no las enlazamos en estos días; volverán después.`;
+
+const fechaVotacion = formatoFechaLarga(`${CALENDARIO.votacion}T12:00:00+01:00`);
+---
+
+<section class="hero">
+  <p class="etiqueta">Elecciones generales · {fechaVotacion}</p>
+  <h1>Seguimiento de las elecciones generales del 29N</h1>
+  <p class="lead">Encuestas y noticias hasta el día de las elecciones. Ese día, el recuento en directo.</p>
+</section>
+
+<aside class="aviso" aria-labelledby="directo-titulo">
+  <h2 id="directo-titulo">El 29 de noviembre, recuento en directo</h2>
+  <p>
+    Durante la jornada electoral del <strong>domingo 29 de noviembre</strong> mostraremos aquí el recuento en directo,
+    actualizado a medida que salgan datos nuevos del escrutinio. Los colegios cierran a las {formatoHora(cierre)} y el
+    recuento arranca a partir de entonces.
+  </p>
+  <p class="cuenta">
+    Faltan <strong data-cuenta-atras={CALENDARIO.cierreColegios} data-texto-final="El recuento está en marcha">{cuentaInicial}</strong> para el
+    cierre de los colegios.
+  </p>
+</aside>
+
+<h2>Qué vamos a mostrar durante el recuento</h2>
+<ul class="lista-simple">
+  <li>Diagramas de sectores con los escaños de cada formación, y otro agrupando las formaciones territoriales de un mismo partido.</li>
+  <li>Mapa de España por circunscripciones con los escaños de cada formación, y otro con el ganador de cada una.</li>
+  <li>
+    <strong>Las 10 circunscripciones donde un escaño puede cambiar de manos</strong>, con el porcentaje de votos que
+    tendrían que moverse para que cambie.
+  </li>
+  <li>
+    El método, a la vista: extrapolación lineal de los votos escrutados al censo de cada circunscripción, barrera del
+    3 % y reparto D'Hondt, como marca la ley electoral.
+  </li>
+</ul>
+
+<h2>Últimas encuestas</h2>
+<section aria-label="Últimas encuestas">
+  {
+    veda ? (
+      <div class="aviso aviso--veda" role="note">
+        <p>{textoVeda}</p>
+      </div>
+    ) : (
+      <>
+        <p class="aviso aviso--veda" role="note" data-aviso-veda hidden>
+          {textoVeda}
+        </p>
+        <div data-encuestas>
+          {encuestas.length > 0 ? (
+            <ul class="enlaces">
+              {encuestas.map((e) => (
+                <li>
+                  <a href={e.url} rel="noopener noreferrer" target="_blank">
+                    {e.titulo}
+                  </a>
+                  <span class="meta">
+                    {e.medio}
+                    {e.fecha ? ` · ${formatoFechaCorta(`${e.fecha}T12:00:00+01:00`)}` : ''}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="vacio">Todavía no hemos añadido encuestas.</p>
+          )}
+        </div>
+      </>
+    )
+  }
+</section>
+
+<h2>Noticias</h2>
+{
+  noticias.length > 0 ? (
+    <ul class="enlaces">
+      {noticias.map((e) => (
+        <li>
+          <a href={e.url} rel="noopener noreferrer" target="_blank">
+            {e.titulo}
+          </a>
+          <span class="meta">
+            {e.medio}
+            {e.fecha ? ` · ${formatoFechaCorta(`${e.fecha}T12:00:00+01:00`)}` : ''}
+          </span>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p class="vacio">Pronto enlazaremos aquí las últimas noticias. Mientras, los recursos oficiales:</p>
+  )
+}
+
+<h2>Recursos oficiales</h2>
+<ul class="enlaces">
+  {
+    oficiales.map((e) => (
+      <li>
+        <a href={e.url} rel="noopener noreferrer" target="_blank">
+          {e.titulo}
+        </a>
+        <span class="meta">{e.medio}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<h2>Fechas clave</h2>
+<ul class="calendario">
+  <li>
+    <time datetime={CALENDARIO.vedaEncuestas.desde}>{formatoFechaCorta(CALENDARIO.vedaEncuestas.desde)}</time>
+    <span>Empieza la veda de encuestas.</span>
+  </li>
+  <li>
+    <time datetime="2026-11-28">28 de noviembre</time>
+    <span>Jornada de reflexión.</span>
+  </li>
+  <li>
+    <time datetime={CALENDARIO.votacion}>29 de noviembre</time>
+    <span>Votación de 9:00 a 20:00. A partir del cierre, recuento en directo aquí.</span>
+  </li>
+  <li>
+    <time datetime="2026-12-04">4 al 7 de diciembre</time>
+    <span>Escrutinio general en las Juntas Electorales Provinciales.</span>
+  </li>
+  <li>
+    <time datetime="2026-12-23">23 de diciembre</time>
+    <span>Sesiones constitutivas del Congreso y del Senado.</span>
+  </li>
+</ul>

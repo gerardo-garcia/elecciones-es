@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+import { CALENDARIO } from '../lib/calendario';
+import { ruta } from '../lib/formato';
+import type { Fase } from '../lib/fase';
+
+interface Props {
+  titulo: string;
+  descripcion?: string;
+  fase: Fase;
+  /** true solo en la portada ('/'): el script de cliente la redirige si la fase ya cambió. */
+  portada?: boolean;
+}
+
+const etiquetaFase: Record<Fase, string> = {
+  previa: 'Antes de las elecciones',
+  recuento: 'Recuento',
+  analisis: 'Análisis',
+};
+
+const {
+  titulo,
+  descripcion = 'Seguimiento de las elecciones generales del 29 de noviembre de 2026: encuestas, recuento en directo y análisis de resultados.',
+  fase,
+  portada = false,
+} = Astro.props;
+
+const inicio = ruta('/');
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo} · Elecciones España</title>
+    <meta name="description" content={descripcion} />
+    <link rel="icon" href={ruta('/favicon.svg')} type="image/svg+xml" />
+  </head>
+  <body data-fase={fase} data-portada={portada ? 'true' : 'false'} data-base={inicio}>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+    <header class="cabecera">
+      <div class="contenedor">
+        <a class="marca" href={inicio}>Elecciones España</a>
+        <span class="fase-actual">{etiquetaFase[fase]}</span>
+      </div>
+    </header>
+
+    <main id="contenido">
+      <div class="contenedor">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="pie">
+      <div class="contenedor">
+        Proyecto independiente, sin vinculación oficial con el Ministerio del Interior ni con la Junta Electoral Central.
+      </div>
+    </footer>
+
+    <script id="calendario" type="application/json" is:inline set:html={JSON.stringify(CALENDARIO)} />
+    <script>
+      import '../scripts/cliente';
+    </script>
+  </body>
+</html>

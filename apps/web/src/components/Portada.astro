@@ -1,0 +1,15 @@
+---
+import type { Fase } from '../lib/fase';
+import PortadaAnalisis from './PortadaAnalisis.astro';
+import PortadaPrevia from './PortadaPrevia.astro';
+import PortadaRecuento from './PortadaRecuento.astro';
+
+interface Props {
+  fase: Fase;
+}
+const { fase } = Astro.props;
+---
+
+{fase === 'previa' && <PortadaPrevia />}
+{fase === 'recuento' && <PortadaRecuento />}
+{fase === 'analisis' && <PortadaAnalisis />}
