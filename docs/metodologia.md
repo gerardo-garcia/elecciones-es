@@ -76,6 +76,11 @@ cambie, y se muestran las 10 con el porcentaje más bajo.
   contraseña por correo, ficheros ASCII con separadores). No se ha encontrado una API pública documentada.
 - **Siglas.** `data/config/agrupaciones.json` usa las siglas de las listas proclamadas (BOE). Las del feed de
   resultados pueden diferir; las que no coincidan no se pierden: cuentan por separado y hay que revisarlas.
+- **Agrupaciones aprobadas (23-nov-2026).** Además de las marcas territoriales de un mismo partido (PSC, PSE-EE… con el
+  PSOE), se suman dos grupos de partidos distintos: **FA+COMP+UPC** (Frente Amplio con Comuns, Aramés y CHA, Compromís
+  y Unidad del Pueblo Canario) y **PP**, que incluye UPN-PP (coalición en Navarra). Cada uno lleva un texto `incluye`
+  que los gráficos y tablas deben mostrar junto al nombre. La agrupación solo afecta a las sumas del resumen nacional:
+  el reparto de cada circunscripción se hace por candidatura, sin agrupar.
 
 ## Fases de la portada
 

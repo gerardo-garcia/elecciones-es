@@ -7,7 +7,7 @@
 | `circunscripciones.json` | 52 circunscripciones, códigos INE y diputados (suman 350) | Anexo del RD 806/2026 (BOE-A-2026-20742). Se regenera con `scripts/anexo_a_json.py` a partir de `https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-20742` |
 | `candidaturas-proclamadas-2026.json` | Denominación y siglas de las 534 listas al Congreso, por circunscripción | Web oficial 29neleccionesgenerales.es, consulta del 2026-11-23. Sin nombres de personas |
 | `cera-2023.json` | Peso del voto exterior (CERA) en 2023 por circunscripción: censo, votantes y votos válidos | Infoelectoral, generales de julio de 2023. Se regenera con `scripts/generales2023_a_json.py` (ver abajo) |
-| `agrupaciones.json` | Agrupación de siglas de formaciones territoriales del mismo partido | **Primera propuesta, pendiente de revisión.** `pendienteDecision` marca lo que debe decidir una persona |
+| `agrupaciones.json` | Agrupación de siglas de formaciones territoriales del mismo partido | Revisada y aprobada el 23-nov-2026. `incluye` es el texto que acompaña al grupo en gráficos y tablas cuando suma partidos distintos; `pendienteDecision` marcaría lo que debe decidir una persona (ahora nada) |
 
 ## `encuestas/` (versionado)
 
