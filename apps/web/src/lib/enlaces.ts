@@ -1,3 +1,5 @@
+import { formatoFechaCorta, formatoMesYAnio } from './formato';
+
 export type TipoEnlace = 'encuesta' | 'noticia' | 'oficial';
 
 export interface Enlace {
@@ -6,8 +8,28 @@ export interface Enlace {
   /** Periódico, instituto o web que lo publica. */
   medio: string;
   url: string;
-  /** Fecha de publicación (AAAA-MM-DD). Opcional en los enlaces oficiales. */
+  /**
+   * Fecha de publicación: AAAA-MM-DD, o AAAA-MM si la fuente solo da el mes. Obligatoria en las encuestas y opcional
+   * en el resto. Una fecha con solo el mes cuenta como el día 1 al ordenar y al comprobar que no es futura.
+   */
   fecha?: string;
+  /** Datos que ayudan a leerlo, p. ej. "Campo: 2–4 de noviembre · 2.000 entrevistas online". */
+  detalle?: string;
+}
+
+const FECHA_COMPLETA = /^\d{4}-\d{2}-\d{2}$/;
+const FECHA_MES = /^\d{4}-\d{2}$/;
+
+/** "9 de noviembre" (AAAA-MM-DD) u "octubre de 2026" (AAAA-MM). Lanza si el formato no es válido. */
+export function formatoFechaEnlace(fecha: string): string {
+  if (FECHA_COMPLETA.test(fecha)) return formatoFechaCorta(`${fecha}T12:00:00+01:00`);
+  if (FECHA_MES.test(fecha)) return formatoMesYAnio(`${fecha}-15T12:00:00+01:00`);
+  throw new Error(`Fecha de enlace con formato inválido: ${fecha}`);
+}
+
+/** Línea de contexto de un enlace: "El País · 9 de noviembre · Campo: …". */
+export function metaEnlace(e: Enlace): string {
+  return [e.medio, e.fecha ? formatoFechaEnlace(e.fecha) : null, e.detalle].filter(Boolean).join(' · ');
 }
 
 /**

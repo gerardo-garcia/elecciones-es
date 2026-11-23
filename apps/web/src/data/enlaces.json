@@ -1,5 +1,5 @@
 {
-  "_nota": "Enlaces de la portada. Tipos: 'oficial', 'noticia', 'encuesta'. Las encuestas desaparecen solas durante la veda (24 nov – cierre de colegios del 29 nov, LOREG art. 69.7). Formato de cada entrada: { tipo, titulo, medio, url, fecha (AAAA-MM-DD) }.",
+  "_nota": "Enlaces de la portada. Tipos: 'oficial', 'noticia', 'encuesta'. Las encuestas desaparecen solas durante la veda (24 nov – cierre de colegios del 29 nov, LOREG art. 69.7). Formato de cada entrada: { tipo, titulo, medio, url, fecha, detalle? }. fecha: AAAA-MM-DD (o AAAA-MM si la fuente solo da el mes); obligatoria en las encuestas. Las fichas completas de las encuestas, con lo que se leyó en cada fuente, están en data/encuestas/.",
   "enlaces": [
     {
       "tipo": "oficial",
@@ -24,6 +24,37 @@
       "titulo": "Real Decreto 806/2026 de convocatoria de elecciones",
       "medio": "BOE",
       "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-20742"
+    },
+    {
+      "tipo": "encuesta",
+      "titulo": "Quinta oleada de IMOP",
+      "medio": "El Confidencial",
+      "url": "https://www.elconfidencial.com/espana/2026-11-23/pp-vox-recta-final-margen-19-escanos-investidura-2023_4470100/",
+      "fecha": "2026-11-23"
+    },
+    {
+      "tipo": "encuesta",
+      "titulo": "Encuesta de 40dB",
+      "medio": "El País y Cadena SER",
+      "url": "https://elpais.com/espana/elecciones-generales/2026-11-09/el-bloque-de-la-derecha-mantiene-su-ventaja-pero-el-psoe-se-acerca-al-pp.html",
+      "fecha": "2026-11-09",
+      "detalle": "Campo: 2–4 de noviembre · 2.000 entrevistas online"
+    },
+    {
+      "tipo": "encuesta",
+      "titulo": "Barómetro de Sigma Dos",
+      "medio": "El Mundo",
+      "url": "https://www.elmundo.es/espana/encuestas/2026/11/08/6af066bee85eceae5a8b4598.html",
+      "fecha": "2026-11-08",
+      "detalle": "Campo: 30 de octubre–6 de noviembre · 4.172 entrevistas"
+    },
+    {
+      "tipo": "encuesta",
+      "titulo": "Estimación de voto preelectoral (estudio 3584)",
+      "medio": "CIS",
+      "url": "https://www.cis.es/documents/d/guest/3584_estimacion-pdf",
+      "fecha": "2026-10",
+      "detalle": "Muestra de 45.074"
     }
   ]
 }

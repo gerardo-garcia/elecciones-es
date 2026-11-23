@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { enlacesVisibles, type Enlace } from './enlaces';
+import enlacesJson from '../data/enlaces.json';
+import { enlacesVisibles, formatoFechaEnlace, metaEnlace, type Enlace } from './enlaces';
 
 const enlaces: Enlace[] = [
   { tipo: 'encuesta', titulo: 'Encuesta A', medio: 'Diario A', url: 'https://a.example/', fecha: '2026-11-20' },
@@ -31,5 +32,60 @@ describe('enlacesVisibles', () => {
   it('los enlaces sin fecha van al final', () => {
     const todos = enlacesVisibles(enlaces, ahora, false);
     expect(todos[todos.length - 1]?.titulo).toBe('Oficial');
+  });
+});
+
+describe('fechas de los enlaces', () => {
+  it('da día y mes si hay fecha completa, y mes y año si solo hay mes', () => {
+    expect(formatoFechaEnlace('2026-11-09')).toBe('9 de noviembre');
+    expect(formatoFechaEnlace('2026-10')).toBe('octubre de 2026');
+  });
+
+  it('rechaza formatos que no son AAAA-MM-DD ni AAAA-MM', () => {
+    for (const mala of ['2026', '9/11/2026', '2026-1-5', '2026-11-09T10:00', '']) {
+      expect(() => formatoFechaEnlace(mala), mala).toThrow(/inválido/);
+    }
+  });
+
+  it('una fecha con solo el mes ordena como el día 1 y no se muestra antes de que empiece ese mes', () => {
+    const e: Enlace[] = [
+      { tipo: 'encuesta', titulo: 'Mensual', medio: 'CIS', url: 'https://a.example/', fecha: '2026-10' },
+      { tipo: 'encuesta', titulo: 'Diaria', medio: 'X', url: 'https://b.example/', fecha: '2026-10-05' },
+    ];
+    expect(enlacesVisibles(e, new Date('2026-11-23T12:00:00+01:00'), false).map((x) => x.titulo)).toEqual(['Diaria', 'Mensual']);
+    expect(enlacesVisibles(e, new Date('2026-09-30T12:00:00+02:00'), false)).toEqual([]);
+  });
+
+  it('metaEnlace une medio, fecha y detalle, y omite lo que falta', () => {
+    expect(metaEnlace({ tipo: 'encuesta', titulo: 't', medio: 'El País', url: 'https://x.example/', fecha: '2026-11-09', detalle: 'Campo: 2–4 de noviembre' })).toBe(
+      'El País · 9 de noviembre · Campo: 2–4 de noviembre',
+    );
+    expect(metaEnlace({ tipo: 'oficial', titulo: 't', medio: 'BOE', url: 'https://x.example/' })).toBe('BOE');
+  });
+});
+
+describe('data/enlaces.json', () => {
+  const todos = enlacesJson.enlaces as Enlace[];
+
+  it('todos los enlaces son https y tienen tipo, título y medio', () => {
+    for (const e of todos) {
+      expect(['encuesta', 'noticia', 'oficial'], e.titulo).toContain(e.tipo);
+      expect(e.url, e.titulo).toMatch(/^https:\/\//);
+      expect(e.titulo.length, e.url).toBeGreaterThan(0);
+      expect(e.medio.length, e.url).toBeGreaterThan(0);
+    }
+  });
+
+  it('toda encuesta lleva fecha con formato válido: sin fecha no se enlaza', () => {
+    const encuestas = todos.filter((e) => e.tipo === 'encuesta');
+    expect(encuestas.length).toBeGreaterThan(0);
+    for (const e of encuestas) {
+      expect(e.fecha, e.titulo).toBeTruthy();
+      expect(() => formatoFechaEnlace(e.fecha!), e.titulo).not.toThrow();
+    }
+  });
+
+  it('no hay URLs repetidas', () => {
+    expect(new Set(todos.map((e) => e.url)).size).toBe(todos.length);
   });
 });

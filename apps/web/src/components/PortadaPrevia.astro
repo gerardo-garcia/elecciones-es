@@ -3,7 +3,7 @@ import enlacesJson from '../data/enlaces.json';
 import { CALENDARIO } from '../lib/calendario';
 import { contexto } from '../lib/contexto';
 import { textoCuentaAtras } from '../lib/cuentaatras';
-import { enlacesVisibles, type Enlace } from '../lib/enlaces';
+import { enlacesVisibles, metaEnlace, type Enlace } from '../lib/enlaces';
 import { formatoFechaCorta, formatoFechaLarga, formatoHora } from '../lib/formato';
 
 const { ahora, veda } = contexto();
@@ -72,10 +72,7 @@ const fechaVotacion = formatoFechaLarga(`${CALENDARIO.votacion}T12:00:00+01:00`)
                   <a href={e.url} rel="noopener noreferrer" target="_blank">
                     {e.titulo}
                   </a>
-                  <span class="meta">
-                    {e.medio}
-                    {e.fecha ? ` · ${formatoFechaCorta(`${e.fecha}T12:00:00+01:00`)}` : ''}
-                  </span>
+                  <span class="meta">{metaEnlace(e)}</span>
                 </li>
               ))}
             </ul>
@@ -97,10 +94,7 @@ const fechaVotacion = formatoFechaLarga(`${CALENDARIO.votacion}T12:00:00+01:00`)
           <a href={e.url} rel="noopener noreferrer" target="_blank">
             {e.titulo}
           </a>
-          <span class="meta">
-            {e.medio}
-            {e.fecha ? ` · ${formatoFechaCorta(`${e.fecha}T12:00:00+01:00`)}` : ''}
-          </span>
+          <span class="meta">{metaEnlace(e)}</span>
         </li>
       ))}
     </ul>
