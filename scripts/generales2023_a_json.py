@@ -3,6 +3,7 @@
 
   - packages/engine/test/fixtures/generales-2023.json  (contraste del motor: votos y escaños oficiales)
   - data/config/cera-2023.json                         (peso del voto exterior CERA por circunscripción)
+  - data/simulacion/generales-2023-municipios.json     (un registro por municipio, para simular una noche electoral)
 
 Entradas (se descargan a mano con un navegador, ver data/README.md):
   PROV_02_202307_1.xlsx  Resultados por circunscripción (incluye CERA)
@@ -53,9 +54,18 @@ def main(ruta_prov, ruta_muni):
     # MUNI: suma por provincia del voto residente (CER).
     nombres_muni = {j: M[4][j] for j in range(13, len(M[5])) if M[4][j]}
     cer = {}
+    municipios = []  # [provincia, mesas, censo, blancos, partido, votos, partido, votos, ...]
+    indice = {s: i for i, s in enumerate(siglas)}
     for r in M[6:]:
         if r[1] is None:
             continue
+        mesas = max(1, entero(r[6]))
+        fila = [int(r[1]), mesas, entero(r[7]), entero(r[11])]
+        for j, nombre in nombres_muni.items():
+            v = entero(r[j])
+            if v:
+                fila += [indice[por_nombre[nombre]], v]
+        municipios.append(fila)
         d = cer.setdefault(int(r[1]), {"censo": 0, "votantes": 0, "blancos": 0, "votos": {}})
         d["censo"] += entero(r[7])
         d["votantes"] += entero(r[8])
@@ -125,6 +135,25 @@ def main(ruta_prov, ruta_muni):
         encoding="utf-8",
     )
 
+    ruta_muni = RAIZ / "data/simulacion/generales-2023-municipios.json"
+    ruta_muni.parent.mkdir(parents=True, exist_ok=True)
+    ruta_muni.write_text(
+        json.dumps(
+            {
+                "_fuente": FUENTE,
+                "_nota": "Un registro por municipio de las generales de julio de 2023 (solo voto residente, CER): "
+                "[provincia, mesas, censo, votos en blanco, partido, votos, partido, votos, ...], donde partido es un índice "
+                "de la lista 'partidos'. Solo se guardan los partidos con votos.",
+                "partidos": siglas,
+                "municipios": municipios,
+            },
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
     ruta_cera = RAIZ / "data/config/cera-2023.json"
     ruta_cera.write_text(
         json.dumps(
@@ -140,7 +169,11 @@ def main(ruta_prov, ruta_muni):
         + "\n",
         encoding="utf-8",
     )
-    print(f"OK: {ruta_fixture.relative_to(RAIZ)} ({ruta_fixture.stat().st_size // 1024} KB) y {ruta_cera.relative_to(RAIZ)}")
+    print(
+        f"OK: {ruta_fixture.relative_to(RAIZ)} ({ruta_fixture.stat().st_size // 1024} KB), "
+        f"{ruta_muni.relative_to(RAIZ)} ({ruta_muni.stat().st_size // 1024} KB, {len(municipios)} municipios) "
+        f"y {ruta_cera.relative_to(RAIZ)}"
+    )
 
 
 if __name__ == "__main__":
