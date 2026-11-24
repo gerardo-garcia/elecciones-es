@@ -1,6 +1,7 @@
 ---
+import { ruta } from '../lib/formato';
 // PLACEHOLDER: aquí irán los paneles del recuento en directo (sectores, mapas y tabla de disputa).
-// Se construirán sobre @elecciones/engine cuando esté definida la fuente de datos en vivo.
+// Los dibujos ya existen (lib/recuento, usados por /simulacion/); falta la fuente de datos en vivo.
 ---
 
 <section class="hero">
@@ -14,7 +15,8 @@
 
 <div class="estado" data-estado="esperando" role="status">
   <strong>Estamos preparando esta pantalla.</strong> En cuanto haya datos del escrutinio aparecerán aquí los paneles del
-  recuento.
+  recuento. Mientras tanto, puedes ver <a href={ruta('simulacion/')}>cómo se moverán con una noche simulada con los datos
+  de 2023</a> (no son resultados de 2026).
 </div>
 
 <h2>Cómo calculamos</h2>

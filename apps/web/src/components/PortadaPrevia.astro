@@ -4,7 +4,7 @@ import { CALENDARIO } from '../lib/calendario';
 import { contexto } from '../lib/contexto';
 import { textoCuentaAtras } from '../lib/cuentaatras';
 import { enlacesVisibles, metaEnlace, type Enlace } from '../lib/enlaces';
-import { formatoFechaCorta, formatoFechaLarga, formatoHora } from '../lib/formato';
+import { formatoFechaCorta, formatoFechaLarga, formatoHora, ruta } from '../lib/formato';
 
 const { ahora, veda } = contexto();
 const enlaces = enlacesJson.enlaces as Enlace[];
@@ -51,6 +51,10 @@ const fechaVotacion = formatoFechaLarga(`${CALENDARIO.votacion}T12:00:00+01:00`)
     3 % y reparto D'Hondt, como marca la ley electoral.
   </li>
 </ul>
+<p>
+  ¿Quieres verlo en movimiento? <a href={ruta('simulacion/')}>Prueba una noche simulada con los datos de 2023</a>: no son
+  resultados de 2026, sirve para ver cómo funcionarán los paneles.
+</p>
 
 <h2>Últimas encuestas</h2>
 <section aria-label="Últimas encuestas">
