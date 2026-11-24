@@ -46,7 +46,18 @@ describe('evaluar (a mano)', () => {
       escanosPendientes: 1,
       circunscripcionesDistintas: 1,
       escanosErroneos: 1,
+      estadoTabla: 'normal',
+      circunscripcionesSinOpcion: 0,
+      cambiosDescartados: 0,
     });
+  });
+
+  it('señala como "cambio descartado" un cambio real que la tabla había dado por imposible', () => {
+    // Recuento completo (100 de 100) con Q 32 / P 28 → Q 2, P 1: sin votos pendientes la tabla lo da por cerrado...
+    const cerrada = proyectarInstantanea(circs, inst(30, [esc('01', 100, { P: 28, Q: 32 })]));
+    // ...pero el "final" de esta prueba es otro: P 60 / Q 40. Un fallo así nunca debería darse con datos coherentes.
+    const m = evaluar(inst(30, []), cerrada, finales);
+    expect(m).toMatchObject({ circunscripcionesDistintas: 1, circunscripcionesSinOpcion: 1, cambiosDescartados: 1 });
   });
 
   it('si el reparto ya es el definitivo no hay error, aunque falte censo por escrutar', () => {
@@ -76,6 +87,8 @@ describe('backtest sobre las generales de 2023', () => {
     const r = noche(1);
     const ultimo = r.puntos.at(-1) as MetricasInstante;
     expect(ultimo).toMatchObject({ porcentajeCenso: 1, escanosPendientes: 0, circunscripcionesDistintas: 0, escanosErroneos: 0 });
+    // Con todo el censo residente contado no queda opción de vuelco en ninguna circunscripción: no hay tabla.
+    expect(ultimo).toMatchObject({ estadoTabla: 'sin-vuelco', filasTabla: 0, circunscripcionesSinOpcion: 52 });
     expect(ultimo.circunscripcionesConDatos).toBe(52);
     expect(ultimo.minutos).toBe(r.minutosCompleto);
   });
@@ -83,6 +96,7 @@ describe('backtest sobre las generales de 2023', () => {
   it('empieza sin datos, avanza en el tiempo y acaba estabilizándose', () => {
     const r = noche(1);
     expect(r.puntos[0]).toMatchObject({ minutos: 0, porcentajeCenso: 0, circunscripcionesConDatos: 0, escanosPendientes: 350 });
+    expect(r.puntos[0]).toMatchObject({ estadoTabla: 'normal', filasTabla: 0, circunscripcionesSinOpcion: 0 });
     const minutos = r.puntos.map((p) => p.minutos);
     expect(minutos).toEqual([...minutos].sort((a, b) => a - b));
     const censo = r.puntos.map((p) => p.porcentajeCenso);
@@ -119,6 +133,30 @@ describe('backtest sobre las generales de 2023', () => {
         // y la tabla de disputa señala las circunscripciones que acabarán cambiando (medido: ninguna omitida, margen 1).
         expect(p.circunscripcionesDistintas - p.distintasEnTabla).toBeLessThanOrEqual(2);
       }
+    }
+  }, TIEMPO);
+
+  it('el criterio de vuelco no descarta nunca un cambio real (5 noches × 3 órdenes de llegada)', () => {
+    let descartados = 0;
+    let cambios = 0;
+    for (const orden of ['aleatorio', 'rurales-primero', 'urbanos-primero'] as OrdenEscrutinio[]) {
+      for (const semilla of SEMILLAS) {
+        for (const p of noche(semilla, orden).puntos) {
+          descartados += p.cambiosDescartados;
+          cambios += p.circunscripcionesDistintas;
+        }
+      }
+    }
+    expect(cambios).toBeGreaterThan(1_000); // la prueba no es vacía
+    expect(descartados).toBe(0);
+  }, TIEMPO);
+
+  it('la tabla mantiene sus filas casi toda la noche: solo se reduce al final del recuento', () => {
+    for (const semilla of SEMILLAS) {
+      const { puntos } = noche(semilla);
+      // Medido con 20 noches por orden: se reduce a partir del 98,9 %. Se deja margen.
+      for (const p of puntos.filter((x) => x.porcentajeCenso < 0.95)) expect(p.estadoTabla, `semilla ${semilla}`).toBe('normal');
+      expect(puntos.filter((x) => x.estadoTabla === 'reducida').length, `semilla ${semilla}`).toBeGreaterThan(0);
     }
   }, TIEMPO);
 

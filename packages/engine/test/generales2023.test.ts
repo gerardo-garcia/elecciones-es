@@ -3,8 +3,9 @@ import fixtureJson from './fixtures/generales-2023.json';
 import ceraJson from '../../../data/config/cera-2023.json';
 import {
   calcularCircunscripcion,
+  construirTablaDisputa,
   estimarVotosCera,
-  tablaDisputa,
+  rankingDisputa,
   votosCeraNecesarios,
   type Circunscripcion,
   type ConfigCera,
@@ -119,13 +120,33 @@ describe('voto CERA de 2023', () => {
   it('con la estimación para 2026, Madrid aparece como circunscripción donde el CERA podría decidir', () => {
     const resultados = circunscripciones.map((c) => calcularCircunscripcion(aCirc(c), escrutinioCer(c)));
     const esperados = estimarVotosCera(configCera, 2_663_407);
-    const tabla = tablaDisputa(resultados, 52, esperados);
+    const tabla = rankingDisputa(resultados, 52, esperados);
     const madrid = tabla.find((f) => f.codigo === '28');
     expect(madrid?.cera?.puedeDecidir).toBe(true);
     // No todo es "podría decidir": la cota descarta la gran mayoría.
     const posibles = tabla.filter((f) => f.cera?.puedeDecidir).length;
     expect(posibles).toBeGreaterThanOrEqual(1);
     expect(posibles).toBeLessThan(tabla.length / 2);
+  });
+});
+
+describe('tabla de disputa con el voto exterior (2023)', () => {
+  const esperados = estimarVotosCera(configCera, 2_663_407);
+
+  it('con el recuento residente completo, solo quedan las circunscripciones que el CERA podría decidir (Madrid entre ellas)', () => {
+    const sin = circunscripciones.map((c) => calcularCircunscripcion(aCirc(c), escrutinioCer(c)));
+    const t = construirTablaDisputa(sin, { porcentajeEscrutadoGlobal: 1, ceraEsperados: esperados });
+    expect(t.estado).not.toBe('sin-vuelco');
+    expect(t.filas.map((f) => f.codigo)).toContain('28');
+    // Las dos formas de decirlo coinciden: lo que la tabla conserva es lo que el CERA podría decidir.
+    for (const f of t.filas) expect(f.cera?.puedeDecidir, f.nombre).toBe(true);
+    expect(t.sinOpcionDeVuelco.length).toBeGreaterThan(t.total / 2);
+  });
+
+  it('una vez escrutado el CERA no queda ninguna circunscripción con opción de vuelco', () => {
+    const con = circunscripciones.map((c) => calcularCircunscripcion(aCirc(c), escrutinioCer(c), votosCera(c)));
+    const t = construirTablaDisputa(con, { porcentajeEscrutadoGlobal: 1, ceraEsperados: esperados });
+    expect(t).toMatchObject({ estado: 'sin-vuelco', filas: [], conOpcionDeVuelco: 0, total: 52 });
   });
 });
 

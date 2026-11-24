@@ -4,7 +4,7 @@ import {
   disputaCircunscripcion,
   ErrorDatos,
   estimarVotosCera,
-  tablaDisputa,
+  rankingDisputa,
   votosCeraNecesarios,
   type ResultadoCircunscripcion,
 } from '../src';
@@ -141,10 +141,10 @@ describe('tabla de disputa con riesgo CERA', () => {
     expect(disputaCircunscripcion(r, 1000)!.cera).toBeNull();
   });
 
-  it('tablaDisputa usa la estimación de cada circunscripción por su código', () => {
-    const tabla = tablaDisputa([resultado()], 10, { '01': 500 });
+  it('rankingDisputa usa la estimación de cada circunscripción por su código', () => {
+    const tabla = rankingDisputa([resultado()], 10, { '01': 500 });
     expect(tabla[0]!.cera?.votosEsperados).toBe(500);
-    expect(tablaDisputa([resultado()], 10, { '99': 500 })[0]!.cera).toBeNull();
+    expect(rankingDisputa([resultado()], 10, { '99': 500 })[0]!.cera).toBeNull();
   });
 });
 

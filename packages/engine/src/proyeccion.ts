@@ -27,6 +27,10 @@ export interface EscanosCandidatura {
 export interface ResultadoCircunscripcion {
   circunscripcion: Circunscripcion;
   estado: EstadoEscrutinio;
+  /** Censo de la circunscripción (sin CERA); null si la fuente aún no ha dado ningún dato de ella. */
+  censo: number | null;
+  /** Censo de las mesas ya escrutadas. */
+  censoEscrutado: number;
   /** Censo escrutado / censo, de 0 a 1. */
   porcentajeCenso: number;
   /** Factor de extrapolación lineal: censo / censo escrutado. */
@@ -71,10 +75,12 @@ export function validarCera(c: VotosCera, codigo: string): void {
   }
 }
 
-function sinDatos(circunscripcion: Circunscripcion): ResultadoCircunscripcion {
+function sinDatos(circunscripcion: Circunscripcion, censo: number | null = null): ResultadoCircunscripcion {
   return {
     circunscripcion,
     estado: 'sin-datos',
+    censo,
+    censoEscrutado: 0,
     porcentajeCenso: 0,
     factor: null,
     proyeccion: null,
@@ -112,7 +118,7 @@ export function calcularCircunscripcion(
     throw new ErrorDatos(`El escrutinio ${escrutinio.codigo} no corresponde a la circunscripción ${circunscripcion.codigo}`);
   }
   validarEscrutinio(escrutinio);
-  if (escrutinio.censoEscrutado === 0) return sinDatos(circunscripcion);
+  if (escrutinio.censoEscrutado === 0) return sinDatos(circunscripcion, escrutinio.censo);
 
   if (cera) validarCera(cera, escrutinio.codigo);
 
@@ -143,6 +149,8 @@ export function calcularCircunscripcion(
   return {
     circunscripcion,
     estado: escrutinio.censoEscrutado === escrutinio.censo ? 'completo' : 'parcial',
+    censo: escrutinio.censo,
+    censoEscrutado: escrutinio.censoEscrutado,
     porcentajeCenso: escrutinio.censoEscrutado / escrutinio.censo,
     factor,
     proyeccion,

@@ -1,4 +1,4 @@
-import { tablaDisputa } from './disputa';
+import { construirTablaDisputa, type EstadoTablaDisputa } from './disputa';
 import { calcularCircunscripcion, type ResultadoCircunscripcion } from './proyeccion';
 import {
   instantanea,
@@ -33,8 +33,16 @@ export interface MetricasInstante {
    * Un escaño que cambia de partido cuenta 1.
    */
   escanosErroneos: number;
-  /** Filas de la tabla de disputa en ese momento. */
+  /** Filas de la tabla de disputa en ese momento (solo circunscripciones donde aún puede haber vuelco). */
   filasTabla: number;
+  estadoTabla: EstadoTablaDisputa;
+  /** Circunscripciones que la tabla ya da por imposibles de cambiar (los votos pendientes no bastan). */
+  circunscripcionesSinOpcion: number;
+  /**
+   * Circunscripciones que acabarán con otro reparto y que la tabla había descartado por imposibles.
+   * Tiene que ser siempre 0: es la prueba de que el criterio de vuelco no descarta cambios reales.
+   */
+  cambiosDescartados: number;
   /** Circunscripciones que acabarán con otro reparto y ya están entre las filas de la tabla. */
   distintasEnTabla: number;
   /** Filas de la tabla cuya circunscripción acaba con otro reparto (las demás son falsas alarmas). */
@@ -90,7 +98,9 @@ export function evaluar(
 ): MetricasInstante {
   if (proyectadas.length !== finales.length) throw new ErrorDatos('Las proyecciones y las finales no coinciden en número');
 
-  const tabla = new Set(tablaDisputa(proyectadas, filasTabla).map((f) => f.codigo));
+  const tabla = construirTablaDisputa(proyectadas, { n: filasTabla, porcentajeEscrutadoGlobal: inst.porcentajeCenso });
+  const enTabla = new Set(tabla.filas.map((f) => f.codigo));
+  const descartadas = new Set(tabla.sinOpcionDeVuelco);
   const cambian = new Set<string>();
   let conDatos = 0;
   let pendientes = 0;
@@ -115,9 +125,12 @@ export function evaluar(
     escanosPendientes: pendientes,
     circunscripcionesDistintas: cambian.size,
     escanosErroneos,
-    filasTabla: tabla.size,
-    distintasEnTabla: [...cambian].filter((c) => tabla.has(c)).length,
-    filasQueCambian: [...tabla].filter((c) => cambian.has(c)).length,
+    filasTabla: enTabla.size,
+    estadoTabla: tabla.estado,
+    circunscripcionesSinOpcion: descartadas.size,
+    cambiosDescartados: [...cambian].filter((c) => descartadas.has(c)).length,
+    distintasEnTabla: [...cambian].filter((c) => enTabla.has(c)).length,
+    filasQueCambian: [...enTabla].filter((c) => cambian.has(c)).length,
   };
 }
 

@@ -22,14 +22,23 @@ const mediana = (xs: number[]) => {
 describe.skipIf(!process.env.INFORME_BACKTEST)('informe del backtest', () => {
   it('imprime la tabla', { timeout: 300_000 }, () => {
     const filas: string[] = [
-      '| Orden de llegada | Censo escrutado | Circunscripciones con reparto distinto del final (mediana / máx.) | De ellas, fuera de la tabla de disputa (máx.) | Minuto en que se estabiliza (mediana / máx.) |',
-      '|---|---|---|---|---|',
+      '| Orden de llegada | Censo escrutado | Circunscripciones con reparto distinto del final (mediana / máx.) | De ellas, fuera de la tabla de disputa (máx.) | Minuto en que se estabiliza (mediana / máx.) | % de censo al que la tabla se reduce / se queda sin filas (mediana) |',
+      '|---|---|---|---|---|---|',
     ];
     for (const orden of ORDENES) {
       const noches = Array.from({ length: NOCHES }, (_, i) =>
         backtest(circunscripciones2023, crearEscenario(municipios2023, { semilla: i + 1, orden })),
       );
       const estables = noches.map((n) => n.minutoEstable ?? n.minutosCompleto);
+      const primero = (estado: string) =>
+        noches.flatMap((n) => {
+          const p = n.puntos.find((x) => (estado === 'reducida' ? x.estadoTabla !== 'normal' : x.estadoTabla === estado));
+          return p ? [p.porcentajeCenso * 100] : [];
+        });
+      const reducida = primero('reducida');
+      const vacia = primero('sin-vuelco');
+      const descartados = noches.reduce((s, n) => s + n.puntos.reduce((a, p) => a + p.cambiosDescartados, 0), 0);
+      if (descartados !== 0) throw new Error(`El criterio de vuelco ha descartado ${descartados} cambios reales`);
       for (const corte of CORTES) {
         // Para cada noche, el primer punto con todas las circunscripciones con datos y al menos `corte` del censo.
         const puntos = noches.flatMap((n) => {
@@ -42,7 +51,7 @@ describe.skipIf(!process.env.INFORME_BACKTEST)('informe del backtest', () => {
         filas.push(
           `| ${primera ? orden : ''} | ${Math.round(corte * 100)} % | ${mediana(dist)} / ${Math.max(...dist)} | ${Math.max(...fuera)} | ${
             primera ? `${mediana(estables)} / ${Math.max(...estables)}` : ''
-          } |`,
+          } | ${primera ? `${mediana(reducida).toFixed(1)} % / ${mediana(vacia).toFixed(1)} %` : ''} |`,
         );
       }
     }
