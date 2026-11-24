@@ -202,20 +202,11 @@ export function tablaDisputa(
 }
 
 /**
- * Por debajo de este porcentaje del censo NACIONAL escrutado (0,9 = 90 %), la tabla de disputa es provisional.
- *
- * La tabla no pretende recoger todos los cambios posibles, sino los más probables, para seguir la noche con
- * tensión (decisión del 24-nov-2026). Con poco escrutinio puede dejar fuera circunscripciones que acabarán cambiando,
- * y la web debe avisarlo mientras no se llegue a este umbral. Ver docs/metodologia.md.
- */
-export const UMBRAL_TABLA_PROVISIONAL = 0.9;
-
-/**
  * Censo escrutado en toda España, de 0 a 1.
  *
- * Si la fuente no lista las circunscripciones que aún no dan datos hay que pasar `censoNacional` (suma del censo
- * de las 52): sin él, el porcentaje saldría por exceso. Sin escrutinios ni censo nacional no hay nada que medir y
- * devuelve 0 (la tabla se considera provisional, que es el lado seguro).
+ * Es el «x % escrutado global» que acompaña a la tabla de disputa. Si la fuente no lista las circunscripciones que
+ * aún no dan datos hay que pasar `censoNacional` (suma del censo de las 52): sin él, el porcentaje saldría por exceso.
+ * Sin escrutinios ni censo nacional no hay nada que medir y devuelve 0.
  */
 export function porcentajeCensoNacional(escrutinios: Escrutinio[], censoNacional?: number): number {
   let escrutado = 0;
@@ -232,12 +223,4 @@ export function porcentajeCensoNacional(escrutinios: Escrutinio[], censoNacional
     throw new ErrorDatos(`El censo nacional (${total}) es menor que la suma del de las circunscripciones (${censo})`);
   }
   return escrutado / total;
-}
-
-/** true mientras el censo nacional escrutado (de 0 a 1) no llegue a `UMBRAL_TABLA_PROVISIONAL`. */
-export function tablaProvisional(porcentajeCensoNacional: number): boolean {
-  if (!(Number.isFinite(porcentajeCensoNacional) && porcentajeCensoNacional >= 0 && porcentajeCensoNacional <= 1)) {
-    throw new ErrorDatos(`Porcentaje de censo nacional inválido: ${porcentajeCensoNacional}`);
-  }
-  return porcentajeCensoNacional < UMBRAL_TABLA_PROVISIONAL;
 }

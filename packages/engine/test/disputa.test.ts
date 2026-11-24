@@ -8,8 +8,6 @@ import {
   porcentajeCensoNacional,
   repartirDHondt,
   tablaDisputa,
-  tablaProvisional,
-  UMBRAL_TABLA_PROVISIONAL,
   type Escrutinio,
   type ResultadoCircunscripcion,
 } from '../src';
@@ -187,29 +185,13 @@ describe('tablaDisputa', () => {
   });
 });
 
-describe('aviso de tabla provisional', () => {
+describe('porcentajeCensoNacional', () => {
   const esc = (codigo: string, censo: number, censoEscrutado: number): Escrutinio => ({
     codigo,
     censo,
     censoEscrutado,
     blancos: 0,
     candidaturas: [{ siglas: 'A', votos: censoEscrutado / 2 }],
-  });
-
-  it('el umbral es el 90 % del censo nacional', () => {
-    expect(UMBRAL_TABLA_PROVISIONAL).toBe(0.9);
-  });
-
-  it('es provisional por debajo del 90 % y deja de serlo al llegar a él', () => {
-    expect(tablaProvisional(0)).toBe(true);
-    expect(tablaProvisional(0.5)).toBe(true);
-    expect(tablaProvisional(0.8999)).toBe(true);
-    expect(tablaProvisional(0.9)).toBe(false);
-    expect(tablaProvisional(1)).toBe(false);
-  });
-
-  it.each([-0.1, 1.1, Number.NaN, Number.POSITIVE_INFINITY])('rechaza un porcentaje fuera de rango: %s', (p) => {
-    expect(() => tablaProvisional(p)).toThrow(ErrorDatos);
   });
 
   it('porcentajeCensoNacional pondera por censo, no por circunscripciones', () => {
@@ -225,9 +207,8 @@ describe('aviso de tabla provisional', () => {
     expect(porcentajeCensoNacional([], 1_000)).toBe(0);
   });
 
-  it('sin datos ni censo nacional devuelve 0 (provisional, el lado seguro)', () => {
+  it('sin datos ni censo nacional devuelve 0', () => {
     expect(porcentajeCensoNacional([])).toBe(0);
-    expect(tablaProvisional(porcentajeCensoNacional([]))).toBe(true);
   });
 
   it('una circunscripción en la lista pero sin escrutar cuenta como 0', () => {

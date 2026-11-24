@@ -65,13 +65,13 @@ cambie, y se muestran las 10 con el porcentaje más bajo.
   para cambiar el reparto, los esperados y si el CERA podría decidirlo. Es una cota inferior: con menos votos CERA
   que la cota es imposible; con más, solo es posible.
 - **Qué pretende la tabla y qué no (decidido el 24-nov-2026).** No intenta recoger todos los cambios posibles, sino los
-  más probables: es una herramienta para seguir la noche con tensión, no un censo de incertidumbres. Por eso se mantienen
-  las **10 filas** y el orden por porcentaje de votos a mover, sin tener en cuenta cuánto censo falta por escrutar.
-  Mientras haya **menos del 90 % del censo nacional escrutado** (`UMBRAL_TABLA_PROVISIONAL`, `tablaProvisional`,
-  `porcentajeCensoNacional`), la web debe mostrar un aviso de que la tabla es **provisional** y puede dejar fuera
-  circunscripciones que acabarán cambiando. En la simulación se probaron una sola vez (sin script que lo reproduzca)
-  otras dos salidas, y se descartaron: reordenar por incertidumbre (mejoraba entre 0 y 7 puntos lo que recoge la tabla) y
-  ampliar a 15 o 20 filas (recogía bastante más, pero con tablas más largas y filas menos probables).
+  más probables: es una herramienta para seguir la noche con tensión. Por eso se mantienen las **10 filas** y el orden
+  por porcentaje de votos a mover, sin tener en cuenta cuánto censo falta por escrutar. **No lleva aviso de
+  provisionalidad** (ya se sabe que lo es), pero sí indica que corresponde al **x % de censo escrutado global**
+  (`porcentajeCensoNacional`) y, en cada fila, el **% escrutado de esa circunscripción**. En la simulación se probaron
+  una sola vez (sin script que lo reproduzca) otras dos salidas, y se descartaron: reordenar por incertidumbre
+  (mejoraba entre 0 y 7 puntos lo que recoge la tabla) y ampliar a 15 o 20 filas (recogía bastante más, pero con
+  tablas más largas y filas menos probables).
 
 ## Simulación de una noche electoral y backtest
 
