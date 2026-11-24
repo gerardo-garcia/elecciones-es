@@ -1,5 +1,5 @@
 {
-  "_nota": "Agrupación de siglas de las generales de abril y noviembre de 2019 y de julio de 2023 (histórico de la web). Mismo criterio que data/config/agrupaciones.json (el de 2026, aprobado): se suman las federaciones y marcas territoriales de un mismo partido, y cuando una etiqueta suma partidos distintos, 'incluye' lo dice. Los ids que existen también en 2026 (psoe, pp, vox, erc, junts, eh-bildu, pnv, bng, cc) conservan su color. PROPUESTA SIN REVISAR por el titular: la 'confianza' media marca las decisiones que son de criterio (Unidas Podemos y Sumar como marcas con sus confluencias, PP-FORO dentro del PP, Compromís aparte). Las siglas que no aparecen aquí no se pierden: cuentan por separado. Las siglas son las que publica Infoelectoral, tal cual.",
+  "_nota": "Agrupación de siglas de las generales de abril y noviembre de 2019 y de julio de 2023 (histórico de la web). Mismo criterio que data/config/agrupaciones.json (el de 2026, aprobado): se suman las federaciones y marcas territoriales de un mismo partido, y cuando una etiqueta suma partidos distintos, 'incluye' lo dice. Los ids que existen también en 2026 (psoe, pp, vox, erc, junts, eh-bildu, pnv, bng, cc) conservan su color. PROPUESTA SIN REVISAR por el titular: la 'confianza' media marca las decisiones que son de criterio (Unidas Podemos y Sumar como marcas con sus confluencias, PP-FORO dentro del PP, Compromís aparte). Las siglas que no aparecen aquí no se pierden: cuentan por separado. Las siglas son las que publica Infoelectoral, tal cual. 'incluyeSiEstan': el texto 'incluye' del grupo solo se muestra en las elecciones en las que se presentó alguna de esas siglas (PP-FORO no existía en 2023).",
   "version": 1,
   "grupos": [
     {
@@ -15,6 +15,7 @@
       "confianza": "media",
       "alias": ["PP", "PP-FORO"],
       "incluye": "PP y PP-FORO (coalición con Foro Asturias en 2019)",
+      "incluyeSiEstan": ["PP-FORO"],
       "notas": "PP-FORO es la coalición del PP con Foro en Asturias en abril y noviembre de 2019. Son partidos distintos: la etiqueta dice qué incluye, como con UPN-PP en 2026."
     },
     { "id": "cs", "nombre": "Cs", "confianza": "alta", "alias": ["Cs"] },
