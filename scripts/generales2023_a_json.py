@@ -143,8 +143,10 @@ def main(ruta_prov, ruta_muni):
                 "_fuente": FUENTE,
                 "_nota": "Un registro por municipio de las generales de julio de 2023 (solo voto residente, CER): "
                 "[provincia, mesas, censo, votos en blanco, partido, votos, partido, votos, ...], donde partido es un índice "
-                "de la lista 'partidos'. Solo se guardan los partidos con votos.",
+                "de la lista 'partidos'. Solo se guardan los partidos con votos. 'escanos' = diputados de cada circunscripción "
+                "en 2023 (código INE → escaños).",
                 "partidos": siglas,
+                "escanos": {c["codigo"]: c["escanos"] for c in sorted(circunscripciones, key=lambda c: c["codigo"])},
                 "municipios": municipios,
             },
             ensure_ascii=False,
