@@ -196,6 +196,35 @@ mismos dibujos sirven para la simulación y, cuando exista, para la fuente en vi
   disputa conserva 10 filas, todas con el aviso «solo el voto exterior»: en la simulación nunca llega a los estados
   `reducida` ni `sin-vuelco` (esos estados están cubiertos por tests con datos fabricados, y por el backtest sin CERA).
 
+## Histórico de elecciones pasadas
+
+`/historico/` guarda el recuento final de las tres últimas elecciones generales (28-abr-2019, 10-nov-2019 y 23-jul-2023),
+cada una en `/historico/generales-AAAA-MM/`. Es el análisis acordado («el mismo que durante el recuento, pero estático»),
+con los resultados oficiales y definitivos.
+
+- **Datos.** Resultados por circunscripción de Infoelectoral (datos abiertos), con el voto exterior (CERA) ya incluido,
+  en `data/historico/` (ver `data/README.md`). El script que los genera se detiene si algo no cuadra con los diputados
+  electos oficiales.
+- **Los escaños son los oficiales, y se comprueban.** El motor repite el reparto (D'Hondt y barrera del 3 %, con factor de
+  extrapolación 1 porque todo el censo está escrutado) y `verificarEscanos` lo compara circunscripción a circunscripción
+  y candidatura a candidatura: si alguna difiere, el build falla en lugar de publicar un reparto distinto del real. Los
+  tests fijan además los totales por grupo y la participación oficiales de las tres elecciones.
+- **Qué muestra cada elección.** El hemiciclo del reparto final con su leyenda; los datos de la jornada (participación,
+  blancos, nulos); votos y escaños por partido (con lo que cada partido saca en votos frente a escaños); los dos
+  diagramas de sectores, los dos mapas y la tabla de todas las circunscripciones, igual que en el recuento en directo.
+- **La tabla de disputa, a posteriori.** Con el recuento cerrado no hay votos pendientes, así que la tabla de la noche
+  electoral se quedaría vacía («sin vuelco»). En el histórico (`resultadoDefinitivo` en `construirVista`) no se descarta
+  ninguna circunscripción y la tabla lista las 10 donde menos votos habrían bastado para cambiar un escaño: «los escaños
+  que se decidieron por menos votos». Mismo cálculo, en pasado.
+- **Agrupación de siglas.** `data/historico/agrupaciones.json`, con el mismo criterio que la de 2026 (federaciones
+  territoriales de un mismo partido, y `incluye` cuando la etiqueta suma partidos distintos). Es una **propuesta sin
+  revisar**; las decisiones de criterio llevan `confianza: media`: Unidas Podemos (2019) y Sumar (2023) con sus
+  confluencias y listas territoriales (así salen los 42 y 35 diputados de Unidas Podemos y los 31 de Sumar que da el
+  Congreso), PP-FORO dentro del PP (el Congreso cuenta esos escaños como del PP), Compromís aparte y la coalición
+  CC-PNC-NC de 2019 separada de Coalición Canaria. La nota «incluye» del PP solo sale en 2019 (`incluyeSiEstan`).
+- **Color.** Los ids que también existen en 2026 conservan su color; los grupos nuevos tienen el suyo en `colores.json`.
+- **Orden del hemiciclo.** De más a menos escaños, de izquierda a derecha, sin colocar a los partidos por ideología.
+
 ## Anuncios
 
 - **Qué hay y dónde.** Banner adaptable al pie de cada página y dos laterales de 160 × 600 desde 1.400 px de ancho

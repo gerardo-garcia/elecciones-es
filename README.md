@@ -14,9 +14,10 @@ La portada cambia sola de fase según la fecha. Método y decisiones: [`docs/met
 ```
 packages/engine   Motor electoral (TypeScript puro, sin I/O): D'Hondt, barrera, extrapolación, tabla de disputa,
                   simulador de una noche electoral y backtest
-apps/web          Web estática (Astro): portada por fases, paneles del recuento y página de simulación
+apps/web          Web estática (Astro): portada por fases, paneles del recuento, simulación e histórico
 data/config       Escaños por circunscripción, candidaturas proclamadas, agrupación de siglas
 data/simulacion   Resultados de 2023 por municipio, para simular una noche electoral
+data/historico    Resultados oficiales por circunscripción de las generales de 2019 (abril y noviembre) y 2023
 scripts           Utilidades de datos
 docs              Metodología
 ```
@@ -27,7 +28,7 @@ Requiere Node ≥ 22 y pnpm 12 (`corepack enable`).
 
 ```sh
 pnpm install
-pnpm test        # motor (157 tests) y web (69 tests)
+pnpm test        # motor (159 tests) y web (93 tests)
 pnpm typecheck
 pnpm dev         # http://localhost:4321
 pnpm build       # apps/web/dist
@@ -86,7 +87,8 @@ mensaje de consentimiento; apuntar el dominio (CNAME a `<usuario>.github.io`, do
 Hecho: motor con tests, datos oficiales de circunscripciones y candidaturas, agrupación de siglas, voto exterior (CERA),
 simulador de una noche electoral con datos de 2023 y backtest del motor, portada de las tres fases (recuento y análisis
 aún son marcadores de posición), paneles del recuento (sectores, mapas, tabla de disputa) y su modo de simulación, publicado
-como «Ejemplo de recuento» (`/simulacion/`) dentro del histórico (`/historico/`), y CI/Pages.
+como «Ejemplo de recuento» (`/simulacion/`) dentro del histórico (`/historico/`), que además guarda el recuento final de
+las generales de abril y noviembre de 2019 y julio de 2023 (`/historico/generales-…/`), y CI/Pages.
 
 Pendiente: fuente de datos en vivo, ingesta en Actions, conectar los paneles a esa fuente en la fase de recuento,
-histórico y blog de encuestas.
+archivar en el histórico el análisis del 29N y blog de encuestas.
