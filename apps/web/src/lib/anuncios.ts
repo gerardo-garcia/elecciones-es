@@ -30,7 +30,12 @@ export function muestraAnuncios(config: ConfigAnuncios | null): config is Config
   return config !== null && config.huecoPie !== null;
 }
 
-/** Datos del responsable del sitio (aviso legal, art. 10 de la LSSI). Se publican en /privacidad/. */
+/**
+ * Datos del responsable del sitio (aviso legal, art. 10 de la LSSI). Se publican en /privacidad/. No están en el
+ * repositorio (es público): vienen de variables de entorno, que en GitHub son secretos de Actions.
+ *   TITULAR_NOMBRE, TITULAR_DOMICILIO, TITULAR_CONTACTO  obligatorios con anuncios
+ *   TITULAR_NIF                                         opcional
+ */
 export interface Titular {
   nombre: string;
   domicilio: string;
@@ -70,16 +75,29 @@ export function lineaAdsTxt(cliente: string): string {
   return `google.com, ${cliente.replace(/^ca-/, '')}, DIRECT, ${AUTORIDAD_GOOGLE}`;
 }
 
+/** Los datos del titular que haya en el entorno, sin espacios sobrantes; los que falten quedan como cadena vacía. */
+export function titularDeEntorno(env: Entorno): Required<Titular> {
+  const valor = (nombre: string) => env[nombre]?.trim() ?? '';
+  return {
+    nombre: valor('TITULAR_NOMBRE'),
+    domicilio: valor('TITULAR_DOMICILIO'),
+    contacto: valor('TITULAR_CONTACTO'),
+    nif: valor('TITULAR_NIF'),
+  };
+}
+
 /** Con anuncios (actividad económica) la ley exige identificar al titular: sin sus datos no se construye la web. */
 export function exigirTitular(titular: Partial<Titular>): Titular {
   const faltan = (['nombre', 'domicilio', 'contacto'] as const).filter((campo) => !titular[campo]?.trim());
   if (faltan.length > 0) {
     throw new Error(
-      `Hay anuncios configurados pero faltan datos del titular en src/data/titular.json: ${faltan.join(', ')}. ` +
-        'Se publican en /privacidad/ (aviso legal).',
+      `Hay anuncios configurados pero faltan datos del titular: ${faltan.join(', ')}. ` +
+        'Defínelos como secretos del repositorio (TITULAR_NOMBRE, TITULAR_DOMICILIO, TITULAR_CONTACTO; opcional TITULAR_NIF): ' +
+        'se publican en /privacidad/ (aviso legal) y no se guardan en el código, que es público.',
     );
   }
   return titular as Titular;
 }
 
 export const ANUNCIOS = (): ConfigAnuncios | null => configuracionAnuncios(process.env);
+export const TITULAR = (): Required<Titular> => titularDeEntorno(process.env);

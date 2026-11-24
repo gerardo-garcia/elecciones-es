@@ -72,8 +72,20 @@ laterales de 160 × 600 fijos junto a la columna de contenido. Se configuran con
 `ADSENSE_CLIENT`, la web los emite y nada más: sin script de Google, sin anuncios y sin cookies. Sirve para dar de alta el
 sitio en AdSense antes de tener los bloques de anuncios. Cuando AdSense lo apruebe, se definen los dos `ADSENSE_SLOT_*`.
 
-Con anuncios, **la web no se construye** si faltan nombre, domicilio o contacto en `apps/web/src/data/titular.json`:
-se publican en `/privacidad/` (aviso legal, art. 10 de la LSSI). La política de privacidad cambia sola según haya o no
+Con anuncios, **la web no se construye** si faltan nombre, domicilio o contacto del titular: se publican en
+`/privacidad/` (aviso legal, art. 10 de la LSSI). **No están en el código, porque el repositorio es público**: son
+**secretos** de Actions (Settings → Secrets and variables → Actions → Secrets, o `gh secret set NOMBRE`, que pide el valor
+sin dejarlo en el historial del terminal):
+
+| Secreto | Valor |
+|---|---|
+| `TITULAR_NOMBRE` | Nombre o razón social (obligatorio con anuncios) |
+| `TITULAR_DOMICILIO` | Domicilio postal (obligatorio con anuncios) |
+| `TITULAR_CONTACTO` | Email o formulario de contacto (obligatorio con anuncios) |
+| `TITULAR_NIF` | NIF (opcional) |
+
+Para construir en local con anuncios, exporta las mismas variables en el terminal. En cuanto están definidos, `/privacidad/`
+los muestra, aunque aún no haya anuncios. La política de privacidad cambia sola según haya o no
 anuncios. `ads.txt` se genera con el ID de editor. El consentimiento lo gestiona Google (AdSense → Privacy & messaging);
 el pie ofrece «Preferencias de publicidad» solo si Google expone ese mensaje. Detalles en `docs/metodologia.md`.
 

@@ -235,7 +235,9 @@ con los resultados oficiales y definitivos.
   `ads.txt` con el ID de editor, que es lo que AdSense usa para verificar el sitio; sigue sin haber script, anuncios ni cookies,
   y no se exigen los datos del titular (sí hacen falta antes de pedir la revisión, porque AdSense espera ver un aviso legal). Una configuración a medias o mal escrita hace fallar la construcción en lugar de publicar un anuncio roto.
 - **Titular obligatorio.** Con anuncios hay actividad económica y la LSSI exige identificar al titular; sin sus datos
-  (`titular.json`) la web no se construye.
+  la web no se construye. Los datos no se guardan en el repositorio, que es público (quedarían en su historial para
+  siempre): son secretos de Actions (`TITULAR_NOMBRE`, `TITULAR_DOMICILIO`, `TITULAR_CONTACTO` y, opcional, `TITULAR_NIF`) que
+  la build lee del entorno (`titularDeEntorno`). Sí acaban en `/privacidad/`, porque es lo que exige la ley.
 - **Consentimiento.** Google exige un gestor de consentimiento certificado para servir anuncios personalizados en la UE
   y el Reino Unido (desde el 16-ene-2024); se usa el de AdSense («Privacy & messaging»), que se configura en su panel y
   se carga con el mismo script de AdSense. El botón «Preferencias de publicidad» solo aparece si Google ofrece el mensaje

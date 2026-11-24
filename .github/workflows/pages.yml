@@ -38,6 +38,11 @@ jobs:
       ADSENSE_SLOT_PIE: ${{ vars.ADSENSE_SLOT_PIE }}
       ADSENSE_SLOT_LATERAL: ${{ vars.ADSENSE_SLOT_LATERAL }}
       ADSENSE_LATERALES: ${{ vars.ADSENSE_LATERALES }}
+      # Titular de la web (aviso legal). Son secretos, no variables ni ficheros: el repositorio es público.
+      TITULAR_NOMBRE: ${{ secrets.TITULAR_NOMBRE }}
+      TITULAR_DOMICILIO: ${{ secrets.TITULAR_DOMICILIO }}
+      TITULAR_CONTACTO: ${{ secrets.TITULAR_CONTACTO }}
+      TITULAR_NIF: ${{ secrets.TITULAR_NIF }}
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6

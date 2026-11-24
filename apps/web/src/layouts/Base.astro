@@ -2,8 +2,7 @@
 import '@fontsource-variable/schibsted-grotesk';
 import '../styles/global.css';
 import Anuncio from '../components/Anuncio.astro';
-import titularJson from '../data/titular.json';
-import { ANCHO_MINIMO_LATERALES, ANUNCIOS, exigirTitular, muestraAnuncios, urlScriptAnuncios } from '../lib/anuncios';
+import { ANCHO_MINIMO_LATERALES, ANUNCIOS, exigirTitular, muestraAnuncios, TITULAR, urlScriptAnuncios } from '../lib/anuncios';
 import { CALENDARIO } from '../lib/calendario';
 import { ruta } from '../lib/formato';
 import type { Fase } from '../lib/fase';
@@ -50,7 +49,7 @@ const marca = renderHemiciclo({ total: 24, filas: 3, grupos: [{ nombre: 'Escaño
 // Con anuncios, la ley exige identificar al titular.
 const config = ANUNCIOS();
 const anuncios = muestraAnuncios(config) ? config : null;
-if (anuncios) exigirTitular(titularJson);
+if (anuncios) exigirTitular(TITULAR());
 ---
 
 <!doctype html>
