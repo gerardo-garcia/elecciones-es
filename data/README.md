@@ -61,6 +61,26 @@ Genera `packages/engine/test/fixtures/generales-2023.json`, `data/config/cera-20
 `data/simulacion/generales-2023-municipios.json`. Requiere `openpyxl`. El CERA
 de cada circunscripción no se publica por separado: es el total provincial menos la suma de sus municipios.
 
+## `historico/`
+
+Resultados oficiales por circunscripción de las tres últimas elecciones generales (28-abr-2019, 10-nov-2019 y
+23-jul-2023), con el voto exterior ya incluido, para las páginas del histórico (`/historico/generales-…/`). Salen de los
+datos abiertos de Infoelectoral: dos ficheros de la misma área de descargas, `Elecciones-Congreso.xlsx` (censo, votos y
+escaños por provincia de todas las generales) y `Elecciones-Congreso-cargos-electos.xlsx` (diputados electos).
+
+```sh
+python3 -I scripts/generales_historicas_a_json.py RUTA/Elecciones-Congreso.xlsx RUTA/Elecciones-Congreso-cargos-electos.xlsx
+```
+
+Genera `data/historico/generales-AAAA-MM.json`. El script se detiene si algo no cuadra: la suma de votos por candidatura
+con la de «votos a candidaturas», los votos válidos, los escaños de cada candidatura con los diputados electos y los
+350 escaños del total nacional. Las siglas de cada candidatura se toman del fichero de electos cuando hay escaño, porque
+el encabezado «NOMBRE - SIGLAS» es ambiguo (hay nombres y siglas con « - »). Un mismo encabezado puede salir en varias
+filas (en 2023, Frente Obrero, Caminando Juntos y PCTE): se suman.
+
+`agrupaciones.json` es la agrupación de siglas para estas elecciones (misma idea que `config/agrupaciones.json`, la de
+2026). Es una propuesta sin revisar: las decisiones de criterio llevan `confianza: media`.
+
 ## `snapshots/` (ignorado por git)
 
 Capturas del escrutinio en vivo, con marca de tiempo y hash.

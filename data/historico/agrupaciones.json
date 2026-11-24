@@ -1,0 +1,84 @@
+{
+  "_nota": "Agrupación de siglas de las generales de abril y noviembre de 2019 y de julio de 2023 (histórico de la web). Mismo criterio que data/config/agrupaciones.json (el de 2026, aprobado): se suman las federaciones y marcas territoriales de un mismo partido, y cuando una etiqueta suma partidos distintos, 'incluye' lo dice. Los ids que existen también en 2026 (psoe, pp, vox, erc, junts, eh-bildu, pnv, bng, cc) conservan su color. PROPUESTA SIN REVISAR por el titular: la 'confianza' media marca las decisiones que son de criterio (Unidas Podemos y Sumar como marcas con sus confluencias, PP-FORO dentro del PP, Compromís aparte). Las siglas que no aparecen aquí no se pierden: cuentan por separado. Las siglas son las que publica Infoelectoral, tal cual.",
+  "version": 1,
+  "grupos": [
+    {
+      "id": "psoe",
+      "nombre": "PSOE",
+      "confianza": "alta",
+      "alias": ["PSOE", "PSC", "PSC-PSOE", "PSE-EE (PSOE)", "PSdeG-PSOE", "PSIB-PSOE", "PSN-PSOE"],
+      "notas": "PSC (Cataluña), PSE-EE (País Vasco), PSdeG (Galicia), PSIB (Baleares) y PSN (Navarra) son federaciones del PSOE, como en 2026."
+    },
+    {
+      "id": "pp",
+      "nombre": "PP",
+      "confianza": "media",
+      "alias": ["PP", "PP-FORO"],
+      "incluye": "PP y PP-FORO (coalición con Foro Asturias en 2019)",
+      "notas": "PP-FORO es la coalición del PP con Foro en Asturias en abril y noviembre de 2019. Son partidos distintos: la etiqueta dice qué incluye, como con UPN-PP en 2026."
+    },
+    { "id": "cs", "nombre": "Cs", "confianza": "alta", "alias": ["Cs"] },
+    { "id": "vox", "nombre": "Vox", "confianza": "alta", "alias": ["VOX"] },
+    {
+      "id": "unidas-podemos",
+      "nombre": "Unidas Podemos",
+      "confianza": "media",
+      "alias": [
+        "PODEMOS-IU-EQUO",
+        "PODEMOS-IU LV CA-EQUO",
+        "ECP-GUANYEM",
+        "PODEMOS-EUPV",
+        "PODEMOS-IU-EQUO BERDEAK",
+        "PODEMOS-EU-",
+        "PODEMOS-EUIB",
+        "PODEMOS-IX-EQUO",
+        "PODEMOS-IU-EQUO-BATZARRE",
+        "PODEMOS-IU",
+        "ECP-GUANYEM EL CANVI",
+        "PODEMOS-IU LV CA",
+        "PODEMOS-EU",
+        "PODEMOS-IX",
+        "PODEMOS-IU-BATZARRE"
+      ],
+      "incluye": "Unidas Podemos y sus confluencias territoriales (En Comú Podem, Podem-EUPV, Elkarrekin Podemos…)",
+      "notas": "En 2019 Podemos, IU y Equo se presentaron juntos bajo la marca Unidas Podemos, con confluencias propias en algunos territorios (En Comú Podem en Cataluña, Podem-EUPV en la Comunitat Valenciana, Elkarrekin Podemos en Euskadi...). Con esta suma salen los 42 diputados de abril y los 35 de noviembre de 2019 que da el Congreso para ese grupo."
+    },
+    { "id": "mas-pais", "nombre": "Más País", "confianza": "alta", "alias": ["MÁS PAÍS-EQUO"] },
+    {
+      "id": "compromis",
+      "nombre": "Compromís",
+      "confianza": "media",
+      "alias": ["COMPROMÍS 2", "MÉS COMPROMÍS"],
+      "notas": "En noviembre de 2019 Compromís se presentó con Más País (MÉS COMPROMÍS). En 2023 fue dentro de la lista de Sumar (SUMAR - COMPROMÍS), que va en el grupo de Sumar."
+    },
+    {
+      "id": "sumar",
+      "nombre": "Sumar",
+      "confianza": "media",
+      "alias": [
+        "SUMAR",
+        "SUMAR - ECP",
+        "SUMAR - COMPROMÍS",
+        "SUMAR ARAGÓN",
+        "MÉS PER MALLORCA-MÉS PER MENORCA-SUMAR"
+      ],
+      "incluye": "Sumar y sus listas territoriales (En Comú Podem, Compromís, Més per Mallorca, Sumar Aragón…)",
+      "notas": "En julio de 2023 las listas de Sumar llevaban su marca con la del socio territorial (SUMAR - ECP, SUMAR - COMPROMÍS...). Con esta suma salen los 31 diputados de Sumar."
+    },
+    { "id": "podemos", "nombre": "Podemos", "confianza": "alta", "alias": ["PODEMOS"], "notas": "Las listas de Podemos de 2023 que no fueron con Sumar." },
+    { "id": "erc", "nombre": "ERC", "confianza": "alta", "alias": ["ERC-SOBIRANISTES", "ERC"] },
+    { "id": "junts", "nombre": "Junts", "confianza": "alta", "alias": ["JxCAT-JUNTS", "JxCAT - JUNTS"] },
+    { "id": "eh-bildu", "nombre": "EH Bildu", "confianza": "alta", "alias": ["EH Bildu"] },
+    { "id": "pnv", "nombre": "PNV", "confianza": "alta", "alias": ["EAJ-PNV"] },
+    { "id": "bng", "nombre": "BNG", "confianza": "alta", "alias": ["BNG", "B.N.G."] },
+    { "id": "cc", "nombre": "Coalición Canaria", "confianza": "alta", "alias": ["CCa-PNC", "CCa"] },
+    {
+      "id": "cc-nc",
+      "nombre": "CC-PNC-NC",
+      "confianza": "media",
+      "alias": ["CCa-PNC-NC", "NC-CCa-PNC"],
+      "notas": "Coalición de noviembre de 2019 de Coalición Canaria, PNC y Nueva Canarias. Se deja aparte de Coalición Canaria porque suma a un partido distinto."
+    },
+    { "id": "navarra-suma", "nombre": "Navarra Suma", "confianza": "alta", "alias": ["NA+"], "notas": "Coalición de UPN, PP y Cs en Navarra en 2019." }
+  ]
+}
