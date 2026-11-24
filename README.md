@@ -27,7 +27,7 @@ Requiere Node ≥ 22 y pnpm 12 (`corepack enable`).
 
 ```sh
 pnpm install
-pnpm test        # motor (156 tests) y web (51 tests)
+pnpm test        # motor (157 tests) y web (54 tests)
 pnpm typecheck
 pnpm dev         # http://localhost:4321
 pnpm build       # apps/web/dist

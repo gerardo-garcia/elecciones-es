@@ -91,6 +91,12 @@ cambie, y se muestran las 10 con el porcentaje más bajo.
     bastan para cambiar el reparto.»* (con una fila: *«La tabla tiene una fila…»*).
   - `sin-vuelco`: ninguna circunscripción puede ya cambiar de reparto. **No se muestra la tabla** y aparece: *«Ya no se
     incluye la tabla de circunscripciones en disputa: no hay opción de vuelco en ninguna circunscripción.»*
+  - **El escaño que cambia** se muestra como *«PSOE → PP»* (origen → destino), cada candidatura con el color de su
+    agrupación y su nombre al lado (el color nunca va solo). La frase completa («Un escaño de PSOE pasaría a PP») queda
+    solo para lectores de pantalla. Si es por barrera se añade «Entra al alcanzar el 3 %», y si no hay una candidatura
+    concreta que pierda el escaño el origen es «Otra candidatura», en gris. El motor añade a cada fila el grupo de las
+    dos candidaturas (`VistaFilaDisputa`) para que la web no necesite conocer las agrupaciones. En pantallas estrechas
+    origen y destino se apilan.
   - **Aviso «solo el voto exterior»**: una fila lleva *«Solo el voto exterior, que se escruta días después, podría
     cambiarlo»* cuando los votos de residentes que faltan ya no bastan para el cambio y solo lo permite sumar el voto
     exterior esperado. Mientras los residentes por sí solos pueden cambiarlo, el aviso no informa de nada y no sale.

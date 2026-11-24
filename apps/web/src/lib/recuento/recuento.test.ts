@@ -8,6 +8,7 @@ import {
   type Circunscripcion,
   type Escrutinio,
   type GrupoConfig,
+  type VistaFilaDisputa,
   type VistaRecuento,
 } from '@elecciones/engine';
 import { aclarar, colorFormacion, colorGrupo, COLOR_SIN_DATOS } from './colores';
@@ -224,6 +225,38 @@ describe('tabla de disputa', () => {
     expect(html).not.toMatch(/provisional/i);
     expect(html).not.toContain('role="note"');
     sinBasura(html);
+  });
+
+  it('el escaño que cambia se ve como «origen → destino» con el color de la agrupación de cada uno', () => {
+    const html = renderTablaDisputa(aMedias.tabla);
+    expect(aMedias.tabla.filas.length).toBeGreaterThan(0);
+    for (const f of aMedias.tabla.filas) {
+      const origen = `<span class="ficha"><i class="muestra" style="background:${colorGrupo(f.actualGrupoId ?? '')}"></i>${f.actual}</span>`;
+      const destino = `<span class="ficha"><i class="muestra" style="background:${colorGrupo(f.aspiranteGrupoId)}"></i>${f.aspirante}</span>`;
+      expect(html, f.nombre).toContain(`<span class="cambio" aria-hidden="true"><span class="origen">${origen}<span class="flecha">→</span></span>${destino}</span>`);
+    }
+    // La frase larga solo queda para los lectores de pantalla.
+    expect(html).toMatch(/<span class="solo-lector">Un escaño de \w+ pasaría a \w+<\/span>/);
+    expect(html.replace(/<span class="solo-lector">.*?<\/span>/g, '')).not.toContain('pasaría');
+  });
+
+  it('el color es el de la agrupación: PSC y PSOE, que comparten grupo, comparten color', () => {
+    const c = { ...(circs[0] as Circunscripcion), escanos: 4 };
+    const v = construirVista([calcularCircunscripcion(c, escrutinio(c.codigo, 800, 400, { PP: 150, PSOE: 120, PSC: 70, VOX: 20 }))], {
+      agrupador,
+      porcentajeCensoNacional: 0.5,
+    });
+    const colorPsoe = colorGrupo('psoe');
+    const html = renderTablaDisputa(v.tabla);
+    expect(html).toContain(`<i class="muestra" style="background:${colorPsoe}"></i>PSC</span><span class="flecha">→</span></span><span class="ficha"><i class="muestra" style="background:${colorPsoe}"></i>PSOE`);
+  });
+
+  it('si no hay una candidatura concreta que pierda el escaño, el origen es «Otra candidatura» en gris', () => {
+    const fila = { ...(aMedias.tabla.filas[0] as VistaFilaDisputa), tipo: 'umbral' as const, actual: null, actualGrupoId: null };
+    const html = renderTablaDisputa({ ...aMedias.tabla, filas: [fila] });
+    expect(html).toContain(`<i class="muestra" style="background:${COLOR_SIN_DATOS}"></i>Otra candidatura</span>`);
+    expect(html).toContain('Entra al alcanzar el 3 %');
+    expect(html).toContain(`${fila.aspirante} alcanzaría el 3 % y entraría</span>`);
   });
 
   it('sin-vuelco: no hay tabla, solo el mensaje', () => {

@@ -1,4 +1,5 @@
-import type { FilaDisputa, TablaDisputa, VistaRecuento } from '@elecciones/engine';
+import type { TablaDisputa, VistaFilaDisputa, VistaRecuento, VistaTablaDisputa } from '@elecciones/engine';
+import { COLOR_SIN_DATOS, colorGrupo } from './colores';
 import { esc, numero, porcentaje } from './html';
 
 /** Textos de las dos notas de la tabla (los fijó el usuario: ver docs/metodologia.md). */
@@ -14,15 +15,25 @@ export function textoReducida(tabla: TablaDisputa): string {
   );
 }
 
-function cambio(f: FilaDisputa): string {
+/** La frase completa, solo para lectores de pantalla: a la vista se ve «origen → destino». */
+function fraseCambio(f: VistaFilaDisputa): string {
   if (f.tipo === 'escano') {
-    return f.actual
-      ? `Un escaño de <strong>${esc(f.actual)}</strong> pasaría a <strong>${esc(f.aspirante)}</strong>`
-      : `<strong>${esc(f.aspirante)}</strong> ganaría un escaño`;
+    return f.actual ? `Un escaño de ${f.actual} pasaría a ${f.aspirante}` : `${f.aspirante} ganaría un escaño`;
   }
+  return `${f.aspirante} alcanzaría el 3 % y entraría${f.actual ? `, a costa de ${f.actual}` : ''}`;
+}
+
+function ficha(nombre: string | null, grupoId: string | null): string {
+  const color = nombre === null || grupoId === null ? COLOR_SIN_DATOS : colorGrupo(grupoId);
+  return `<span class="ficha"><i class="muestra" style="background:${esc(color)}"></i>${esc(nombre ?? 'Otra candidatura')}</span>`;
+}
+
+/** «PSOE → PP», cada uno con el color de su agrupación. El nombre siempre acompaña al color; la flecha no se separa del origen. */
+function cambio(f: VistaFilaDisputa): string {
   return (
-    `<strong>${esc(f.aspirante)}</strong> alcanzaría el 3 % y entraría` +
-    (f.actual ? `, a costa de <strong>${esc(f.actual)}</strong>` : '')
+    `<span class="cambio" aria-hidden="true"><span class="origen">${ficha(f.actual, f.actualGrupoId)}<span class="flecha">→</span></span>${ficha(f.aspirante, f.aspiranteGrupoId)}</span>` +
+    (f.tipo === 'umbral' ? '<span class="aviso-fila" aria-hidden="true">Entra al alcanzar el 3 %</span>' : '') +
+    `<span class="solo-lector">${esc(fraseCambio(f))}</span>`
   );
 }
 
@@ -30,13 +41,13 @@ function cambio(f: FilaDisputa): string {
  * Solo el voto exterior (CERA, que se escruta días después) podría cambiar el reparto: los votos que faltan de los
  * residentes ya no bastan, pero sumando los del exterior que se esperan sí. Antes de eso el aviso no informa de nada.
  */
-export function soloElVotoExterior(f: FilaDisputa): boolean {
+export function soloElVotoExterior(f: VistaFilaDisputa): boolean {
   const { vuelco, cera } = f;
   if (!vuelco || !cera || vuelco.votosNecesarios === null || !vuelco.puedeHaberVuelco) return false;
   return vuelco.votosNecesarios > vuelco.votosPendientes - cera.votosEsperados;
 }
 
-function fila(f: FilaDisputa): string {
+function fila(f: VistaFilaDisputa): string {
   const avisos = [
     f.empateSorteo ? 'Empate: lo decide un sorteo' : '',
     soloElVotoExterior(f) ? 'Solo el voto exterior, que se escruta días después, podría cambiarlo' : '',
@@ -57,7 +68,7 @@ function fila(f: FilaDisputa): string {
  *  - reducida: la tabla y una nota que avisa de que tiene menos filas porque ya no hay vuelco en el resto.
  *  - sin-vuelco: sin tabla; un mensaje.
  */
-export function renderTablaDisputa(tabla: TablaDisputa): string {
+export function renderTablaDisputa(tabla: VistaTablaDisputa): string {
   if (tabla.estado === 'sin-vuelco') {
     return `<p class="nota nota--tabla" role="status" data-estado="sin-vuelco">${esc(TEXTO_SIN_VUELCO)}</p>`;
   }

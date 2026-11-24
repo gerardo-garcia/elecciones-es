@@ -486,6 +486,61 @@ h3 {
   white-space: nowrap;
 }
 
+.cambio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+}
+
+.origen {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+/* En pantallas estrechas el origen y el destino van uno sobre otro, para que la tabla no se ensanche con nombres largos. */
+@media (max-width: 520px) {
+  .cambio {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .origen {
+    white-space: normal;
+  }
+
+  .tabla th,
+  .tabla td {
+    padding: 0.5rem 0.4rem;
+  }
+}
+
+.ficha {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+.flecha {
+  color: var(--texto-suave);
+}
+
+/* Texto que solo oyen los lectores de pantalla. */
+.solo-lector {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .aviso-fila {
   display: block;
   font-size: 0.8rem;
