@@ -49,7 +49,20 @@ describe('construirVista (a mano)', () => {
     const nacional = calcularNacional(resultados, agrupador);
     expect(vista.grupos).toEqual(nacional.porGrupo);
     expect(vista.formaciones.map((f) => [f.siglas, f.escanos])).toEqual(nacional.porCandidatura.map((c) => [c.siglas, c.escanos]));
-    expect(vista.tabla).toEqual(construirTablaDisputa(resultados, { porcentajeEscrutadoGlobal: 0.4 }));
+    const tabla = construirTablaDisputa(resultados, { porcentajeEscrutadoGlobal: 0.4 });
+    expect(vista.tabla.filas.map(({ actualGrupoId: _a, aspiranteGrupoId: _b, ...fila }) => fila)).toEqual(tabla.filas);
+    expect(vista.tabla).toMatchObject({ estado: tabla.estado, n: tabla.n, conOpcionDeVuelco: tabla.conOpcionDeVuelco });
+  });
+
+  it('cada fila de la tabla lleva el grupo de las dos candidaturas (PSC y PSOE son el mismo)', () => {
+    // 4 escaños: PP 2, PSOE 1 y PSC 1 (el último escaño es el de PSC); el aspirante es la segunda de PSOE.
+    const r = calcularCircunscripcion(circ('04', 4), escrutinio('04', 800, 400, { PP: 150, PSOE: 120, PSC: 70, VOX: 20 }));
+    const fila = construirVista([r], { agrupador, porcentajeCensoNacional: 0.5 }).tabla.filas[0];
+    expect(fila).toMatchObject({ actual: 'PSC', actualGrupoId: 'psoe', aspirante: 'PSOE', aspiranteGrupoId: 'psoe' });
+    for (const f of vista.tabla.filas) {
+      expect(f.actualGrupoId).toBe(f.actual === null ? null : agrupador(f.actual).id);
+      expect(f.aspiranteGrupoId).toBe(agrupador(f.aspirante).id);
+    }
   });
 
   it('cada formación lleva el grupo que le da el color (PSC y PSOE comparten grupo)', () => {

@@ -1,5 +1,5 @@
 import type { Agrupador } from './agrupacion';
-import { construirTablaDisputa, type TablaDisputa } from './disputa';
+import { construirTablaDisputa, type FilaDisputa, type TablaDisputa } from './disputa';
 import { calcularNacional, type TotalGrupo } from './nacional';
 import type { EstadoEscrutinio, ResultadoCircunscripcion } from './proyeccion';
 
@@ -35,6 +35,18 @@ export interface VistaCircunscripcion {
   ganador: VistaGanador | null;
 }
 
+/** Fila de la tabla de disputa con el grupo de cada candidatura, que es lo que da el color. */
+export interface VistaFilaDisputa extends FilaDisputa {
+  /** Agrupación de `actual` (null si no hay una candidatura concreta que pierda el escaño). */
+  actualGrupoId: string | null;
+  /** Agrupación de `aspirante`. */
+  aspiranteGrupoId: string;
+}
+
+export interface VistaTablaDisputa extends Omit<TablaDisputa, 'filas'> {
+  filas: VistaFilaDisputa[];
+}
+
 export interface VistaRecuento {
   /** Censo escrutado en toda España, de 0 a 1. */
   porcentajeCensoNacional: number;
@@ -48,7 +60,7 @@ export interface VistaRecuento {
   /** Escaños por grupo (formaciones territoriales de un mismo partido sumadas), de más a menos. */
   grupos: TotalGrupo[];
   circunscripciones: VistaCircunscripcion[];
-  tabla: TablaDisputa;
+  tabla: VistaTablaDisputa;
 }
 
 export interface OpcionesVista {
@@ -109,6 +121,13 @@ export function construirVista(resultados: ResultadoCircunscripcion[], opciones:
       escanos: r.escanos.map((e) => ({ siglas: e.siglas, grupoId: agrupador(e.siglas).id, escanos: e.escanos })),
       ganador: ganador(r, agrupador),
     })),
-    tabla,
+    tabla: {
+      ...tabla,
+      filas: tabla.filas.map((f) => ({
+        ...f,
+        actualGrupoId: f.actual === null ? null : agrupador(f.actual).id,
+        aspiranteGrupoId: agrupador(f.aspirante).id,
+      })),
+    },
   };
 }
