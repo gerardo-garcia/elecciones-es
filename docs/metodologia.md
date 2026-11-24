@@ -64,6 +64,14 @@ cambie, y se muestran las 10 con el porcentaje más bajo.
 - **Riesgo CERA** (opcional, mientras el voto exterior no esté escrutado): cada fila indica los votos CERA necesarios
   para cambiar el reparto, los esperados y si el CERA podría decidirlo. Es una cota inferior: con menos votos CERA
   que la cota es imposible; con más, solo es posible.
+- **Qué pretende la tabla y qué no (decidido el 24-nov-2026).** No intenta recoger todos los cambios posibles, sino los
+  más probables: es una herramienta para seguir la noche con tensión, no un censo de incertidumbres. Por eso se mantienen
+  las **10 filas** y el orden por porcentaje de votos a mover, sin tener en cuenta cuánto censo falta por escrutar.
+  Mientras haya **menos del 90 % del censo nacional escrutado** (`UMBRAL_TABLA_PROVISIONAL`, `tablaProvisional`,
+  `porcentajeCensoNacional`), la web debe mostrar un aviso de que la tabla es **provisional** y puede dejar fuera
+  circunscripciones que acabarán cambiando. En la simulación se probaron una sola vez (sin script que lo reproduzca)
+  otras dos salidas, y se descartaron: reordenar por incertidumbre (mejoraba entre 0 y 7 puntos lo que recoge la tabla) y
+  ampliar a 15 o 20 filas (recogía bastante más, pero con tablas más largas y filas menos probables).
 
 ## Simulación de una noche electoral y backtest
 
@@ -118,8 +126,7 @@ Qué se desprende, **sobre la simulación**:
 - **La tabla de las 10 circunscripciones en disputa se queda corta al principio:** con el 50 % del censo deja fuera
   hasta 9-13 de las que acabarán cambiando y con el 75 %, hasta 5-7, porque ordena por votos a mover sin tener en
   cuenta que, con poco censo escrutado, la proyección es menos fiable. A partir del 90-95 % ya las recoge casi todas
-  (se le escapan 0-2). Sería razonable ordenar también por distancia relativa a la incertidumbre de la muestra
-  (pendiente de decidir).
+  (se le escapan 0-2). Qué se hace con ello: ver el apartado de la tabla, más arriba.
 - Si los municipios grandes llegan antes, la proyección a mitad de noche es peor que con orden aleatorio.
 
 ## Limitaciones conocidas
