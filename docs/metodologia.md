@@ -64,14 +64,37 @@ cambie, y se muestran las 10 con el porcentaje más bajo.
 - **Riesgo CERA** (opcional, mientras el voto exterior no esté escrutado): cada fila indica los votos CERA necesarios
   para cambiar el reparto, los esperados y si el CERA podría decidirlo. Es una cota inferior: con menos votos CERA
   que la cota es imposible; con más, solo es posible.
+- **Solo entran las circunscripciones donde aún puede haber vuelco** (`posibilidadVuelco`). Se comparan los votos
+  reales que harían falta para cambiar el reparto con los que como mucho pueden llegar:
+  - *Necesarios*: los de la cota de `votosCeraNecesarios` (todos a una sola candidatura, lo más favorable al cambio),
+    pasados de votos proyectados a reales dividiendo por el factor de extrapolación.
+  - *Pendientes*: los electores de las mesas sin escrutar (`censo − censo escrutado`, como si todos votaran) más, mientras
+    no esté escrutado, el voto exterior esperado (`estimarVotosCera`; es una estimación, no una cota).
+  - Si los pendientes no llegan a los necesarios, el reparto ya no puede cambiar y la circunscripción sale de la tabla.
+    Con los pendientes justos se considera que aún puede haberlo. Una circunscripción que aún no da datos **no** se
+    descarta (no se sabe), solo se omite.
+  - Para el voto residente la cota es rigurosa: no puede descartar un cambio real. Se contrasta en los tests con 600
+    escenarios adversos (todos los votos pendientes a una candidatura o repartidos) y con la simulación de 2023.
 - **Qué pretende la tabla y qué no (decidido el 24-nov-2026).** No intenta recoger todos los cambios posibles, sino los
   más probables: es una herramienta para seguir la noche con tensión. Por eso se mantienen las **10 filas** y el orden
   por porcentaje de votos a mover, sin tener en cuenta cuánto censo falta por escrutar. **No lleva aviso de
-  provisionalidad** (ya se sabe que lo es), pero sí indica que corresponde al **x % de censo escrutado global**
-  (`porcentajeCensoNacional`) y, en cada fila, el **% escrutado de esa circunscripción**. En la simulación se probaron
-  una sola vez (sin script que lo reproduzca) otras dos salidas, y se descartaron: reordenar por incertidumbre
-  (mejoraba entre 0 y 7 puntos lo que recoge la tabla) y ampliar a 15 o 20 filas (recogía bastante más, pero con
-  tablas más largas y filas menos probables).
+  provisionalidad** (ya se sabe que lo es). En la simulación se probaron una sola vez (sin script que lo reproduzca)
+  otras dos salidas, y se descartaron: reordenar por incertidumbre (mejoraba entre 0 y 7 puntos lo que recoge la tabla) y
+  ampliar a 15 o 20 filas (recogía bastante más, pero con tablas más largas y filas menos probables).
+- **Cómo se presenta (`construirTablaDisputa`).** La tabla indica que corresponde al **x % del censo escrutado en toda
+  España** (`porcentajeEscrutadoGlobal`, de `porcentajeCensoNacional`) y cada fila muestra el **% escrutado de su
+  circunscripción** (`porcentajeCenso`). Tiene tres estados; la redacción de las notas es una propuesta, pendiente de
+  que exista el panel:
+  - `normal`: hasta 10 filas, sin nota. Al principio de la noche tiene menos filas porque faltan datos, pero no es
+    `reducida`: ese estado solo lo provocan circunscripciones descartadas.
+  - `reducida`: ya hay circunscripciones descartadas y quedan menos de 10 con opción de vuelco (con 52, más de 42
+    descartadas). Nota: *«La tabla tiene menos de 10 filas: en las otras N circunscripciones los votos pendientes ya no
+    bastan para cambiar el reparto.»*
+  - `sin-vuelco`: ninguna circunscripción puede ya cambiar de reparto. **No se muestra la tabla** y aparece: *«Ya no se
+    incluye la tabla de circunscripciones en disputa: no hay opción de vuelco en ninguna circunscripción.»*
+  - En 2023, con el recuento residente completo y el voto exterior aún sin escrutar, la tabla conserva solo las
+    circunscripciones que el CERA podría decidir (Madrid entre ellas, que de hecho cambió); al sumar el CERA, queda
+    `sin-vuelco` (test).
 
 ## Simulación de una noche electoral y backtest
 
@@ -98,23 +121,23 @@ censo residente, sin CERA): mide el error de la extrapolación, no el del voto e
 con 20 noches simuladas (semillas 1-20) por orden de llegada; se regenera con
 `INFORME_BACKTEST=1 pnpm --filter @elecciones/engine exec vitest run test/informe-backtest.test.ts`:
 
-| Orden de llegada | Censo escrutado | Circunscripciones con reparto distinto del final (mediana / máx.) | De ellas, fuera de la tabla de disputa (máx.) | Minuto en que se estabiliza (mediana / máx.) |
-|---|---|---|---|---|
-| aleatorio | 50 % | 10 / 15 | 9 | 240 / 285 |
-|  | 75 % | 6 / 13 | 7 |  |
-|  | 90 % | 3 / 5 | 1 |  |
-|  | 95 % | 1 / 4 | 0 |  |
-|  | 99 % | 1 / 2 | 0 |  |
-| rurales-primero | 50 % | 12 / 15 | 10 | 182,5 / 250 |
-|  | 75 % | 6 / 9 | 5 |  |
-|  | 90 % | 1 / 4 | 2 |  |
-|  | 95 % | 0 / 2 | 0 |  |
-|  | 99 % | 0 / 1 | 0 |  |
-| urbanos-primero | 50 % | 17,5 / 20 | 13 | 240 / 285 |
-|  | 75 % | 11 / 12 | 6 |  |
-|  | 90 % | 5 / 6 | 1 |  |
-|  | 95 % | 2 / 3 | 1 |  |
-|  | 99 % | 1 / 2 | 0 |  |
+| Orden de llegada | Censo escrutado | Circunscripciones con reparto distinto del final (mediana / máx.) | De ellas, fuera de la tabla de disputa (máx.) | Minuto en que se estabiliza (mediana / máx.) | % de censo al que la tabla se reduce / se queda sin filas (mediana) |
+|---|---|---|---|---|---|
+| aleatorio | 50 % | 10 / 15 | 9 | 240 / 285 | 99,5 % / 100 % |
+|  | 75 % | 6 / 13 | 7 |  |  |
+|  | 90 % | 3 / 5 | 1 |  |  |
+|  | 95 % | 1 / 4 | 0 |  |  |
+|  | 99 % | 1 / 2 | 0 |  |  |
+| rurales-primero | 50 % | 12 / 15 | 10 | 182,5 / 250 | 99,5 % / 100 % |
+|  | 75 % | 6 / 9 | 5 |  |  |
+|  | 90 % | 1 / 4 | 2 |  |  |
+|  | 95 % | 0 / 2 | 0 |  |  |
+|  | 99 % | 0 / 1 | 0 |  |  |
+| urbanos-primero | 50 % | 17,5 / 20 | 13 | 240 / 285 | 99,4 % / 100 % |
+|  | 75 % | 11 / 12 | 6 |  |  |
+|  | 90 % | 5 / 6 | 1 |  |  |
+|  | 95 % | 2 / 3 | 1 |  |  |
+|  | 99 % | 1 / 2 | 0 |  |  |
 
 («Minuto» = minutos desde las 20:00, cuando ya están todas las circunscripciones con datos y ningún reparto cambia
 después. «Censo escrutado» es el nacional, con las 52 circunscripciones dando datos.)
@@ -128,6 +151,12 @@ Qué se desprende, **sobre la simulación**:
   cuenta que, con poco censo escrutado, la proyección es menos fiable. A partir del 90-95 % ya las recoge casi todas
   (se le escapan 0-2). Qué se hace con ello: ver el apartado de la tabla, más arriba.
 - Si los municipios grandes llegan antes, la proyección a mitad de noche es peor que con orden aleatorio.
+- **El criterio de vuelco no descartó ningún cambio real** (en 20 noches por orden, cada 2 minutos: 0 de unas 57.000
+  observaciones de una circunscripción con reparto distinto del final; el informe aborta si descarta alguno). Pero
+  descarta muy tarde: **la tabla mantiene sus filas hasta el ~99,5 % del censo** y solo entonces se reduce, y se queda
+  sin filas al llegar al 100 %. Con el 90 % del censo escrutado hay una mediana de 6-8 circunscripciones descartadas, y
+  con el 99 %, 37-38. Usar la participación observada en lugar de «vota todo el censo pendiente» (medido una vez, con
+  margen de 1 a 1,5) apenas lo adelanta: la tabla se reduce igualmente hacia el 99,2-99,5 %.
 
 ## Limitaciones conocidas
 
@@ -136,6 +165,9 @@ Qué se desprende, **sobre la simulación**:
 - **Voto exterior (CERA).** Hasta el escrutinio general la proyección no lo incluye y puede mover algún escaño
   (en 2023 movió uno, en Madrid). La web debe avisarlo y marcar las circunscripciones donde podría decidir.
   Las fechas del escrutinio general son las de la guía de La Moncloa, sin confirmar oficialmente.
+- **El «vuelco posible» es una cota prudente.** Supone que todos los electores de las mesas sin escrutar votan, y que
+  lo hacen a una sola candidatura: por eso nunca descarta un cambio real, pero mantiene en la tabla circunscripciones
+  donde el cambio es prácticamente imposible. La parte del voto exterior sí es una estimación (con margen).
 - **Fuente en vivo sin definir.** Interior distribuye el escrutinio provisional a medios acreditados (URL, usuario y
   contraseña por correo, ficheros ASCII con separadores). No se ha encontrado una API pública documentada.
 - **Siglas.** `data/config/agrupaciones.json` usa las siglas de las listas proclamadas (BOE). Las del feed de
