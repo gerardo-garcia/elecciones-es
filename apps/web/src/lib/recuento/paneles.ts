@@ -2,7 +2,7 @@ import type { VistaRecuento } from '@elecciones/engine';
 import { leyendaEscanos, leyendaGanador, renderLeyenda, renderMapaEscanos, renderMapaGanador } from './mapas';
 import { coinciden, renderSectores, trozosFormaciones, trozosGrupos } from './sectores';
 import { esc, numero, porcentaje } from './html';
-import { renderTablaCircunscripciones, renderTablaDisputa } from './tabla';
+import { renderTablaCircunscripciones, renderTablaDisputa, type OpcionesTabla } from './tabla';
 
 /** HTML de cada panel del recuento. La página (o el script de cliente) los coloca en su sitio con `data-panel`. */
 export interface Paneles {
@@ -31,12 +31,16 @@ function resumen(vista: VistaRecuento): string {
   );
 }
 
-export function renderPaneles(vista: VistaRecuento): Paneles {
+/**
+ * `definitivo`: recuento cerrado (histórico). El panel `resumen` (% escrutado, circunscripciones con datos) no tiene
+ * sentido y queda vacío; las tablas hablan de lo que habría podido cambiar.
+ */
+export function renderPaneles(vista: VistaRecuento, opciones: OpcionesTabla = {}): Paneles {
   const formaciones = trozosFormaciones(vista);
   const grupos = trozosGrupos(vista);
   const total = vista.escanosTotales;
   return {
-    resumen: resumen(vista),
+    resumen: opciones.definitivo ? '' : resumen(vista),
     sectoresFormaciones: renderSectores(formaciones, { titulo: 'Escaños por formación', escanosTotales: total }),
     sectoresGrupos: renderSectores(grupos, { titulo: 'Escaños por partido, agrupando formaciones territoriales', escanosTotales: total }),
     notaGrupos: coinciden(formaciones, grupos)
@@ -44,8 +48,8 @@ export function renderPaneles(vista: VistaRecuento): Paneles {
       : '',
     mapaGanador: renderMapaGanador(vista) + renderLeyenda(leyendaGanador(vista)),
     mapaEscanos: renderMapaEscanos(vista) + renderLeyenda(leyendaEscanos(vista)),
-    disputa: renderTablaDisputa(vista.tabla),
-    circunscripciones: renderTablaCircunscripciones(vista),
+    disputa: renderTablaDisputa(vista.tabla, opciones),
+    circunscripciones: renderTablaCircunscripciones(vista, opciones),
   };
 }
 

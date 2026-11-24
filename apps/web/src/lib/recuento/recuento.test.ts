@@ -358,6 +358,73 @@ describe('paneles', () => {
   });
 });
 
+describe('recuento definitivo (histórico)', () => {
+  /** Recuento cerrado: todo el censo escrutado y, por tanto, ninguna circunscripción con opción de vuelco. */
+  const cerrado = () => {
+    const resultados = circs.map((c, i) =>
+      calcularCircunscripcion(c, escrutinio(c.codigo, 10_000, 10_000, { PP: 4_000 + 25 * i, PSOE: 3_500, VOX: 1_500, PSC: 600 })),
+    );
+    return construirVista(resultados, { agrupador, porcentajeCensoNacional: 1, resultadoDefinitivo: true });
+  };
+
+  it('la tabla de disputa habla en pasado, sin la columna de lo escrutado ni el aviso del voto exterior', () => {
+    const html = renderTablaDisputa(cerrado().tabla, { definitivo: true });
+    sinBasura(html);
+    expect(html).toContain('circunscripciones con el reparto más ajustado');
+    expect(html).toContain('Escaño que habría cambiado');
+    expect(html).toContain('Votos que tendrían que haberse movido');
+    expect(html).toContain('habría pasado a');
+    expect(html).not.toMatch(/Escrutado en ella|podría cambiar|pasaría|del censo escrutado|voto exterior/);
+    expect(html.match(/<tr>/g)).toHaveLength(11); // la cabecera y 10 filas
+  });
+
+  it('sin la opción definitiva, la misma vista cerrada sigue diciendo que no hay vuelco (la noche electoral no cambia)', () => {
+    const v = cerrado();
+    expect(renderTablaDisputa({ ...v.tabla, estado: 'sin-vuelco', filas: [] })).toContain(TEXTO_SIN_VUELCO);
+  });
+
+  it('en la fila del umbral dice que habría entrado, no que entra', () => {
+    const fila: VistaFilaDisputa = {
+      codigo: '28',
+      nombre: 'Madrid',
+      tipo: 'umbral',
+      actual: null,
+      actualGrupoId: null,
+      aspirante: 'ZZZ',
+      aspiranteGrupoId: 'sin-agrupar:ZZZ',
+      votosAMover: 120,
+      porcentajeVotosAMover: 0.01,
+      porcentajeCenso: 1,
+      empateSorteo: false,
+      cera: null,
+      vuelco: null,
+    };
+    const tabla = { ...cerrado().tabla, filas: [fila] };
+    expect(renderTablaDisputa(tabla, { definitivo: true })).toMatch(/Habría entrado al alcanzar el 3 %.*ZZZ habría alcanzado el 3 % y entrado/s);
+    expect(renderTablaDisputa(tabla)).toContain('Entra al alcanzar el 3 %');
+  });
+
+  it('la tabla de todas las circunscripciones no lleva el % escrutado y el reparto ya no es «actual»', () => {
+    const v = cerrado();
+    const definitiva = renderTablaCircunscripciones(v, { definitivo: true });
+    sinBasura(definitiva);
+    expect(definitiva).not.toContain('Escrutado');
+    expect(definitiva).not.toContain('Reparto actual');
+    expect(definitiva).toContain('<th scope="col">Reparto</th>');
+    expect(definitiva.match(/<tr>/g)).toHaveLength(53); // la cabecera y 52 circunscripciones
+    expect(renderTablaCircunscripciones(v)).toContain('Reparto actual');
+  });
+
+  it('el panel de resumen del escrutinio queda vacío y el resto de paneles se dibujan', () => {
+    const paneles = renderPaneles(cerrado(), { definitivo: true });
+    expect(paneles.resumen).toBe('');
+    for (const nombre of NOMBRES_PANEL.filter((n) => n !== 'resumen' && n !== 'notaGrupos')) {
+      sinBasura(paneles[nombre]);
+      expect(paneles[nombre].length, nombre).toBeGreaterThan(20);
+    }
+  });
+});
+
 describe('hemiciclo', () => {
   const total = 350;
   it('coloca todos los escaños, cada uno una vez y dentro del dibujo', () => {

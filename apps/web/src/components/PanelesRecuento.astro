@@ -7,11 +7,13 @@ import type { Paneles } from '../lib/recuento/paneles';
  */
 interface Props {
   paneles: Paneles;
+  /** Recuento cerrado (histórico): sin el resumen del escrutinio y con la tabla de los escaños más ajustados. */
+  definitivo?: boolean;
 }
-const { paneles } = Astro.props;
+const { paneles, definitivo = false } = Astro.props;
 ---
 
-<div data-panel="resumen" set:html={paneles.resumen} />
+{!definitivo && <div data-panel="resumen" set:html={paneles.resumen} />}
 
 <h2>Escaños</h2>
 <div class="rejilla-sectores">
@@ -39,7 +41,20 @@ const { paneles } = Astro.props;
 </section>
 </div>
 
-<h2>Circunscripciones donde puede cambiar un escaño</h2>
+{
+  definitivo ? (
+    <>
+      <h2>Los escaños que se decidieron por menos votos</h2>
+      <p class="intro-seccion">
+        Las circunscripciones donde menos votos habrían bastado para que un escaño cambiara de manos: cuántos tendrían que
+        haber pasado de una candidatura a otra. Con el recuento cerrado esto ya no puede cambiar; sirve para ver dónde
+        estuvo más reñido el reparto.
+      </p>
+    </>
+  ) : (
+    <h2>Circunscripciones donde puede cambiar un escaño</h2>
+  )
+}
 <div data-panel="disputa" set:html={paneles.disputa} />
 
 <details class="detalle">
