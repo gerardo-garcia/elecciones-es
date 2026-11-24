@@ -25,6 +25,21 @@ Registro de encuestas con su fuente, fechas de campo, muestra y cifras, y el est
 las recoge. Las que se enlazan en la portada están en `apps/web/src/data/enlaces.json`, donde toda encuesta lleva fecha.
 `python3 -I scripts/comprobar_enlaces.py data/encuestas/encuestas-2026-11-23.json` vuelve a pedir los enlaces y compara.
 
+## Mapa de las circunscripciones
+
+`apps/web/src/data/mapa-circunscripciones.json` es el mapa de las 52 circunscripciones del Congreso (50 provincias, con
+Baleares y cada provincia canaria enteras, más Ceuta y Melilla), generado a partir de **Natural Earth**
+(Admin 1 – States, Provinces, 1:10m, v5.1.1, dominio público; <https://www.naturalearthdata.com/>). Se descarga a mano
+<https://naciscdn.org/naturalearth/10m/cultural/ne_10m_admin_1_states_provinces.zip> y:
+
+```sh
+python3 -I scripts/mapa_circunscripciones.py RUTA/ne_10m_admin_1_states_provinces.zip
+```
+
+Solo con la biblioteca estándar; el ZIP es un dato externo y se lee sin extraerlo. Proyecta con una cónica conforme de
+Lambert, simplifica el contorno (≈ 0,6 km) y deja Canarias, con la misma escala, en un recuadro. Se descartó el
+conjunto NUTS3 de Eurostat (GISCO) porque su licencia es solo para uso no comercial y exige atribución específica.
+
 ## `raw/` (ignorado por git)
 
 Datos brutos descargados a mano, por ejemplo los ficheros de Infoelectoral de elecciones anteriores. El portal de
