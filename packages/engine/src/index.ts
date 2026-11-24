@@ -8,3 +8,4 @@ export * from './disputa';
 export * from './cera';
 export * from './simulacion';
 export * from './backtest';
+export * from './vista';
