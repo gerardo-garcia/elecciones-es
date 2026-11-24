@@ -4,7 +4,11 @@ import { CALENDARIO } from '../lib/calendario';
 import { contexto } from '../lib/contexto';
 import { textoCuentaAtras } from '../lib/cuentaatras';
 import { enlacesVisibles, metaEnlace, type Enlace } from '../lib/enlaces';
-import { formatoFechaCorta, formatoFechaLarga, formatoHora, ruta } from '../lib/formato';
+import { formatoFechaCorta, formatoHora, ruta } from '../lib/formato';
+import { renderHemiciclo } from '../lib/recuento/hemiciclo';
+import { renderPaneles } from '../lib/recuento/paneles';
+import { horaSimulada } from '../lib/reloj';
+import { indiceInicial, nocheSimulada, ORDENES } from '../lib/simulacion';
 
 const { ahora, veda } = contexto();
 const enlaces = enlacesJson.enlaces as Enlace[];
@@ -16,45 +20,102 @@ const cierre = new Date(CALENDARIO.cierreColegios);
 const cuentaInicial = textoCuentaAtras(cierre.getTime() - ahora.getTime()) ?? 'El recuento está en marcha';
 const textoVeda = `Desde el ${formatoFechaCorta(CALENDARIO.vedaEncuestas.desde)} hasta el cierre de los colegios (${formatoHora(CALENDARIO.vedaEncuestas.hasta)} del ${formatoFechaCorta(CALENDARIO.vedaEncuestas.hasta)}) la ley electoral prohíbe publicar y difundir encuestas. Por eso no las enlazamos en estos días; volverán después.`;
 
-const fechaVotacion = formatoFechaLarga(`${CALENDARIO.votacion}T12:00:00+01:00`);
+// Los 350 escaños vacíos: se llenan la noche del 29N.
+const hemiciclo = renderHemiciclo({
+  total: 350,
+  mayoria: 176,
+  etiqueta: 'Hemiciclo del Congreso de los Diputados: 350 escaños, todavía sin repartir. La mayoría absoluta son 176.',
+});
+
+// Vista previa real de los paneles, con el momento con el que se abre el ejemplo de recuento (datos de 2023).
+const noche = nocheSimulada(ORDENES[0] as (typeof ORDENES)[number]);
+const indice = indiceInicial(noche);
+const ejemplo = renderPaneles(noche.vistas[indice] as (typeof noche.vistas)[number]);
+const horaEjemplo = horaSimulada(noche.minutos[indice] as number);
 ---
 
-<section class="hero">
-  <p class="etiqueta">Elecciones generales · {fechaVotacion}</p>
-  <h1>Seguimiento de las elecciones generales del 29N</h1>
-  <p class="lead">Encuestas y noticias hasta el día de las elecciones. Ese día, el recuento en directo.</p>
+<section class="hero hero--portada">
+  <h1>Elecciones generales del 29N</h1>
+  <p class="lead">
+    Encuestas y noticias hasta el día de las elecciones. Ese día, a partir del cierre de los colegios, el recuento en
+    directo.
+  </p>
+  <div class="acciones">
+    <a class="boton" href={ruta('simulacion/')}>Ver el ejemplo de recuento</a>
+    <a class="boton boton--secundario" href="#fechas">Fechas clave</a>
+  </div>
+
+  <div class="hemiciclo-marco">
+    <p class="hemiciclo-mayoria" aria-hidden="true">Mayoría absoluta: 176</p>
+    <div class="hemiciclo--entrada" set:html={hemiciclo} />
+    <div class="hemiciclo-centro">
+      <p class="cuenta-atras">
+        <strong data-cuenta-atras={CALENDARIO.cierreColegios} data-texto-final="El recuento está en marcha">{cuentaInicial}</strong>
+      </p>
+      <p class="cuenta-pie">para el cierre de los colegios, a las {formatoHora(cierre)} del domingo 29 de noviembre</p>
+    </div>
+  </div>
 </section>
 
-<aside class="aviso" aria-labelledby="directo-titulo">
-  <h2 id="directo-titulo">El 29 de noviembre, recuento en directo</h2>
-  <p>
-    Durante la jornada electoral del <strong>domingo 29 de noviembre</strong> mostraremos aquí el recuento en directo,
-    actualizado a medida que salgan datos nuevos del escrutinio. Los colegios cierran a las {formatoHora(cierre)} y el
-    recuento arranca a partir de entonces.
-  </p>
-  <p class="cuenta">
-    Faltan <strong data-cuenta-atras={CALENDARIO.cierreColegios} data-texto-final="El recuento está en marcha">{cuentaInicial}</strong> para el
-    cierre de los colegios.
-  </p>
-</aside>
-
-<h2>Qué vamos a mostrar durante el recuento</h2>
-<ul class="lista-simple">
-  <li>Diagramas de sectores con los escaños de cada formación, y otro agrupando las formaciones territoriales de un mismo partido.</li>
-  <li>Mapa de España por circunscripciones con los escaños de cada formación, y otro con el ganador de cada una.</li>
+<h2>Así se verá el recuento</h2>
+<p class="intro-seccion">
+  Estos paneles se actualizarán con cada dato del escrutinio. Esta es una muestra con los datos de las elecciones de 2023.
+</p>
+<div class="vista-previa">
+  <div class="vista-previa-cabecera">
+    <span class="chip">Ejemplo</span>
+    <p>Datos de 2023, a las {horaEjemplo} de una noche simulada. No son resultados de 2026.</p>
+  </div>
+  <div class="vista-previa-rejilla">
+    <div>
+      <div set:html={ejemplo.sectoresGrupos} />
+      <div set:html={ejemplo.notaGrupos} />
+    </div>
+    <div set:html={ejemplo.mapaGanador} />
+  </div>
+</div>
+<ul class="guia-paneles">
   <li>
-    <strong>Las 10 circunscripciones donde un escaño puede cambiar de manos</strong>, con el porcentaje de votos que
-    tendrían que moverse para que cambie.
+    <strong>Escaños</strong>
+    <span>Por formación, y agrupando las formaciones territoriales de un mismo partido.</span>
   </li>
   <li>
-    El método, a la vista: extrapolación lineal de los votos escrutados al censo de cada circunscripción, barrera del
-    3 % y reparto D'Hondt, como marca la ley electoral.
+    <strong>Mapas</strong>
+    <span>El grupo más votado y los escaños de cada formación en cada circunscripción.</span>
+  </li>
+  <li>
+    <strong>En disputa</strong>
+    <span>Las 10 circunscripciones donde un escaño puede cambiar de manos y cuántos votos tendrían que moverse.</span>
   </li>
 </ul>
-<p>
-  ¿Quieres verlo en movimiento? Mira el <a href={ruta('simulacion/')}>ejemplo de recuento</a>, una noche simulada con los
-  datos de 2023: no son resultados de 2026, sirve para ver cómo funcionarán los paneles.
+<p class="nota-suave">
+  El método está a la vista: extrapolación lineal de los votos escrutados al censo de cada circunscripción, barrera del 3
+  % y reparto D'Hondt, como marca la ley electoral. <a href={ruta('simulacion/')}>Ver el ejemplo de recuento completo</a>.
 </p>
+
+<h2 id="fechas">Fechas clave</h2>
+<ol class="cronologia">
+  <li>
+    <time datetime={CALENDARIO.vedaEncuestas.desde}>{formatoFechaCorta(CALENDARIO.vedaEncuestas.desde)}</time>
+    <span>Empieza la veda de encuestas.</span>
+  </li>
+  <li>
+    <time datetime="2026-11-28">28 de noviembre</time>
+    <span>Jornada de reflexión.</span>
+  </li>
+  <li data-principal>
+    <time datetime={CALENDARIO.votacion}>29 de noviembre</time>
+    <span>Votación de 9:00 a 20:00. A partir del cierre, recuento en directo aquí.</span>
+  </li>
+  <li>
+    <time datetime="2026-12-04">4 al 7 de diciembre</time>
+    <span>Escrutinio general en las Juntas Electorales Provinciales.</span>
+  </li>
+  <li>
+    <time datetime="2026-12-23">23 de diciembre</time>
+    <span>Sesiones constitutivas del Congreso y del Senado.</span>
+  </li>
+</ol>
 
 <h2>Últimas encuestas</h2>
 <section aria-label="Últimas encuestas">
@@ -119,28 +180,4 @@ const fechaVotacion = formatoFechaLarga(`${CALENDARIO.votacion}T12:00:00+01:00`)
       </li>
     ))
   }
-</ul>
-
-<h2>Fechas clave</h2>
-<ul class="calendario">
-  <li>
-    <time datetime={CALENDARIO.vedaEncuestas.desde}>{formatoFechaCorta(CALENDARIO.vedaEncuestas.desde)}</time>
-    <span>Empieza la veda de encuestas.</span>
-  </li>
-  <li>
-    <time datetime="2026-11-28">28 de noviembre</time>
-    <span>Jornada de reflexión.</span>
-  </li>
-  <li>
-    <time datetime={CALENDARIO.votacion}>29 de noviembre</time>
-    <span>Votación de 9:00 a 20:00. A partir del cierre, recuento en directo aquí.</span>
-  </li>
-  <li>
-    <time datetime="2026-12-04">4 al 7 de diciembre</time>
-    <span>Escrutinio general en las Juntas Electorales Provinciales.</span>
-  </li>
-  <li>
-    <time datetime="2026-12-23">23 de diciembre</time>
-    <span>Sesiones constitutivas del Congreso y del Senado.</span>
-  </li>
 </ul>

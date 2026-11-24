@@ -27,6 +27,7 @@ const { paneles } = Astro.props;
 </div>
 
 <h2>Mapas</h2>
+<div class="rejilla-mapas">
 <section aria-labelledby="titulo-mapa-ganador">
   <h3 id="titulo-mapa-ganador">Grupo más votado en cada circunscripción</h3>
   <div data-panel="mapaGanador" set:html={paneles.mapaGanador} />
@@ -36,6 +37,7 @@ const { paneles } = Astro.props;
   <p class="nota-suave">El tamaño de cada círculo es proporcional a los escaños que reparte la circunscripción.</p>
   <div data-panel="mapaEscanos" set:html={paneles.mapaEscanos} />
 </section>
+</div>
 
 <h2>Circunscripciones donde puede cambiar un escaño</h2>
 <div data-panel="disputa" set:html={paneles.disputa} />

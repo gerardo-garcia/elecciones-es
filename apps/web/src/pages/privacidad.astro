@@ -19,11 +19,11 @@ const ACTUALIZADO = '2026-11-24T12:00:00+01:00';
   fase={fase}
 >
   <section class="hero">
-    <p class="etiqueta">Privacidad y aviso legal</p>
     <h1>Privacidad, cookies y aviso legal</h1>
     <p class="lead">Última actualización: {formatoFechaLarga(ACTUALIZADO)}.</p>
   </section>
 
+  <div class="prosa">
   {
     hayTitular && (
       <>
@@ -100,4 +100,5 @@ const ACTUALIZADO = '2026-11-24T12:00:00+01:00';
     resultados del recuento son una proyección calculada a partir de los datos provisionales del escrutinio y no un
     resultado oficial.
   </p>
+  </div>
 </Base>

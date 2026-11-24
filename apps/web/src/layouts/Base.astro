@@ -1,4 +1,5 @@
 ---
+import '@fontsource-variable/schibsted-grotesk';
 import '../styles/global.css';
 import Anuncio from '../components/Anuncio.astro';
 import titularJson from '../data/titular.json';
@@ -6,6 +7,7 @@ import { ANCHO_MINIMO_LATERALES, ANUNCIOS, exigirTitular, muestraAnuncios, urlSc
 import { CALENDARIO } from '../lib/calendario';
 import { ruta } from '../lib/formato';
 import type { Fase } from '../lib/fase';
+import { renderHemiciclo } from '../lib/recuento/hemiciclo';
 
 interface Props {
   titulo: string;
@@ -13,11 +15,13 @@ interface Props {
   fase: Fase;
   /** true solo en la portada ('/'): el script de cliente la redirige si la fase ya cambió. */
   portada?: boolean;
+  /** Páginas que no deben aparecer en los buscadores (la 404). */
+  noindex?: boolean;
 }
 
 const etiquetaFase: Record<Fase, string> = {
   previa: 'Antes de las elecciones',
-  recuento: 'Recuento',
+  recuento: 'Recuento en directo',
   analisis: 'Análisis',
 };
 
@@ -26,9 +30,19 @@ const {
   descripcion = 'Seguimiento de las elecciones generales del 29 de noviembre de 2026: encuestas, recuento en directo y análisis de resultados.',
   fase,
   portada = false,
+  noindex = false,
 } = Astro.props;
 
 const inicio = ruta('/');
+const rutaHistorico = ruta('historico/');
+const rutaEjemplo = ruta('simulacion/');
+const actual = Astro.url.pathname;
+// En la página del ejemplo se resalta «Ejemplo de recuento»; en el histórico y en lo que cuelga de él, «Histórico».
+const enHistorico = actual === rutaHistorico;
+const enEjemplo = actual === rutaEjemplo;
+
+// La marca es un hemiciclo en pequeño: tres arcos de escaños.
+const marca = renderHemiciclo({ total: 24, filas: 3, grupos: [{ nombre: 'Escaños', color: 'currentColor', escanos: 24 }] });
 
 // Sin ID de AdSense no hay nada. Solo con el ID (modo verificación) va la etiqueta `meta` y ningún script de terceros.
 // Con anuncios, la ley exige identificar al titular.
@@ -44,6 +58,7 @@ if (anuncios) exigirTitular(titularJson);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{titulo} · Elecciones España</title>
     <meta name="description" content={descripcion} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" href={ruta('/favicon.svg')} type="image/svg+xml" />
     {config && <meta name="google-adsense-account" content={config.cliente} />}
     {anuncios && <script async src={urlScriptAnuncios(anuncios.cliente)} crossorigin="anonymous" is:inline />}
@@ -52,8 +67,12 @@ if (anuncios) exigirTitular(titularJson);
     <a class="saltar" href="#contenido">Saltar al contenido</a>
     <header class="cabecera">
       <div class="contenedor">
-        <a class="marca" href={inicio}>Elecciones España</a>
-        <span class="fase-actual">{etiquetaFase[fase]}</span>
+        <a class="marca" href={inicio}><Fragment set:html={marca} />Elecciones España</a>
+        <nav class="nav" aria-label="Principal">
+          <a class="nav-extra" href={rutaEjemplo} aria-current={enEjemplo ? 'page' : undefined}>Ejemplo de recuento</a>
+          <a href={rutaHistorico} aria-current={enHistorico ? 'page' : undefined}>Histórico</a>
+        </nav>
+        <span class="fase-actual" data-fase={fase}><span class="punto" aria-hidden="true"></span>{etiquetaFase[fase]}</span>
       </div>
     </header>
 
@@ -81,24 +100,26 @@ if (anuncios) exigirTitular(titularJson);
 
     <footer class="pie">
       <div class="contenedor">
-        <p>
-          Proyecto independiente, sin vinculación oficial con el Ministerio del Interior ni con la Junta Electoral Central.
-        </p>
-        <p>
-          <a href={ruta('historico/')}>Histórico</a>
-          {' · '}
-          <a href={ruta('privacidad/')}>Privacidad y aviso legal</a>
+        <div>
+          <p class="pie-marca"><Fragment set:html={marca} />Elecciones España</p>
+          <p>
+            Proyecto independiente, sin vinculación oficial con el Ministerio del Interior ni con la Junta Electoral Central.
+          </p>
+        </div>
+        <ul>
+          <li><a href={rutaEjemplo}>Ejemplo de recuento</a></li>
+          <li><a href={rutaHistorico}>Histórico</a></li>
+          <li><a href={ruta('privacidad/')}>Privacidad y aviso legal</a></li>
           {
             anuncios && (
-              <span data-preferencias-publicidad hidden>
-                {' · '}
+              <li data-preferencias-publicidad hidden>
                 <button type="button" class="enlace">
                   Preferencias de publicidad
                 </button>
-              </span>
+              </li>
             )
           }
-        </p>
+        </ul>
       </div>
     </footer>
 

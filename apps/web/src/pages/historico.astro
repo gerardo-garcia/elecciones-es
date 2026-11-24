@@ -2,8 +2,16 @@
 import Base from '../layouts/Base.astro';
 import { contexto } from '../lib/contexto';
 import { ruta } from '../lib/formato';
+import { renderHemiciclo } from '../lib/recuento/hemiciclo';
+import { renderPaneles } from '../lib/recuento/paneles';
+import { indiceInicial, nocheSimulada, ORDENES } from '../lib/simulacion';
 
 const { fase } = contexto();
+
+// Miniaturas: el reparto del ejemplo de recuento y un hemiciclo vacío para las elecciones que aún no han ocurrido.
+const noche = nocheSimulada(ORDENES[0] as (typeof ORDENES)[number]);
+const miniaturaEjemplo = renderPaneles(noche.vistas[indiceInicial(noche)] as (typeof noche.vistas)[number]).sectoresGrupos;
+const miniaturaVacia = renderHemiciclo({ total: 350 });
 ---
 
 <Base
@@ -12,24 +20,32 @@ const { fase } = contexto();
   fase={fase}
 >
   <section class="hero">
-    <p class="etiqueta">Histórico</p>
     <h1>Histórico</h1>
     <p class="lead">
-      Recuentos y análisis de elecciones pasadas. Los de las generales del 29N se guardarán aquí cuando termine el recuento.
+      Los recuentos y los análisis de las elecciones pasadas, para volver a verlos cuando quieras. Las generales del 29N se
+      guardarán aquí cuando termine el recuento.
     </p>
   </section>
 
-  <h2>Ejemplos</h2>
-  <ul class="enlaces">
-    <li>
-      <a href={ruta('simulacion/')}>Ejemplo de recuento</a>
-      <span class="meta">
-        Una noche electoral simulada con los votos de las generales de 2023, para ver cómo funcionan los paneles. No son
-        resultados de 2026.
-      </span>
+  <ul class="historico">
+    <li class="entrada-historico">
+      <div class="miniatura" aria-hidden="true" set:html={miniaturaEjemplo} />
+      <div>
+        <h2><a href={ruta('simulacion/')}>Ejemplo de recuento</a></h2>
+        <p>
+          Una noche electoral simulada con los votos de las generales de 2023, para ver cómo funcionan los paneles. No son
+          resultados de 2026.
+        </p>
+        <span class="chip">Ejemplo</span>
+      </div>
+    </li>
+    <li class="entrada-historico entrada-historico--pendiente">
+      <div class="miniatura miniatura--vacia" aria-hidden="true" set:html={miniaturaVacia} />
+      <div>
+        <h2>Elecciones generales del 29N de 2026</h2>
+        <p>El recuento y el análisis estarán aquí cuando termine el escrutinio.</p>
+        <span class="chip chip--suave">Próximamente</span>
+      </div>
     </li>
   </ul>
-
-  <h2>Elecciones anteriores</h2>
-  <p class="vacio">Todavía no hay elecciones guardadas.</p>
 </Base>

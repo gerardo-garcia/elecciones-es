@@ -20,10 +20,13 @@ const paneles = renderPaneles(noche.vistas[inicial] as (typeof noche.vistas)[num
   descripcion="Ejemplo de recuento: una noche electoral simulada con los datos de las elecciones generales de 2023, para ver cómo funcionarán los paneles el 29N."
   fase={fase}
 >
-  <p class="nota-suave"><a href={ruta('historico/')}>← Histórico</a></p>
+  <nav class="migas" aria-label="Ruta">
+    <a href={ruta('historico/')}>Histórico</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">Ejemplo de recuento</span>
+  </nav>
 
   <section class="hero">
-    <p class="etiqueta">Ejemplo de recuento · datos de 2023</p>
     <h1>Así será el recuento: una noche simulada</h1>
     <p class="lead">
       Reproducimos una noche electoral con los votos de las elecciones generales de 2023, mesa a mesa, para que veas cómo
@@ -46,32 +49,36 @@ const paneles = renderPaneles(noche.vistas[inicial] as (typeof noche.vistas)[num
     data-orden-inicial={orden}
     onsubmit="return false"
   >
-    <div class="controles-fila">
-      <button type="button" class="boton" data-reproducir aria-pressed="false" hidden>▶ Reproducir</button>
+    <div class="reproductor">
+      <button type="button" class="boton" data-reproducir aria-pressed="false" hidden>Reproducir</button>
+      <p class="reloj" role="status" aria-live="off">
+        <strong data-reloj>{horaSimulada(minutos)}</strong>
+        <span data-tiempo>({tiempoTrasElCierre(minutos)})</span>
+      </p>
       <label class="control-deslizador">
-        <span>Momento de la noche</span>
+        <span class="solo-lector">Momento de la noche</span>
         <input type="range" min="0" max={noche.minutos.length - 1} value={inicial} step="1" data-deslizador disabled />
       </label>
     </div>
-    <p class="reloj" role="status" aria-live="off">
-      <strong data-reloj>{horaSimulada(minutos)}</strong> <span data-tiempo>({tiempoTrasElCierre(minutos)})</span>
-    </p>
-    <div class="controles-fila">
-      <label>
-        <span>Orden en que llegan las mesas</span>
-        <select data-orden disabled>
-          {ORDENES.map((o) => <option value={o} selected={o === orden}>{NOMBRE_ORDEN[o]}</option>)}
-        </select>
-      </label>
-      <label>
-        <span>Velocidad</span>
-        <select data-velocidad disabled>
-          <option value="1200">Lenta</option>
-          <option value="600" selected>Normal</option>
-          <option value="250">Rápida</option>
-        </select>
-      </label>
-    </div>
+    <details class="opciones">
+      <summary>Opciones</summary>
+      <div class="controles-fila">
+        <label>
+          <span>Orden en que llegan las mesas</span>
+          <select data-orden disabled>
+            {ORDENES.map((o) => <option value={o} selected={o === orden}>{NOMBRE_ORDEN[o]}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Velocidad</span>
+          <select data-velocidad disabled>
+            <option value="1200">Lenta</option>
+            <option value="600" selected>Normal</option>
+            <option value="250">Rápida</option>
+          </select>
+        </label>
+      </div>
+    </details>
     <p class="estado-carga" data-estado-carga role="status">
       Esta simulación necesita JavaScript para moverse; mientras tanto se muestra el momento de las {horaSimulada(minutos)}.
     </p>

@@ -27,7 +27,7 @@ Requiere Node ≥ 22 y pnpm 12 (`corepack enable`).
 
 ```sh
 pnpm install
-pnpm test        # motor (157 tests) y web (63 tests)
+pnpm test        # motor (157 tests) y web (69 tests)
 pnpm typecheck
 pnpm dev         # http://localhost:4321
 pnpm build       # apps/web/dist
@@ -39,6 +39,14 @@ Previsualizar la portada en otro momento:
 AHORA_FORZADA=2026-11-25T12:00:00+01:00 pnpm build   # en plena veda de encuestas
 AHORA_FORZADA=2026-11-29T21:00:00+01:00 pnpm build   # fase de recuento
 ```
+
+## Diseño de la web
+
+Tinta y papel: la interfaz es neutra y **el color es solo de los datos** (partidos en gráficos, mapas y tablas), para que
+la web no sugiera ningún partido. Los colores y la escala están en `apps/web/src/styles/global.css` (variables CSS,
+con versión oscura). La portada abre con el hemiciclo de 350 escaños sin repartir (`lib/recuento/hemiciclo.ts`, una
+función pura que luego puede colorear los escaños de cada grupo). La tipografía, Schibsted Grotesk (licencia OFL), va
+dentro de la propia web con `@fontsource-variable`: no se pide nada a Google Fonts ni a otro tercero.
 
 ## Publicación
 

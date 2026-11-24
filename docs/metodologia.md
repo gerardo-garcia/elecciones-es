@@ -181,11 +181,17 @@ mismos dibujos sirven para la simulación y, cuando exista, para la fuente en vi
 - **Mapa.** Natural Earth (dominio público) proyectado con una cónica conforme de Lambert; Canarias en un recuadro con la
   misma escala; Ceuta y Melilla, minúsculas, se dibujan como un círculo con rótulo. Ver `data/README.md`.
 - **Ejemplo de recuento (`/simulacion/`).** Está en el histórico (`/historico/`, que luego guardará las elecciones pasadas) y
-  enlazado desde el pie de todas las páginas. Reproduce una noche con los datos de 2023 (ver el apartado anterior). El build
+  enlazado desde la cabecera y el pie de todas las páginas. Reproduce una noche con los datos de 2023 (ver el apartado anterior). El build
   precalcula una vista cada 5 minutos para cada orden de llegada (`noche-<orden>.json`, ≈1,6 MB cada uno, ≈100 KB
   comprimidos) y la página los reproduce con deslizador, play/pausa, velocidad y orden. Lleva un aviso fijo de que **no son
   resultados de 2026**. Sin JavaScript se ve el momento de las 21:30. En 2023 se usan los escaños y siglas de 2023, con
   dos alias (Junts y Coalición Canaria) y sin el texto `incluye` de 2026.
+- **Vista previa en la portada y en el histórico.** La portada de la fase previa y la tarjeta del histórico reutilizan los
+  mismos dibujos (diagrama de sectores y mapa del grupo más votado) con el momento con el que se abre el ejemplo (las
+  21:30 de la noche simulada), calculado en el build. Siempre van etiquetados como «Ejemplo», con datos de 2023.
+- **Hemiciclo.** `lib/recuento/hemiciclo.ts` dibuja los 350 escaños en arcos concéntricos, ordenados de izquierda a
+  derecha. La portada lo muestra sin repartir, con la línea de la mayoría absoluta (176) en el centro; sin grupos todo es
+  gris y con grupos colorea los escaños de izquierda a derecha, para poder usarlo también con datos del recuento.
 - **Qué se ve al final de la simulación.** Con el 100 % de los residentes escrutado y el CERA esperado, la tabla de
   disputa conserva 10 filas, todas con el aviso «solo el voto exterior»: en la simulación nunca llega a los estados
   `reducida` ni `sin-vuelco` (esos estados están cubiertos por tests con datos fabricados, y por el backtest sin CERA).

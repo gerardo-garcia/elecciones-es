@@ -69,14 +69,14 @@ function iniciar(formulario: HTMLFormElement) {
   const pausar = () => {
     if (temporizador !== undefined) clearInterval(temporizador);
     temporizador = undefined;
-    botonPlay.textContent = '▶ Reproducir';
+    botonPlay.textContent = 'Reproducir';
     botonPlay.setAttribute('aria-pressed', 'false');
   };
 
   const reproducir = () => {
     if (!noche) return;
     if (indice >= noche.vistas.length - 1) indice = 0;
-    botonPlay.textContent = '⏸ Pausar';
+    botonPlay.textContent = 'Pausar';
     botonPlay.setAttribute('aria-pressed', 'true');
     temporizador = window.setInterval(() => {
       if (!noche || indice >= noche.vistas.length - 1) return pausar();
