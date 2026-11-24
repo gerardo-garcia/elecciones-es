@@ -29,6 +29,21 @@ const escrutinio = (codigo: string, censo: number, censoEscrutado: number, votos
   candidaturas: Object.entries(votos).map(([siglas, v]) => ({ siglas, votos: v })),
 });
 
+describe('construirVista: resultado definitivo', () => {
+  const rs = ['01', '02', '03'].map((c, i) =>
+    calcularCircunscripcion(circ(c, 5), escrutinio(c, 100_000, 100_000, { A: 40_000 + 500 * i, B: 30_000, C: 10_000 }, 1_000)),
+  );
+
+  it('con el recuento completo la tabla normal queda sin vuelco; la definitiva lista las circunscripciones más ajustadas', () => {
+    expect(construirVista(rs, { agrupador, porcentajeCensoNacional: 1 }).tabla).toMatchObject({ estado: 'sin-vuelco', filas: [] });
+    const t = construirVista(rs, { agrupador, porcentajeCensoNacional: 1, resultadoDefinitivo: true }).tabla;
+    expect(t).toMatchObject({ estado: 'normal', total: 3, sinOpcionDeVuelco: [] });
+    expect(t.filas).toHaveLength(3);
+    // Cada fila conserva el grupo de cada candidatura (da el color).
+    expect(t.filas[0]).toMatchObject({ aspiranteGrupoId: expect.any(String) });
+  });
+});
+
 describe('construirVista (a mano)', () => {
   // 01: 3 escaños, recuento a medias; 02: 2 escaños, completo; 03: 5 escaños, sin datos.
   const c1 = circ('01', 3);

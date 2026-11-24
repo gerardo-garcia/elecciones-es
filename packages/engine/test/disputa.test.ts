@@ -403,6 +403,19 @@ describe('construirTablaDisputa', () => {
     expect(t.sinOpcionDeVuelco).toHaveLength(12);
   });
 
+  it('incluirTodas (resultado definitivo): ninguna se descarta y salen las 10 más ajustadas aunque el recuento esté completo', () => {
+    const rs = codigos(1, 12).map((c, i) => sinOpcion(c, 100 + 900 * i)); // todas completas: sin opción de vuelco
+    expect(tabla(rs).estado).toBe('sin-vuelco'); // el comportamiento de la noche electoral no cambia
+    const t = tabla(rs, { incluirTodas: true, porcentajeEscrutadoGlobal: 1 });
+    expect(t).toMatchObject({ estado: 'normal', porcentajeEscrutadoGlobal: 1, total: 12, conOpcionDeVuelco: 12, sinOpcionDeVuelco: [] });
+    expect(t.filas).toHaveLength(10);
+    // Las más ajustadas, de menos a más: las de menor ventaja (01, 02, 03...).
+    expect(t.filas.map((f) => f.codigo)).toEqual(codigos(1, 10));
+    for (let i = 1; i < t.filas.length; i++) {
+      expect(t.filas[i]?.porcentajeVotosAMover).toBeGreaterThan(t.filas[i - 1]?.porcentajeVotosAMover ?? 0);
+    }
+  });
+
   it('una circunscripción sin datos no se descarta: faltan datos, no opciones', () => {
     const sinDatos = (c: string) => calcularCircunscripcion(circ(c, 5), null);
     const t = tabla([...codigos(1, 45).map(sinDatos), ...codigos(46, 7).map((c) => conOpcion(c))]);

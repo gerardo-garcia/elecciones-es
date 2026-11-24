@@ -280,6 +280,12 @@ export interface OpcionesTablaDisputa {
   n?: number;
   /** Votos válidos CERA esperados por circunscripción, mientras el voto exterior no esté escrutado. */
   ceraEsperados?: Record<string, number>;
+  /**
+   * Resultado definitivo (recuento cerrado, voto exterior incluido): no se descarta ninguna circunscripción por no
+   * poder ya cambiar. La tabla pasa a ser un análisis a posteriori: los escaños que se decidieron por menos votos
+   * (siempre `normal`, con las `n` más ajustadas).
+   */
+  incluirTodas?: boolean;
 }
 
 export interface TablaDisputa {
@@ -307,7 +313,7 @@ export interface TablaDisputa {
  * tiene pocas filas pero no está `reducida`: ese estado solo lo provocan circunscripciones descartadas.
  */
 export function construirTablaDisputa(resultados: ResultadoCircunscripcion[], opciones: OpcionesTablaDisputa): TablaDisputa {
-  const { porcentajeEscrutadoGlobal, n = 10, ceraEsperados } = opciones;
+  const { porcentajeEscrutadoGlobal, n = 10, ceraEsperados, incluirTodas = false } = opciones;
   if (!(Number.isFinite(porcentajeEscrutadoGlobal) && porcentajeEscrutadoGlobal >= 0 && porcentajeEscrutadoGlobal <= 1)) {
     throw new ErrorDatos(`Porcentaje escrutado global inválido: ${porcentajeEscrutadoGlobal}`);
   }
@@ -319,7 +325,7 @@ export function construirTablaDisputa(resultados: ResultadoCircunscripcion[], op
     const codigo = r.circunscripcion.codigo;
     const esperados = ceraEsperados?.[codigo];
     const vuelco = posibilidadVuelco(r, esperados);
-    if (vuelco && !vuelco.puedeHaberVuelco) {
+    if (!incluirTodas && vuelco && !vuelco.puedeHaberVuelco) {
       sinOpcionDeVuelco.push(codigo);
       continue;
     }

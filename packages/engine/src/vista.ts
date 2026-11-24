@@ -71,6 +71,11 @@ export interface OpcionesVista {
   ceraEsperados?: Record<string, number>;
   /** Filas de la tabla de disputa (por defecto, 10). */
   filasTabla?: number;
+  /**
+   * Resultado definitivo de unas elecciones ya terminadas (histórico): la tabla muestra los escaños que se decidieron
+   * por menos votos, sin descartar ninguna circunscripción (ver `OpcionesTablaDisputa.incluirTodas`).
+   */
+  resultadoDefinitivo?: boolean;
 }
 
 function ganador(r: ResultadoCircunscripcion, agrupador: Agrupador): VistaGanador | null {
@@ -93,12 +98,13 @@ function ganador(r: ResultadoCircunscripcion, agrupador: Agrupador): VistaGanado
 }
 
 export function construirVista(resultados: ResultadoCircunscripcion[], opciones: OpcionesVista): VistaRecuento {
-  const { agrupador, porcentajeCensoNacional, ceraEsperados, filasTabla } = opciones;
+  const { agrupador, porcentajeCensoNacional, ceraEsperados, filasTabla, resultadoDefinitivo } = opciones;
   const nacional = calcularNacional(resultados, agrupador);
   const tabla = construirTablaDisputa(resultados, {
     porcentajeEscrutadoGlobal: porcentajeCensoNacional,
     ...(filasTabla === undefined ? {} : { n: filasTabla }),
     ...(ceraEsperados === undefined ? {} : { ceraEsperados }),
+    ...(resultadoDefinitivo ? { incluirTodas: true } : {}),
   });
 
   return {
