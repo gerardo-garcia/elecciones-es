@@ -1,0 +1,42 @@
+---
+import type { ConfigAnuncios } from '../lib/anuncios';
+
+/**
+ * Un bloque de anuncios de AdSense con el hueco reservado, para que el contenido no salte al cargar el anuncio.
+ * `pie`: banner adaptable al ancho, bajo el contenido. `lateral`: 160 × 600 junto a la columna, solo en pantallas anchas
+ * (el script de cliente no lo carga si no caben, para no pedir un anuncio que no se ve).
+ */
+interface Props {
+  config: ConfigAnuncios;
+  tipo: 'pie' | 'lateral';
+  lado?: 'izquierdo' | 'derecho';
+}
+const { config, tipo, lado } = Astro.props;
+const hueco = tipo === 'pie' ? config.huecoPie : (config.huecoLateral as string);
+---
+
+{
+  tipo === 'pie' ? (
+    <aside class="anuncio anuncio--pie" aria-label="Publicidad" data-anuncio="pie">
+      <p class="anuncio-rotulo">Publicidad</p>
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client={config.cliente}
+        data-ad-slot={hueco}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+    </aside>
+  ) : (
+    <aside class={`anuncio anuncio--lateral anuncio--${lado}`} aria-label="Publicidad" data-anuncio="lateral">
+      <p class="anuncio-rotulo">Publicidad</p>
+      <ins
+        class="adsbygoogle"
+        style="display:inline-block;width:160px;height:600px"
+        data-ad-client={config.cliente}
+        data-ad-slot={hueco}
+      />
+    </aside>
+  )
+}

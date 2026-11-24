@@ -33,6 +33,11 @@ jobs:
       ASTRO_TELEMETRY_DISABLED: '1'
       SITE_URL: ${{ vars.SITE_URL }}
       BASE_PATH: ${{ vars.BASE_PATH }}
+      # Anuncios: sin ADSENSE_CLIENT no se muestra ni se carga nada. Ver apps/web/src/lib/anuncios.ts.
+      ADSENSE_CLIENT: ${{ vars.ADSENSE_CLIENT }}
+      ADSENSE_SLOT_PIE: ${{ vars.ADSENSE_SLOT_PIE }}
+      ADSENSE_SLOT_LATERAL: ${{ vars.ADSENSE_SLOT_LATERAL }}
+      ADSENSE_LATERALES: ${{ vars.ADSENSE_LATERALES }}
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6

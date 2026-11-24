@@ -243,6 +243,78 @@ h2 {
   color: var(--texto-suave);
 }
 
+.pie p {
+  margin: 0 0 0.5rem;
+}
+
+.enlace {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--acento);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.enlace[hidden] {
+  display: none;
+}
+
+/* --- Anuncios ------------------------------------------------------------------------------------------- */
+
+.anuncio {
+  margin: 2rem 0 1.5rem;
+}
+
+.anuncio-rotulo {
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+/* El hueco del pie se reserva para que el contenido no salte cuando llega el anuncio. */
+.anuncio--pie {
+  min-height: 7.5rem;
+}
+
+/* Si Google no tiene anuncio que mostrar, AdSense lo marca como «unfilled»: el hueco se pliega. */
+.anuncio:has(ins[data-ad-status='unfilled']) {
+  display: none;
+}
+
+/* Los laterales solo existen si caben a cada lado de la columna de contenido (60rem): 160 px + margen. El ancho
+   mínimo es ANCHO_MINIMO_LATERALES (lib/anuncios.ts); un test comprueba que coinciden. */
+.anuncio--lateral {
+  display: none;
+}
+
+@media (min-width: 1400px) {
+  .anuncio--lateral {
+    display: block;
+    position: fixed;
+    top: 6rem;
+    width: 160px;
+    margin: 0;
+  }
+
+  .anuncio--izquierdo {
+    left: calc(50% - 30rem - 160px - 1.5rem);
+  }
+
+  .anuncio--derecho {
+    right: calc(50% - 30rem - 160px - 1.5rem);
+  }
+}
+
+@media print {
+  .anuncio {
+    display: none;
+  }
+}
+
 /* --- Recuento y simulación ------------------------------------------------------------------------------ */
 
 h3 {

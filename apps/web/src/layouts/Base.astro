@@ -1,5 +1,8 @@
 ---
 import '../styles/global.css';
+import Anuncio from '../components/Anuncio.astro';
+import titularJson from '../data/titular.json';
+import { ANCHO_MINIMO_LATERALES, ANUNCIOS, exigirTitular, urlScriptAnuncios } from '../lib/anuncios';
 import { CALENDARIO } from '../lib/calendario';
 import { ruta } from '../lib/formato';
 import type { Fase } from '../lib/fase';
@@ -26,6 +29,10 @@ const {
 } = Astro.props;
 
 const inicio = ruta('/');
+
+// Sin ID de AdSense no hay anuncios ni se carga nada de terceros. Con anuncios, la ley exige identificar al titular.
+const anuncios = ANUNCIOS();
+if (anuncios) exigirTitular(titularJson);
 ---
 
 <!doctype html>
@@ -36,8 +43,9 @@ const inicio = ruta('/');
     <title>{titulo} · Elecciones España</title>
     <meta name="description" content={descripcion} />
     <link rel="icon" href={ruta('/favicon.svg')} type="image/svg+xml" />
+    {anuncios && <script async src={urlScriptAnuncios(anuncios.cliente)} crossorigin="anonymous" is:inline />}
   </head>
-  <body data-fase={fase} data-portada={portada ? 'true' : 'false'} data-base={inicio}>
+  <body data-fase={fase} data-portada={portada ? 'true' : 'false'} data-base={inicio} data-ancho-laterales={ANCHO_MINIMO_LATERALES}>
     <a class="saltar" href="#contenido">Saltar al contenido</a>
     <header class="cabecera">
       <div class="contenedor">
@@ -52,15 +60,47 @@ const inicio = ruta('/');
       </div>
     </main>
 
+    {
+      anuncios && (
+        <div class="contenedor">
+          <Anuncio config={anuncios} tipo="pie" />
+        </div>
+      )
+    }
+    {
+      anuncios?.huecoLateral && (
+        <>
+          <Anuncio config={anuncios} tipo="lateral" lado="izquierdo" />
+          <Anuncio config={anuncios} tipo="lateral" lado="derecho" />
+        </>
+      )
+    }
+
     <footer class="pie">
       <div class="contenedor">
-        Proyecto independiente, sin vinculación oficial con el Ministerio del Interior ni con la Junta Electoral Central.
+        <p>
+          Proyecto independiente, sin vinculación oficial con el Ministerio del Interior ni con la Junta Electoral Central.
+        </p>
+        <p>
+          <a href={ruta('privacidad/')}>Privacidad y aviso legal</a>
+          {
+            anuncios && (
+              <span data-preferencias-publicidad hidden>
+                {' · '}
+                <button type="button" class="enlace">
+                  Preferencias de publicidad
+                </button>
+              </span>
+            )
+          }
+        </p>
       </div>
     </footer>
 
     <script id="calendario" type="application/json" is:inline set:html={JSON.stringify(CALENDARIO)} />
     <script>
       import '../scripts/cliente';
+      import '../scripts/anuncios';
     </script>
   </body>
 </html>
