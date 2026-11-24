@@ -1,0 +1,24 @@
+{
+  "_nota": "Color de cada agrupación (id de data/config/agrupaciones.json; las siglas sin grupo son 'sin-agrupar:' + siglas normalizadas). Los colores de los partidos grandes siguen su imagen habitual; el resto, tonos distinguibles entre sí. Siempre van acompañados de texto (leyenda, tablas), nunca son lo único que informa. Si falta un id se usa un color de 'otros' elegido por el id, siempre el mismo.",
+  "grupos": {
+    "psoe": "#d9232d",
+    "pp": "#1c75bc",
+    "vox": "#5ea324",
+    "fa-comp-upc": "#a8327f",
+    "sin-agrupar:SUMAR": "#e0529c",
+    "podemos": "#6f3b9a",
+    "adelante-andalucia": "#2aa37a",
+    "erc": "#f08a00",
+    "junts": "#17b0a0",
+    "eh-bildu": "#b9c41c",
+    "pnv": "#0d6e45",
+    "bng": "#6bc2e8",
+    "cc": "#f2c500",
+    "sin-agrupar:UPN": "#0f3f8c",
+    "pcte": "#8a1c1c",
+    "frente-obrero": "#5f6368",
+    "fia": "#5a4fcf"
+  },
+  "otros": ["#8d6e63", "#78909c", "#9575cd", "#4db6ac", "#c0875a", "#e57373", "#7e9c3a"],
+  "sinDatos": "#c7ccd4"
+}
