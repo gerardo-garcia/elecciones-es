@@ -77,8 +77,8 @@ mensaje de consentimiento; apuntar el dominio (CNAME a `<usuario>.github.io`, do
 
 Hecho: motor con tests, datos oficiales de circunscripciones y candidaturas, agrupación de siglas, voto exterior (CERA),
 simulador de una noche electoral con datos de 2023 y backtest del motor, portada de las tres fases (recuento y análisis
-aún son marcadores de posición), paneles del recuento (sectores, mapas, tabla de disputa) y su modo de simulación en
-`/simulacion/`, y CI/Pages.
+aún son marcadores de posición), paneles del recuento (sectores, mapas, tabla de disputa) y su modo de simulación, publicado
+como «Ejemplo de recuento» (`/simulacion/`) dentro del histórico (`/historico/`), y CI/Pages.
 
 Pendiente: fuente de datos en vivo, ingesta en Actions, conectar los paneles a esa fuente en la fase de recuento,
 histórico y blog de encuestas.

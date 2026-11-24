@@ -2,6 +2,7 @@
 import PanelesRecuento from '../components/PanelesRecuento.astro';
 import Base from '../layouts/Base.astro';
 import { contexto } from '../lib/contexto';
+import { ruta } from '../lib/formato';
 import { horaSimulada, tiempoTrasElCierre } from '../lib/reloj';
 import { renderPaneles } from '../lib/recuento/paneles';
 import { indiceInicial, nocheSimulada, NOMBRE_ORDEN, ORDENES, PASO_MINUTOS } from '../lib/simulacion';
@@ -15,12 +16,14 @@ const paneles = renderPaneles(noche.vistas[inicial] as (typeof noche.vistas)[num
 ---
 
 <Base
-  titulo="Simulación del recuento con los datos de 2023"
-  descripcion="Simulación del recuento de una noche electoral con los datos de las elecciones generales de 2023, para ver cómo funcionarán los paneles el 29N."
+  titulo="Ejemplo de recuento"
+  descripcion="Ejemplo de recuento: una noche electoral simulada con los datos de las elecciones generales de 2023, para ver cómo funcionarán los paneles el 29N."
   fase={fase}
 >
+  <p class="nota-suave"><a href={ruta('historico/')}>← Histórico</a></p>
+
   <section class="hero">
-    <p class="etiqueta">Simulación · datos de 2023</p>
+    <p class="etiqueta">Ejemplo de recuento · datos de 2023</p>
     <h1>Así será el recuento: una noche simulada</h1>
     <p class="lead">
       Reproducimos una noche electoral con los votos de las elecciones generales de 2023, mesa a mesa, para que veas cómo

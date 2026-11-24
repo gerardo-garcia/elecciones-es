@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import { contexto } from '../lib/contexto';
+import { ruta } from '../lib/formato';
+
+const { fase } = contexto();
+---
+
+<Base
+  titulo="Histórico"
+  descripcion="Recuentos y análisis de elecciones pasadas, y un ejemplo de recuento para ver cómo funcionan los paneles."
+  fase={fase}
+>
+  <section class="hero">
+    <p class="etiqueta">Histórico</p>
+    <h1>Histórico</h1>
+    <p class="lead">
+      Recuentos y análisis de elecciones pasadas. Los de las generales del 29N se guardarán aquí cuando termine el recuento.
+    </p>
+  </section>
+
+  <h2>Ejemplos</h2>
+  <ul class="enlaces">
+    <li>
+      <a href={ruta('simulacion/')}>Ejemplo de recuento</a>
+      <span class="meta">
+        Una noche electoral simulada con los votos de las generales de 2023, para ver cómo funcionan los paneles. No son
+        resultados de 2026.
+      </span>
+    </li>
+  </ul>
+
+  <h2>Elecciones anteriores</h2>
+  <p class="vacio">Todavía no hay elecciones guardadas.</p>
+</Base>
