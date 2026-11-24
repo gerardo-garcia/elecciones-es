@@ -1,12 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import titularJson from '../data/titular.json';
-import { ANUNCIOS } from '../lib/anuncios';
+import { ANUNCIOS, muestraAnuncios } from '../lib/anuncios';
 import { contexto } from '../lib/contexto';
 import { formatoFechaLarga } from '../lib/formato';
 
 const { fase } = contexto();
-const anuncios = ANUNCIOS();
+const anuncios = muestraAnuncios(ANUNCIOS());
 const titular = titularJson;
 const hayTitular = Boolean(titular.nombre.trim() && titular.domicilio.trim() && titular.contacto.trim());
 /** Se cambia a mano cuando cambie el texto: la web se reconstruye cada pocas horas y una fecha automática no diría nada. */

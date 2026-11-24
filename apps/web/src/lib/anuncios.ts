@@ -4,6 +4,9 @@
  *   ADSENSE_SLOT_PIE        ID del bloque de anuncios del pie.
  *   ADSENSE_SLOT_LATERAL    ID del bloque de los laterales (solo si están activados).
  *   ADSENSE_LATERALES       "false" para quitar los laterales (por defecto, activados).
+ *
+ * Tres estados: sin ADSENSE_CLIENT, nada. Con solo ADSENSE_CLIENT, **modo verificación**: la etiqueta `meta` y `ads.txt`
+ * con los que AdSense comprueba que el sitio es tuyo, sin ningún script ni anuncio ni cookie. Con los bloques, anuncios.
  */
 
 /** Ancho de pantalla desde el que caben los laterales junto a la columna de contenido (`--ancho` + 2 × 160 px + márgenes). */
@@ -14,9 +17,17 @@ const AUTORIDAD_GOOGLE = 'f08c47fec0942fa0';
 
 export interface ConfigAnuncios {
   cliente: string;
-  huecoPie: string;
-  /** null si los laterales están desactivados. */
+  /** null en modo verificación: sin bloques de anuncios. */
+  huecoPie: string | null;
+  /** null si los laterales están desactivados (o en modo verificación). */
   huecoLateral: string | null;
+}
+
+/** Configuración con anuncios de verdad (no solo verificación del sitio). */
+export type ConfigConAnuncios = ConfigAnuncios & { huecoPie: string };
+
+export function muestraAnuncios(config: ConfigAnuncios | null): config is ConfigConAnuncios {
+  return config !== null && config.huecoPie !== null;
 }
 
 /** Datos del responsable del sitio (aviso legal, art. 10 de la LSSI). Se publican en /privacidad/. */
@@ -39,10 +50,11 @@ export function configuracionAnuncios(env: Entorno): ConfigAnuncios | null {
   if (!CLIENTE.test(cliente)) throw new Error(`ADSENSE_CLIENT no tiene el formato ca-pub-XXXXXXXXXXXXXXXX: «${cliente}»`);
 
   const huecoPie = env.ADSENSE_SLOT_PIE?.trim() ?? '';
-  if (!HUECO.test(huecoPie)) throw new Error('Con ADSENSE_CLIENT hace falta ADSENSE_SLOT_PIE (el ID numérico del bloque del pie).');
+  const huecoLateral = env.ADSENSE_SLOT_LATERAL?.trim() ?? '';
+  if (!huecoPie && !huecoLateral) return { cliente, huecoPie: null, huecoLateral: null };
+  if (!HUECO.test(huecoPie)) throw new Error('Con bloques de anuncios hace falta ADSENSE_SLOT_PIE (el ID numérico del bloque del pie).');
 
   if (env.ADSENSE_LATERALES?.trim().toLowerCase() === 'false') return { cliente, huecoPie, huecoLateral: null };
-  const huecoLateral = env.ADSENSE_SLOT_LATERAL?.trim() ?? '';
   if (!HUECO.test(huecoLateral)) {
     throw new Error('Con los laterales activados hace falta ADSENSE_SLOT_LATERAL (o ADSENSE_LATERALES=false para quitarlos).');
   }

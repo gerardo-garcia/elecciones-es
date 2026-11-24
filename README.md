@@ -27,7 +27,7 @@ Requiere Node ≥ 22 y pnpm 12 (`corepack enable`).
 
 ```sh
 pnpm install
-pnpm test        # motor (157 tests) y web (62 tests)
+pnpm test        # motor (157 tests) y web (63 tests)
 pnpm typecheck
 pnpm dev         # http://localhost:4321
 pnpm build       # apps/web/dist
@@ -54,10 +54,14 @@ laterales de 160 × 600 fijos junto a la columna de contenido. Se configuran con
 
 | Variable | Valor |
 |---|---|
-| `ADSENSE_CLIENT` | ID de editor, `ca-pub-XXXXXXXXXXXXXXXX`. Sin él, no hay anuncios |
+| `ADSENSE_CLIENT` | ID de editor, `ca-pub-XXXXXXXXXXXXXXXX`. Sin él, no hay nada. **Solo con él, modo verificación** (ver abajo) |
 | `ADSENSE_SLOT_PIE` | ID del bloque de anuncios del pie |
 | `ADSENSE_SLOT_LATERAL` | ID del bloque de los laterales |
 | `ADSENSE_LATERALES` | `false` para quitar los laterales (entonces no hace falta su bloque) |
+
+**Modo verificación.** AdSense comprueba que el sitio es tuyo con la etiqueta `meta` y `ads.txt`. Definiendo solo
+`ADSENSE_CLIENT`, la web los emite y nada más: sin script de Google, sin anuncios y sin cookies. Sirve para dar de alta el
+sitio en AdSense antes de tener los bloques de anuncios. Cuando AdSense lo apruebe, se definen los dos `ADSENSE_SLOT_*`.
 
 Con anuncios, **la web no se construye** si faltan nombre, domicilio o contacto en `apps/web/src/data/titular.json`:
 se publican en `/privacidad/` (aviso legal, art. 10 de la LSSI). La política de privacidad cambia sola según haya o no

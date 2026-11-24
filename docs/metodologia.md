@@ -195,7 +195,9 @@ mismos dibujos sirven para la simulación y, cuando exista, para la fuente en vi
   (columna de 60 rem + 2 × 160 px + márgenes), fijos al hacer scroll y ocultos por debajo. Nunca dentro de un panel ni de
   la tabla. Cada bloque lleva el rótulo «Publicidad». Los laterales no piden anuncio si no caben (`scripts/anuncios.ts`).
 - **Inactivo por defecto.** Sin `ADSENSE_CLIENT` no se carga ningún script de terceros, no hay cookies y `ads.txt` es un
-  comentario. Una configuración a medias o mal escrita hace fallar la construcción en lugar de publicar un anuncio roto.
+  comentario. Solo con `ADSENSE_CLIENT` (**modo verificación**) se añade la etiqueta `<meta name="google-adsense-account">` y
+  `ads.txt` con el ID de editor, que es lo que AdSense usa para verificar el sitio; sigue sin haber script, anuncios ni cookies,
+  y no se exigen los datos del titular (sí hacen falta antes de pedir la revisión, porque AdSense espera ver un aviso legal). Una configuración a medias o mal escrita hace fallar la construcción en lugar de publicar un anuncio roto.
 - **Titular obligatorio.** Con anuncios hay actividad económica y la LSSI exige identificar al titular; sin sus datos
   (`titular.json`) la web no se construye.
 - **Consentimiento.** Google exige un gestor de consentimiento certificado para servir anuncios personalizados en la UE

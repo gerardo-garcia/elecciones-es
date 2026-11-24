@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Anuncio from '../components/Anuncio.astro';
 import titularJson from '../data/titular.json';
-import { ANCHO_MINIMO_LATERALES, ANUNCIOS, exigirTitular, urlScriptAnuncios } from '../lib/anuncios';
+import { ANCHO_MINIMO_LATERALES, ANUNCIOS, exigirTitular, muestraAnuncios, urlScriptAnuncios } from '../lib/anuncios';
 import { CALENDARIO } from '../lib/calendario';
 import { ruta } from '../lib/formato';
 import type { Fase } from '../lib/fase';
@@ -30,8 +30,10 @@ const {
 
 const inicio = ruta('/');
 
-// Sin ID de AdSense no hay anuncios ni se carga nada de terceros. Con anuncios, la ley exige identificar al titular.
-const anuncios = ANUNCIOS();
+// Sin ID de AdSense no hay nada. Solo con el ID (modo verificación) va la etiqueta `meta` y ningún script de terceros.
+// Con anuncios, la ley exige identificar al titular.
+const config = ANUNCIOS();
+const anuncios = muestraAnuncios(config) ? config : null;
 if (anuncios) exigirTitular(titularJson);
 ---
 
@@ -43,6 +45,7 @@ if (anuncios) exigirTitular(titularJson);
     <title>{titulo} · Elecciones España</title>
     <meta name="description" content={descripcion} />
     <link rel="icon" href={ruta('/favicon.svg')} type="image/svg+xml" />
+    {config && <meta name="google-adsense-account" content={config.cliente} />}
     {anuncios && <script async src={urlScriptAnuncios(anuncios.cliente)} crossorigin="anonymous" is:inline />}
   </head>
   <body data-fase={fase} data-portada={portada ? 'true' : 'false'} data-base={inicio} data-ancho-laterales={ANCHO_MINIMO_LATERALES}>

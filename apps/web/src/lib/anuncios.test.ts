@@ -5,6 +5,7 @@ import {
   configuracionAnuncios,
   exigirTitular,
   lineaAdsTxt,
+  muestraAnuncios,
   urlScriptAnuncios,
 } from './anuncios';
 
@@ -19,12 +20,17 @@ describe('configuracionAnuncios', () => {
     expect(configuracionAnuncios({ ADSENSE_SLOT_PIE: '1234567890' })).toBeNull();
   });
 
+  it('con solo el cliente es modo verificación: sin bloques, por tanto sin anuncios', () => {
+    const verificacion = configuracionAnuncios({ ADSENSE_CLIENT: CLIENTE });
+    expect(verificacion).toEqual({ cliente: CLIENTE, huecoPie: null, huecoLateral: null });
+    expect(muestraAnuncios(verificacion)).toBe(false);
+    expect(muestraAnuncios(null)).toBe(false);
+  });
+
   it('con cliente y los dos huecos, activa pie y laterales', () => {
-    expect(configuracionAnuncios({ ADSENSE_CLIENT: CLIENTE, ADSENSE_SLOT_PIE: '1111111111', ADSENSE_SLOT_LATERAL: '2222222222' })).toEqual({
-      cliente: CLIENTE,
-      huecoPie: '1111111111',
-      huecoLateral: '2222222222',
-    });
+    const config = configuracionAnuncios({ ADSENSE_CLIENT: CLIENTE, ADSENSE_SLOT_PIE: '1111111111', ADSENSE_SLOT_LATERAL: '2222222222' });
+    expect(config).toEqual({ cliente: CLIENTE, huecoPie: '1111111111', huecoLateral: '2222222222' });
+    expect(muestraAnuncios(config)).toBe(true);
   });
 
   it('ADSENSE_LATERALES=false quita los laterales y entonces no hace falta su hueco', () => {
@@ -39,7 +45,7 @@ describe('configuracionAnuncios', () => {
 
   it('falla con un mensaje claro si la configuración está a medias o mal escrita', () => {
     expect(() => configuracionAnuncios({ ADSENSE_CLIENT: 'pub-123' })).toThrow(/ADSENSE_CLIENT/);
-    expect(() => configuracionAnuncios({ ADSENSE_CLIENT: CLIENTE })).toThrow(/ADSENSE_SLOT_PIE/);
+    expect(() => configuracionAnuncios({ ADSENSE_CLIENT: CLIENTE, ADSENSE_SLOT_LATERAL: '2222222222' })).toThrow(/ADSENSE_SLOT_PIE/);
     expect(() => configuracionAnuncios({ ADSENSE_CLIENT: CLIENTE, ADSENSE_SLOT_PIE: 'abc' })).toThrow(/ADSENSE_SLOT_PIE/);
     expect(() => configuracionAnuncios({ ADSENSE_CLIENT: CLIENTE, ADSENSE_SLOT_PIE: '1111111111' })).toThrow(/ADSENSE_SLOT_LATERAL/);
   });
