@@ -8,6 +8,8 @@ import {
   instantaneaFinal,
   leerMunicipios,
   minutosHastaCompleto,
+  porcentajeCensoNacional,
+  tablaProvisional,
   type Circunscripcion,
   type Escrutinio,
   type Municipio,
@@ -148,6 +150,21 @@ describe('evolución de la noche', () => {
         for (const [siglas, votos] of Object.entries(votosDe(e))) expect(votos).toBeLessThanOrEqual(vf[siglas] ?? 0);
       }
     }
+  });
+
+  it('el porcentaje nacional del motor concuerda con el del simulador y marca cuándo la tabla deja de ser provisional', () => {
+    let provisional = true;
+    for (const t of [0, 30, 60, 90, 120, 150, 180, 240, 400]) {
+      const inst = instantanea(escenario, t);
+      const p = porcentajeCensoNacional(inst.escrutinios, escenario.censoNacional);
+      expect(p).toBeCloseTo(inst.porcentajeCenso, 12);
+      const ahora = tablaProvisional(p);
+      expect(ahora).toBe(p < 0.9);
+      if (!ahora) provisional = false;
+      else expect(provisional, 'una vez no provisional no debe volver a serlo').toBe(true);
+    }
+    expect(tablaProvisional(porcentajeCensoNacional(instantanea(escenario, 0).escrutinios, escenario.censoNacional))).toBe(true);
+    expect(tablaProvisional(porcentajeCensoNacional(instantaneaFinal(escenario).escrutinios, escenario.censoNacional))).toBe(false);
   });
 
   it('pasado el minuto de escrutinio completo, la instantánea es la final', () => {

@@ -1,5 +1,6 @@
 import { repartirDHondt } from './dhondt';
-import type { ResultadoCircunscripcion } from './proyeccion';
+import { validarEscrutinio, type ResultadoCircunscripcion } from './proyeccion';
+import { ErrorDatos, type Escrutinio } from './tipos';
 import { UMBRAL_CONGRESO_PORCIENTO } from './umbral';
 
 /**
@@ -198,4 +199,45 @@ export function tablaDisputa(
     .filter((f): f is FilaDisputa => f !== null)
     .sort((a, b) => a.porcentajeVotosAMover - b.porcentajeVotosAMover || (a.codigo < b.codigo ? -1 : 1))
     .slice(0, n);
+}
+
+/**
+ * Por debajo de este porcentaje del censo NACIONAL escrutado (0,9 = 90 %), la tabla de disputa es provisional.
+ *
+ * La tabla no pretende recoger todos los cambios posibles, sino los más probables, para seguir la noche con
+ * tensión (decisión del 24-nov-2026). Con poco escrutinio puede dejar fuera circunscripciones que acabarán cambiando,
+ * y la web debe avisarlo mientras no se llegue a este umbral. Ver docs/metodologia.md.
+ */
+export const UMBRAL_TABLA_PROVISIONAL = 0.9;
+
+/**
+ * Censo escrutado en toda España, de 0 a 1.
+ *
+ * Si la fuente no lista las circunscripciones que aún no dan datos hay que pasar `censoNacional` (suma del censo
+ * de las 52): sin él, el porcentaje saldría por exceso. Sin escrutinios ni censo nacional no hay nada que medir y
+ * devuelve 0 (la tabla se considera provisional, que es el lado seguro).
+ */
+export function porcentajeCensoNacional(escrutinios: Escrutinio[], censoNacional?: number): number {
+  let escrutado = 0;
+  let censo = 0;
+  for (const e of escrutinios) {
+    validarEscrutinio(e);
+    escrutado += e.censoEscrutado;
+    censo += e.censo;
+  }
+  if (censoNacional === undefined && censo === 0) return 0;
+  const total = censoNacional ?? censo;
+  if (!(Number.isFinite(total) && total > 0)) throw new ErrorDatos(`Censo nacional inválido: ${total}`);
+  if (total < censo) {
+    throw new ErrorDatos(`El censo nacional (${total}) es menor que la suma del de las circunscripciones (${censo})`);
+  }
+  return escrutado / total;
+}
+
+/** true mientras el censo nacional escrutado (de 0 a 1) no llegue a `UMBRAL_TABLA_PROVISIONAL`. */
+export function tablaProvisional(porcentajeCensoNacional: number): boolean {
+  if (!(Number.isFinite(porcentajeCensoNacional) && porcentajeCensoNacional >= 0 && porcentajeCensoNacional <= 1)) {
+    throw new ErrorDatos(`Porcentaje de censo nacional inválido: ${porcentajeCensoNacional}`);
+  }
+  return porcentajeCensoNacional < UMBRAL_TABLA_PROVISIONAL;
 }
