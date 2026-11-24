@@ -26,10 +26,20 @@ function cambio(f: FilaDisputa): string {
   );
 }
 
+/**
+ * Solo el voto exterior (CERA, que se escruta días después) podría cambiar el reparto: los votos que faltan de los
+ * residentes ya no bastan, pero sumando los del exterior que se esperan sí. Antes de eso el aviso no informa de nada.
+ */
+export function soloElVotoExterior(f: FilaDisputa): boolean {
+  const { vuelco, cera } = f;
+  if (!vuelco || !cera || vuelco.votosNecesarios === null || !vuelco.puedeHaberVuelco) return false;
+  return vuelco.votosNecesarios > vuelco.votosPendientes - cera.votosEsperados;
+}
+
 function fila(f: FilaDisputa): string {
   const avisos = [
     f.empateSorteo ? 'Empate: lo decide un sorteo' : '',
-    f.cera?.puedeDecidir ? 'El voto exterior podría decidirlo' : '',
+    soloElVotoExterior(f) ? 'Solo el voto exterior, que se escruta días después, podría cambiarlo' : '',
   ].filter(Boolean);
   return (
     `<tr><th scope="row">${esc(f.nombre)}` +

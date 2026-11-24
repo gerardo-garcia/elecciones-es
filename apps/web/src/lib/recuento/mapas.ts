@@ -81,8 +81,8 @@ export function renderMapaGanador(vista: VistaRecuento, mapa: Mapa = MAPA): stri
   );
 }
 
-const RADIO_ESCANO = 3.6;
-const RADIO_MINIMO = 5;
+const RADIO_ESCANO = 4.2;
+const RADIO_MINIMO = 6;
 
 /** Círculo proporcional a los escaños de la circunscripción, partido por formaciones. */
 function simbolo(c: VistaCircunscripcion, centro: [number, number], colores: Map<string, string>): string {

@@ -94,7 +94,7 @@ export function renderSectores(trozos: Trozo[], { titulo, escanosTotales }: Opci
     .map(
       (t) =>
         `<li><span class="muestra" style="background:${t.color}" aria-hidden="true"></span>` +
-        `<span class="nombre">${esc(t.nombre)}${t.nota ? ` <small>(incluye ${esc(t.nota)})</small>` : ''}</span>` +
+        `<span class="nombre">${esc(t.nombre)}${t.nota ? `<small>Incluye ${esc(t.nota)}</small>` : ''}</span>` +
         `<strong>${numero(t.escanos)}</strong></li>`,
     )
     .join('');

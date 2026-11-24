@@ -15,7 +15,7 @@ import { esc, numero, porcentaje } from './html';
 import { leyendaEscanos, leyendaGanador, MAPA, renderMapaEscanos, renderMapaGanador } from './mapas';
 import { NOMBRES_PANEL, renderPaneles } from './paneles';
 import { coinciden, renderSectores, trozosFormaciones, trozosGrupos } from './sectores';
-import { renderTablaCircunscripciones, renderTablaDisputa, TEXTO_SIN_VUELCO } from './tabla';
+import { renderTablaCircunscripciones, renderTablaDisputa, soloElVotoExterior, TEXTO_SIN_VUELCO } from './tabla';
 
 const circs = circunscripcionesJson.circunscripciones as Circunscripcion[];
 const agrupador = crearAgrupador(agrupacionesJson.grupos as GrupoConfig[]);
@@ -122,10 +122,10 @@ describe('diagramas de sectores', () => {
     );
     expect(html).not.toContain('<b>X</b>');
     expect(html).toContain('&lt;b&gt;X&lt;/b&gt;');
-    expect(html).toContain('(incluye X e Y &amp; Z)');
+    expect(html).toContain('<small>Incluye X e Y &amp; Z</small>');
     const v = vista(1);
     const grupos = renderSectores(trozosGrupos(v), { titulo: 'g', escanosTotales: v.escanosTotales });
-    expect(grupos).toContain('(incluye ');
+    expect(grupos).toContain('<small>Incluye ');
   });
 
   it('el segundo diagrama avisa de que coincide con el primero solo si agrupar no junta nada', () => {
@@ -262,6 +262,30 @@ describe('tabla de disputa', () => {
     const html = renderTablaDisputa(vista(0).tabla);
     expect(html).toContain('Todavía no hay circunscripciones con datos suficientes');
     expect(html).not.toContain(TEXTO_SIN_VUELCO);
+  });
+
+  it('avisa del voto exterior solo cuando los residentes por sí solos ya no pueden cambiar la circunscripción', () => {
+    const conCera = (fraccion: number, cera: number) =>
+      construirVista(
+        circs.map((c) => calcularCircunscripcion(c, escrutinio(c.codigo, 10_000, Math.round(10_000 * fraccion), { PP: 4_113, PSOE: 3_377, VOX: 1_511 }))),
+        { agrupador, porcentajeCensoNacional: fraccion, ceraEsperados: Object.fromEntries(circs.map((c) => [c.codigo, cera])) },
+      );
+    const aviso = 'Solo el voto exterior, que se escruta días después, podría cambiarlo';
+
+    // A mitad del recuento quedan 5.000 votos de residentes: bastan para cambiar el reparto, el exterior no hace falta.
+    const antes = conCera(0.5, 5_000);
+    expect(antes.tabla.filas.length).toBeGreaterThan(0);
+    expect(antes.tabla.filas.some(soloElVotoExterior)).toBe(false);
+    expect(renderTablaDisputa(antes.tabla)).not.toContain(aviso);
+
+    // Con el recuento de residentes completo, lo que mantiene la fila en la tabla es el voto exterior.
+    const despues = conCera(1, 5_000);
+    expect(despues.tabla.estado).toBe('normal');
+    expect(despues.tabla.filas.every(soloElVotoExterior)).toBe(true);
+    expect(renderTablaDisputa(despues.tabla).match(new RegExp(aviso, 'g'))).toHaveLength(10);
+
+    // Si el exterior esperado no basta para cambiar nada, no queda ninguna fila.
+    expect(conCera(1, 1).tabla.estado).toBe('sin-vuelco');
   });
 
   it('escapa los nombres de las circunscripciones y de las candidaturas', () => {
