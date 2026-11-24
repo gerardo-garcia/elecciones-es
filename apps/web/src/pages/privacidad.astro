@@ -1,0 +1,103 @@
+---
+import Base from '../layouts/Base.astro';
+import titularJson from '../data/titular.json';
+import { ANUNCIOS } from '../lib/anuncios';
+import { contexto } from '../lib/contexto';
+import { formatoFechaLarga } from '../lib/formato';
+
+const { fase } = contexto();
+const anuncios = ANUNCIOS();
+const titular = titularJson;
+const hayTitular = Boolean(titular.nombre.trim() && titular.domicilio.trim() && titular.contacto.trim());
+/** Se cambia a mano cuando cambie el texto: la web se reconstruye cada pocas horas y una fecha automática no diría nada. */
+const ACTUALIZADO = '2026-11-24T12:00:00+01:00';
+---
+
+<Base
+  titulo="Privacidad y aviso legal"
+  descripcion="Qué datos trata esta web, qué cookies usa y quién es el responsable."
+  fase={fase}
+>
+  <section class="hero">
+    <p class="etiqueta">Privacidad y aviso legal</p>
+    <h1>Privacidad, cookies y aviso legal</h1>
+    <p class="lead">Última actualización: {formatoFechaLarga(ACTUALIZADO)}.</p>
+  </section>
+
+  {
+    hayTitular && (
+      <>
+        <h2>Responsable del sitio</h2>
+        <ul class="lista-simple">
+          <li>
+            <strong>Titular:</strong> {titular.nombre}
+          </li>
+          {titular.nif.trim() && (
+            <li>
+              <strong>NIF:</strong> {titular.nif}
+            </li>
+          )}
+          <li>
+            <strong>Domicilio:</strong> {titular.domicilio}
+          </li>
+          <li>
+            <strong>Contacto:</strong> {titular.contacto}
+          </li>
+        </ul>
+      </>
+    )
+  }
+
+  <h2>Qué datos trata esta web</h2>
+  <p>
+    La web no pide registro, no tiene formularios y no guarda nada en tu navegador por su cuenta. Es un sitio estático
+    alojado en GitHub Pages: GitHub, como proveedor del alojamiento, puede registrar datos técnicos de la visita (por
+    ejemplo, la dirección IP) según su propia{' '}
+    <a href="https://docs.github.com/es/site-policy/privacy-policies/github-general-privacy-statement">política de privacidad</a>.
+  </p>
+
+  <h2>Cookies y publicidad</h2>
+  {
+    anuncios ? (
+      <>
+        <p>
+          La web muestra publicidad de <strong>Google AdSense</strong>. Para ello Google, y los socios publicitarios que
+          participan en sus anuncios, pueden usar cookies e identificadores del dispositivo, por ejemplo para limitar
+          cuántas veces ves un anuncio o para medir su rendimiento y, si lo aceptas, personalizarlo.
+        </p>
+        <p>
+          Solo se usan tras tu consentimiento. La primera vez que entras se te muestra un mensaje de Google para que
+          aceptes o rechaces; puedes cambiar tu elección cuando quieras con «Preferencias de publicidad», al pie de
+          cada página. La base jurídica es tu consentimiento (art. 6.1.a del RGPD y art. 22.2 de la LSSI).
+        </p>
+        <p>
+          Más información: <a href="https://policies.google.com/technologies/partner-sites">cómo usa Google la información
+          de los sitios que usan sus servicios</a> y <a href="https://adssettings.google.com">la configuración de
+          anuncios de tu cuenta de Google</a>.
+        </p>
+      </>
+    ) : (
+      <p>Ahora mismo la web no muestra publicidad y no usa cookies propias ni de terceros.</p>
+    )
+  }
+
+  <h2>Enlaces a otras webs</h2>
+  <p>
+    La web enlaza a noticias, encuestas y fuentes oficiales. Cada una de esas webs tiene su propia política de privacidad y
+    de cookies, que no controlamos.
+  </p>
+
+  <h2>Tus derechos</h2>
+  <p>
+    Puedes ejercer los derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad sobre tus datos
+    escribiendo al contacto indicado arriba. Si crees que no se han respetado, puedes reclamar ante la{' '}
+    <a href="https://www.aepd.es">Agencia Española de Protección de Datos</a>.
+  </p>
+
+  <h2>Independencia</h2>
+  <p>
+    Proyecto independiente, sin vinculación oficial con el Ministerio del Interior ni con la Junta Electoral Central. Los
+    resultados del recuento son una proyección calculada a partir de los datos provisionales del escrutinio y no un
+    resultado oficial.
+  </p>
+</Base>
