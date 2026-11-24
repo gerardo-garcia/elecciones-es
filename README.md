@@ -14,7 +14,7 @@ La portada cambia sola de fase según la fecha. Método y decisiones: [`docs/met
 ```
 packages/engine   Motor electoral (TypeScript puro, sin I/O): D'Hondt, barrera, extrapolación, tabla de disputa,
                   simulador de una noche electoral y backtest
-apps/web          Web estática (Astro): portada por fases
+apps/web          Web estática (Astro): portada por fases, paneles del recuento y página de simulación
 data/config       Escaños por circunscripción, candidaturas proclamadas, agrupación de siglas
 data/simulacion   Resultados de 2023 por municipio, para simular una noche electoral
 scripts           Utilidades de datos
@@ -27,7 +27,7 @@ Requiere Node ≥ 22 y pnpm 12 (`corepack enable`).
 
 ```sh
 pnpm install
-pnpm test        # motor (146 tests) y web (24 tests)
+pnpm test        # motor (156 tests) y web (51 tests)
 pnpm typecheck
 pnpm dev         # http://localhost:4321
 pnpm build       # apps/web/dist
@@ -49,7 +49,8 @@ Actions**. Con dominio propio, definir las variables de repo `SITE_URL` y `BASE_
 
 Hecho: motor con tests, datos oficiales de circunscripciones y candidaturas, agrupación de siglas, voto exterior (CERA),
 simulador de una noche electoral con datos de 2023 y backtest del motor, portada de las tres fases (recuento y análisis
-aún son marcadores de posición) y CI/Pages.
+aún son marcadores de posición), paneles del recuento (sectores, mapas, tabla de disputa) y su modo de simulación en
+`/simulacion/`, y CI/Pages.
 
-Pendiente: fuente de datos en vivo, ingesta en Actions, paneles del recuento (sectores, mapas, tabla), modo de simulación
-en la web, histórico y blog de encuestas.
+Pendiente: fuente de datos en vivo, ingesta en Actions, conectar los paneles a esa fuente en la fase de recuento,
+histórico y blog de encuestas.

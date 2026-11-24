@@ -13,10 +13,10 @@
 
 | Fichero | Contenido | Origen |
 |---|---|---|
-| `generales-2023-municipios.json` | Un registro por municipio (8.131) de las generales de julio de 2023, solo voto residente: provincia, mesas, censo, blancos y votos por partido (índice en la lista `partidos`). 417 KB | Infoelectoral, resultados por municipio. Se regenera con `scripts/generales2023_a_json.py` |
+| `generales-2023-municipios.json` | Un registro por municipio (8.131) de las generales de julio de 2023, solo voto residente: provincia, mesas, censo, blancos y votos por partido (índice en la lista `partidos`), y `escanos` (escaños de cada circunscripción en 2023, código INE → diputados, suman 350). 418 KB | Infoelectoral, resultados por municipio. Se regenera con `scripts/generales2023_a_json.py` |
 
-Sirve para simular una noche electoral y para el backtest del motor (ver `docs/metodologia.md`). No hay datos a nivel de
-mesa: cada municipio se reparte a partes iguales entre sus mesas.
+Sirve para simular una noche electoral, para el backtest del motor y para la página `/simulacion/` de la web (ver
+`docs/metodologia.md`). No hay datos a nivel de mesa: cada municipio se reparte a partes iguales entre sus mesas.
 
 ## `encuestas/` (versionado)
 

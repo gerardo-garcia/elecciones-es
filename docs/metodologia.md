@@ -83,15 +83,17 @@ cambie, y se muestran las 10 con el porcentaje más bajo.
   ampliar a 15 o 20 filas (recogía bastante más, pero con tablas más largas y filas menos probables).
 - **Cómo se presenta (`construirTablaDisputa`).** La tabla indica que corresponde al **x % del censo escrutado en toda
   España** (`porcentajeEscrutadoGlobal`, de `porcentajeCensoNacional`) y cada fila muestra el **% escrutado de su
-  circunscripción** (`porcentajeCenso`). Tiene tres estados; la redacción de las notas es una propuesta, pendiente de
-  que exista el panel:
+  circunscripción** (`porcentajeCenso`). Tiene tres estados (los textos están en `apps/web/src/lib/recuento/tabla.ts`):
   - `normal`: hasta 10 filas, sin nota. Al principio de la noche tiene menos filas porque faltan datos, pero no es
     `reducida`: ese estado solo lo provocan circunscripciones descartadas.
   - `reducida`: ya hay circunscripciones descartadas y quedan menos de 10 con opción de vuelco (con 52, más de 42
-    descartadas). Nota: *«La tabla tiene menos de 10 filas: en las otras N circunscripciones los votos pendientes ya no
-    bastan para cambiar el reparto.»*
+    descartadas). Nota: *«La tabla tiene N filas en lugar de 10: en M circunscripciones los votos que faltan por escrutar ya no
+    bastan para cambiar el reparto.»* (con una fila: *«La tabla tiene una fila…»*).
   - `sin-vuelco`: ninguna circunscripción puede ya cambiar de reparto. **No se muestra la tabla** y aparece: *«Ya no se
     incluye la tabla de circunscripciones en disputa: no hay opción de vuelco en ninguna circunscripción.»*
+  - **Aviso «solo el voto exterior»**: una fila lleva *«Solo el voto exterior, que se escruta días después, podría
+    cambiarlo»* cuando los votos de residentes que faltan ya no bastan para el cambio y solo lo permite sumar el voto
+    exterior esperado. Mientras los residentes por sí solos pueden cambiarlo, el aviso no informa de nada y no sale.
   - En 2023, con el recuento residente completo y el voto exterior aún sin escrutar, la tabla conserva solo las
     circunscripciones que el CERA podría decidir (Madrid entre ellas, que de hecho cambió); al sumar el CERA, queda
     `sin-vuelco` (test).
@@ -151,12 +153,35 @@ Qué se desprende, **sobre la simulación**:
   cuenta que, con poco censo escrutado, la proyección es menos fiable. A partir del 90-95 % ya las recoge casi todas
   (se le escapan 0-2). Qué se hace con ello: ver el apartado de la tabla, más arriba.
 - Si los municipios grandes llegan antes, la proyección a mitad de noche es peor que con orden aleatorio.
-- **El criterio de vuelco no descartó ningún cambio real** (en 20 noches por orden, cada 2 minutos: 0 de unas 57.000
+- **El criterio de vuelco no descartó ningún cambio real** (sin CERA; en 20 noches por orden, cada 2 minutos: 0 de unas 57.000
   observaciones de una circunscripción con reparto distinto del final; el informe aborta si descarta alguno). Pero
   descarta muy tarde: **la tabla mantiene sus filas hasta el ~99,5 % del censo** y solo entonces se reduce, y se queda
   sin filas al llegar al 100 %. Con el 90 % del censo escrutado hay una mediana de 6-8 circunscripciones descartadas, y
   con el 99 %, 37-38. Usar la participación observada en lugar de «vota todo el censo pendiente» (medido una vez, con
   margen de 1 a 1,5) apenas lo adelanta: la tabla se reduce igualmente hacia el 99,2-99,5 %.
+
+## Paneles del recuento y modo de simulación
+
+La web no calcula nada: dibuja una `VistaRecuento` (datos planos que construye el motor con `construirVista`; se puede
+guardar como JSON). Los paneles son funciones puras de esa vista (`apps/web/src/lib/recuento`, con tests), así que los
+mismos dibujos sirven para la simulación y, cuando exista, para la fuente en vivo (un `recuento.json` generado por Actions).
+
+- **Paneles:** resumen (% de censo escrutado y escaños asignados), dos sectores de escaños (por formación y con las
+  formaciones de un mismo partido sumadas, con su texto `incluye`), dos mapas (grupo más votado de cada circunscripción y
+  círculos de escaños por formación), tabla de disputa y tabla de las 52 circunscripciones.
+- **Color.** Un color por agrupación (`apps/web/src/data/colores.json`); las formaciones de un mismo grupo se distinguen
+  aclarando el tono. El color nunca va solo: todo lleva su nombre y su cifra. El «ganador» de una circunscripción es el
+  grupo con más votos proyectados, no el de más escaños (con pocos escaños los empates son habituales).
+- **Mapa.** Natural Earth (dominio público) proyectado con una cónica conforme de Lambert; Canarias en un recuadro con la
+  misma escala; Ceuta y Melilla, minúsculas, se dibujan como un círculo con rótulo. Ver `data/README.md`.
+- **Simulación (`/simulacion/`).** Reproduce una noche con los datos de 2023 (ver el apartado anterior). El build
+  precalcula una vista cada 5 minutos para cada orden de llegada (`noche-<orden>.json`, ≈1,6 MB cada uno, ≈100 KB
+  comprimidos) y la página los reproduce con deslizador, play/pausa, velocidad y orden. Lleva un aviso fijo de que **no son
+  resultados de 2026**. Sin JavaScript se ve el momento de las 21:30. En 2023 se usan los escaños y siglas de 2023, con
+  dos alias (Junts y Coalición Canaria) y sin el texto `incluye` de 2026.
+- **Qué se ve al final de la simulación.** Con el 100 % de los residentes escrutado y el CERA esperado, la tabla de
+  disputa conserva 10 filas, todas con el aviso «solo el voto exterior»: en la simulación nunca llega a los estados
+  `reducida` ni `sin-vuelco` (esos estados están cubiertos por tests con datos fabricados, y por el backtest sin CERA).
 
 ## Limitaciones conocidas
 
