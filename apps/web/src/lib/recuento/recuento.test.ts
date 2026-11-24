@@ -12,6 +12,7 @@ import {
   type VistaRecuento,
 } from '@elecciones/engine';
 import { aclarar, colorFormacion, colorGrupo, COLOR_SIN_DATOS } from './colores';
+import { ALTO, ANCHO, posicionesHemiciclo, renderHemiciclo } from './hemiciclo';
 import { esc, numero, porcentaje } from './html';
 import { leyendaEscanos, leyendaGanador, MAPA, renderMapaEscanos, renderMapaGanador } from './mapas';
 import { NOMBRES_PANEL, renderPaneles } from './paneles';
@@ -354,5 +355,70 @@ describe('paneles', () => {
   it('la tabla de todas las circunscripciones tiene una fila por circunscripción', () => {
     const html = renderTablaCircunscripciones(vista(0.5));
     expect(html.match(/<tbody>.*<\/tbody>/s)?.[0].match(/<tr>/g)).toHaveLength(52);
+  });
+});
+
+describe('hemiciclo', () => {
+  const total = 350;
+  it('coloca todos los escaños, cada uno una vez y dentro del dibujo', () => {
+    const p = posicionesHemiciclo(total);
+    expect(p).toHaveLength(total);
+    expect(new Set(p.map((e) => `${e.x.toFixed(2)},${e.y.toFixed(2)}`)).size).toBe(total);
+    for (const { x, y } of p) {
+      expect(x).toBeGreaterThan(0);
+      expect(x).toBeLessThan(ANCHO);
+      expect(y).toBeGreaterThan(0);
+      expect(y).toBeLessThan(ALTO);
+    }
+  });
+
+  it('va de izquierda a derecha: el primero está a la izquierda y el último a la derecha', () => {
+    const p = posicionesHemiciclo(total);
+    expect((p[0] as { x: number }).x).toBeLessThan((p[total - 1] as { x: number }).x);
+    const mitad = ANCHO / 2;
+    expect(p.slice(0, 170).every((e) => e.x < mitad)).toBe(true);
+    expect(p.slice(-170).every((e) => e.x > mitad)).toBe(true);
+  });
+
+  it('funciona con pocos escaños y con una sola fila', () => {
+    expect(posicionesHemiciclo(1)).toHaveLength(1);
+    expect(posicionesHemiciclo(5, 1)).toHaveLength(5);
+    expect(posicionesHemiciclo(24, 3)).toHaveLength(24);
+  });
+
+  it('sin grupos todo queda vacío; con grupos reparte los colores y deja el resto vacío', () => {
+    const vacio = renderHemiciclo({ total, etiqueta: 'Hemiciclo' });
+    expect(vacio).toContain('var(--escano)');
+    expect(vacio.match(/<path/g)).toHaveLength(1);
+
+    const con = renderHemiciclo({
+      total,
+      etiqueta: 'Hemiciclo',
+      grupos: [
+        { nombre: 'A', color: '#111111', escanos: 100 },
+        { nombre: 'B', color: '#222222', escanos: 50 },
+      ],
+    });
+    const cuentas = [...con.matchAll(/stroke="([^"]+)"[^>]*fill="none"/g)].map((m) => m[1]);
+    expect(cuentas).toEqual(['#111111', '#222222', 'var(--escano)']);
+    // Cada trazo lleva un punto por escaño.
+    const puntosPorTrazo = [...con.matchAll(/<path d="([^"]+)"/g)].map((m) => (m[1] as string).split('M').length - 1);
+    expect(puntosPorTrazo).toEqual([100, 50, 200]);
+  });
+
+  it('dibuja la línea de la mayoría solo si se pide y escapa la etiqueta', () => {
+    expect(renderHemiciclo({ total, etiqueta: 'x' })).not.toContain('<line');
+    const svg = renderHemiciclo({ total, mayoria: 176, etiqueta: 'a "b" <c>' });
+    expect(svg).toContain('<line');
+    expect(svg).toContain('Mayoría absoluta: 176 escaños');
+    expect(svg).toContain('a &quot;b&quot; &lt;c&gt;');
+    expect(svg).toContain(`viewBox="0 0 ${ANCHO} ${ALTO + 20}"`);
+  });
+
+  it('sin etiqueta es decorativo: los lectores de pantalla lo ignoran', () => {
+    const svg = renderHemiciclo({ total: 24, filas: 3 });
+    expect(svg).toContain('aria-hidden="true"');
+    expect(svg).not.toContain('role="img"');
+    expect(svg).toContain(`viewBox="0 0 ${ANCHO} ${ALTO}"`);
   });
 });
