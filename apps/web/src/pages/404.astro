@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import { contexto } from '../lib/contexto';
+import { ruta } from '../lib/formato';
+
+const { fase } = contexto();
+---
+
+<Base titulo="Página no encontrada" descripcion="La dirección que buscas no existe o ha cambiado." fase={fase} noindex>
+  <section class="hero">
+    <h1>No encontramos esta página</h1>
+    <p class="lead">La dirección no existe o ha cambiado. Puedes volver a la portada o mirar el histórico.</p>
+    <div class="acciones">
+      <a class="boton" href={ruta('/')}>Ir a la portada</a>
+      <a class="boton boton--secundario" href={ruta('historico/')}>Ver el histórico</a>
+    </div>
+  </section>
+
+  <script>
+    // Antes de tener dominio propio la web vivía bajo /elecciones-es/. Si llega alguien con esa ruta (un marcador, o una
+    // copia antigua en caché), se le lleva a la misma página sin el prefijo.
+    const viejo = '/elecciones-es/';
+    if (document.body.dataset.base === '/' && location.pathname.startsWith(viejo)) {
+      location.replace(`/${location.pathname.slice(viejo.length)}${location.search}${location.hash}`);
+    }
+  </script>
+</Base>
