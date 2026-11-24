@@ -209,7 +209,7 @@ main {
   background: var(--superficie);
 }
 
-.nav a[aria-current='page'] {
+.nav a[aria-current] {
   color: var(--texto);
   background: var(--superficie-fuerte);
 }
@@ -846,6 +846,79 @@ main {
   place-items: center;
 }
 
+/* Las elecciones pasadas: el hemiciclo es el reparto final, no una cuenta atrás. */
+
+.historico--aparte {
+  margin-top: 1rem;
+}
+
+.hemiciclo-marco--resultado {
+  margin-top: clamp(1rem, 3vw, 2rem);
+}
+
+/* Con el doble selector gana a `.leyenda`, que se declara más abajo. */
+.leyenda.leyenda--hemiciclo {
+  margin-top: 1.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 0.6rem 2.5rem;
+}
+
+/* Datos de la jornada: una lista de hechos, con filas separadas por una línea, no un cuadro de cifras gigantes. */
+.datos {
+  display: grid;
+  margin: 1rem 0 0;
+  border-top: 1px solid var(--borde-fuerte);
+}
+
+@media (min-width: 44rem) {
+  .datos {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 3rem;
+  }
+}
+
+.datos > div {
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 11rem) minmax(0, 1fr);
+  gap: 0.25rem 1rem;
+  align-items: baseline;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--borde);
+}
+
+.datos dt {
+  color: var(--texto-suave);
+}
+
+.datos dd {
+  margin: 0;
+}
+
+.datos dd strong {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+
+.datos dd span {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+.tabla-votos tfoot th,
+.tabla-votos tfoot td {
+  border-top: 1px solid var(--borde-fuerte);
+  border-bottom: 0;
+  font-weight: 650;
+}
+
+.ficha--suave {
+  font-weight: 500;
+  color: var(--texto-suave);
+}
+
 /* --- Anuncios ------------------------------------------------------------------------------------------- */
 
 .anuncio {
@@ -1147,6 +1220,12 @@ main {
   height: 0.85rem;
   border-radius: 3px;
   align-self: center;
+}
+
+/* En una leyenda, el cuadrito va a la altura de la primera línea aunque el nombre lleve debajo una nota «Incluye…». */
+.leyenda .muestra {
+  align-self: start;
+  margin-top: 0.4rem;
 }
 
 .leyenda--linea {

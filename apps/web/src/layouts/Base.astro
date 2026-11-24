@@ -39,6 +39,8 @@ const rutaEjemplo = ruta('simulacion/');
 const actual = Astro.url.pathname;
 // En la página del ejemplo se resalta «Ejemplo de recuento»; en el histórico y en lo que cuelga de él, «Histórico».
 const enHistorico = actual === rutaHistorico;
+// Dentro de una elección del histórico (/historico/generales-…/) el enlace sigue marcado, pero como sección, no como página.
+const dentroDelHistorico = !enHistorico && actual.startsWith(rutaHistorico);
 const enEjemplo = actual === rutaEjemplo;
 
 // La marca es un hemiciclo en pequeño: tres arcos de escaños.
@@ -70,7 +72,7 @@ if (anuncios) exigirTitular(titularJson);
         <a class="marca" href={inicio}><Fragment set:html={marca} />Elecciones España</a>
         <nav class="nav" aria-label="Principal">
           <a class="nav-extra" href={rutaEjemplo} aria-current={enEjemplo ? 'page' : undefined}>Ejemplo de recuento</a>
-          <a href={rutaHistorico} aria-current={enHistorico ? 'page' : undefined}>Histórico</a>
+          <a href={rutaHistorico} aria-current={enHistorico ? 'page' : dentroDelHistorico ? 'true' : undefined}>Histórico</a>
         </nav>
         <span class="fase-actual" data-fase={fase}><span class="punto" aria-hidden="true"></span>{etiquetaFase[fase]}</span>
       </div>

@@ -1,0 +1,192 @@
+---
+import PanelesRecuento from '../../components/PanelesRecuento.astro';
+import Base from '../../layouts/Base.astro';
+import { contexto } from '../../lib/contexto';
+import { ruta } from '../../lib/formato';
+import { ELECCIONES_HISTORICAS, eleccionHistorica, fichaDe, vistaDe, votosPorGrupo } from '../../lib/historico';
+import { colorGrupo } from '../../lib/recuento/colores';
+import { renderHemiciclo } from '../../lib/recuento/hemiciclo';
+import { numero, porcentaje } from '../../lib/recuento/html';
+import { renderPaneles } from '../../lib/recuento/paneles';
+
+export function getStaticPaths() {
+  return ELECCIONES_HISTORICAS.map((e) => ({ params: { id: e.id } }));
+}
+
+const { fase } = contexto();
+const eleccion = eleccionHistorica(Astro.params.id as string);
+const vista = vistaDe(eleccion);
+const ficha = fichaDe(eleccion.datos);
+const filas = votosPorGrupo(eleccion.datos);
+const paneles = renderPaneles(vista, { definitivo: true });
+
+// Los grupos con escaños, de más a menos, para el hemiciclo y su leyenda.
+const grupos = vista.grupos.filter((g) => g.escanos > 0);
+const [primero] = grupos;
+const hemiciclo = renderHemiciclo({
+  total: ficha.escanos,
+  mayoria: ficha.mayoria,
+  grupos: grupos.map((g) => ({ nombre: g.nombre, color: colorGrupo(g.id), escanos: g.escanos })),
+  etiqueta: `Reparto final de los ${ficha.escanos} escaños: ${grupos.map((g) => `${g.nombre} ${g.escanos}`).join(', ')}. La mayoría absoluta son ${ficha.mayoria}.`,
+});
+
+// Texto de entrada, en una sola cadena para no depender de los espacios entre expresiones de la plantilla.
+const entrada = [
+  'Recuento final.',
+  primero ? `${primero.nombre} consiguió más escaños: ${numero(primero.escanos)} de ${numero(ficha.escanos)}.` : '',
+  primero && primero.escanos >= ficha.mayoria
+    ? `${primero.nombre} alcanzó la mayoría absoluta (${numero(ficha.mayoria)}).`
+    : `Ninguna formación alcanzó la mayoría absoluta, que está en ${numero(ficha.mayoria)}.`,
+  `Participación: ${porcentaje(ficha.participacion)}.`,
+]
+  .filter(Boolean)
+  .join(' ');
+
+const descripcion = `Recuento final de las elecciones generales del ${eleccion.fechaLarga}: escaños, votos por partido, mapas por circunscripción y los escaños más ajustados.`;
+
+const otras = ELECCIONES_HISTORICAS.filter((e) => e.id !== eleccion.id).map((e) => {
+  const [lider] = vistaDe(e).grupos;
+  return { e, lider };
+});
+---
+
+<Base titulo={eleccion.titulo} descripcion={descripcion} fase={fase}>
+  <nav class="migas" aria-label="Ruta">
+    <a href={ruta('historico/')}>Histórico</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">{eleccion.titulo}</span>
+  </nav>
+
+  <section class="hero">
+    <h1>{eleccion.titulo}</h1>
+    <p class="lead">{entrada}</p>
+  </section>
+
+  <div class="hemiciclo-marco hemiciclo-marco--resultado">
+    <p class="hemiciclo-mayoria" aria-hidden="true">Mayoría absoluta: {ficha.mayoria}</p>
+    <div set:html={hemiciclo} />
+  </div>
+  <ul class="leyenda leyenda--hemiciclo">
+    {
+      grupos.map((g) => (
+        <li>
+          <span class="muestra" style={`background:${colorGrupo(g.id)}`} aria-hidden="true" />
+          <span class="nombre">
+            {g.nombre}
+            {g.incluye && <small>Incluye {g.incluye}</small>}
+          </span>
+          <strong>{numero(g.escanos)}</strong>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Datos de la jornada</h2>
+  <dl class="datos">
+    <div>
+      <dt>Participación</dt>
+      <dd>
+        <strong>{porcentaje(ficha.participacion)}</strong>
+        <span>{numero(ficha.votantes)} votantes de {numero(ficha.electores)} electores, con los residentes en el extranjero</span>
+      </dd>
+    </div>
+    <div>
+      <dt>Votos a candidaturas</dt>
+      <dd><strong>{numero(ficha.votosACandidaturas)}</strong></dd>
+    </div>
+    <div>
+      <dt>Votos en blanco</dt>
+      <dd>
+        <strong>{numero(ficha.blancos)}</strong>
+        <span>{porcentaje(ficha.blancos / ficha.validos, 2)} de los votos válidos</span>
+      </dd>
+    </div>
+    <div>
+      <dt>Votos nulos</dt>
+      <dd><strong>{numero(ficha.nulos)}</strong></dd>
+    </div>
+  </dl>
+
+  <h2>Votos y escaños por partido</h2>
+  <p class="intro-seccion">
+    Los votos de todas las circunscripciones, con las formaciones territoriales de un mismo partido sumadas. Los
+    porcentajes son sobre los votos válidos (candidaturas más votos en blanco). Las candidaturas sin escaño y con menos del
+    1 % de los votos se suman en «Otras candidaturas».
+  </p>
+  <div class="tabla-ancha">
+    <table class="tabla tabla-votos">
+      <thead>
+        <tr>
+          <th scope="col">Partido</th>
+          <th scope="col" class="num">Votos</th>
+          <th scope="col" class="num">% de los votos</th>
+          <th scope="col" class="num">Escaños</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          filas.map((f) => (
+            <tr>
+              <th scope="row">
+                {f.id === 'otras' || f.id === 'blanco' ? (
+                  <span class="ficha ficha--suave">{f.nombre}</span>
+                ) : (
+                  <span class="ficha">
+                    <i class="muestra" style={`background:${colorGrupo(f.id)}`} aria-hidden="true" />
+                    {f.nombre}
+                  </span>
+                )}
+                {f.incluye && <span class="aviso-fila">Incluye {f.incluye}</span>}
+              </th>
+              <td class="num">{numero(f.votos)}</td>
+              <td class="num">{porcentaje(f.porcentaje)}</td>
+              <td class="num">{f.escanos > 0 ? <strong>{numero(f.escanos)}</strong> : '—'}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">Votos válidos</th>
+          <td class="num">{numero(ficha.validos)}</td>
+          <td class="num">{porcentaje(1)}</td>
+          <td class="num"><strong>{numero(ficha.escanos)}</strong></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <PanelesRecuento paneles={paneles} definitivo />
+
+  <h2>De dónde salen los datos</h2>
+  <div class="prosa">
+    <p>
+      Son los resultados oficiales y definitivos del Ministerio del Interior (<a
+        href="https://infoelectoral.interior.gob.es/"
+        rel="noopener noreferrer"
+        target="_blank">Infoelectoral</a
+      >), con el voto de los residentes en el extranjero ya incluido. Los escaños son los oficiales. Además, el motor de esta
+      web repite el reparto circunscripción a circunscripción (ley D'Hondt y barrera del 3 % de los votos válidos) y lo
+      compara con ellos: si no coincidiera en alguna, la página no se publicaría.
+    </p>
+    <p>
+      La agrupación de las formaciones en partidos es nuestra: suma las federaciones y marcas territoriales de un mismo
+      partido y, cuando una etiqueta junta partidos distintos, lo dice en la leyenda con «Incluye».
+    </p>
+  </div>
+
+  <h2>Otras elecciones</h2>
+  <ul class="enlaces">
+    {
+      otras.map(({ e, lider }) => (
+        <li>
+          <a href={ruta(`historico/${e.id}/`)}>{e.titulo}</a>
+          {lider && <span class="meta">Más escaños: {lider.nombre} ({numero(lider.escanos)})</span>}
+        </li>
+      ))
+    }
+    <li>
+      <a href={ruta('historico/')}>Todo el histórico</a>
+    </li>
+  </ul>
+</Base>

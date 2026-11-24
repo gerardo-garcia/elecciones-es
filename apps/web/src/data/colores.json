@@ -1,5 +1,5 @@
 {
-  "_nota": "Color de cada agrupación (id de data/config/agrupaciones.json; las siglas sin grupo son 'sin-agrupar:' + siglas normalizadas). Los colores de los partidos grandes siguen su imagen habitual; el resto, tonos distinguibles entre sí. Siempre van acompañados de texto (leyenda, tablas), nunca son lo único que informa. Si falta un id se usa un color de 'otros' elegido por el id, siempre el mismo.",
+  "_nota": "Color de cada agrupación (id de data/config/agrupaciones.json y de data/historico/agrupaciones.json, la de las elecciones pasadas; las siglas sin grupo son 'sin-agrupar:' + siglas normalizadas). Los colores de los partidos grandes siguen su imagen habitual; el resto, tonos distinguibles entre sí. Siempre van acompañados de texto (leyenda, tablas), nunca son lo único que informa. Si falta un id se usa un color de 'otros' elegido por el id, siempre el mismo.",
   "grupos": {
     "psoe": "#d9232d",
     "pp": "#1c75bc",
@@ -17,7 +17,17 @@
     "sin-agrupar:UPN": "#0f3f8c",
     "pcte": "#8a1c1c",
     "frente-obrero": "#5f6368",
-    "fia": "#5a4fcf"
+    "fia": "#5a4fcf",
+    "cs": "#f0501a",
+    "unidas-podemos": "#6f3b9a",
+    "sumar": "#e0529c",
+    "mas-pais": "#2db37f",
+    "compromis": "#b5651d",
+    "cc-nc": "#c99a00",
+    "navarra-suma": "#0f3f8c",
+    "sin-agrupar:CUPPR": "#d4388a",
+    "sin-agrupar:PRC": "#b07cc6",
+    "sin-agrupar:TERUELEXISTE": "#e0766b"
   },
   "otros": ["#8d6e63", "#78909c", "#9575cd", "#4db6ac", "#c0875a", "#e57373", "#7e9c3a"],
   "sinDatos": "#c7ccd4"
