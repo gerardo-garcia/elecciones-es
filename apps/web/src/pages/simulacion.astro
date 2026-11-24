@@ -1,0 +1,97 @@
+---
+import PanelesRecuento from '../components/PanelesRecuento.astro';
+import Base from '../layouts/Base.astro';
+import { contexto } from '../lib/contexto';
+import { horaSimulada, tiempoTrasElCierre } from '../lib/reloj';
+import { renderPaneles } from '../lib/recuento/paneles';
+import { indiceInicial, nocheSimulada, NOMBRE_ORDEN, ORDENES, PASO_MINUTOS } from '../lib/simulacion';
+
+const { fase } = contexto();
+const orden = ORDENES[0] as (typeof ORDENES)[number];
+const noche = nocheSimulada(orden);
+const inicial = indiceInicial(noche);
+const minutos = noche.minutos[inicial] as number;
+const paneles = renderPaneles(noche.vistas[inicial] as (typeof noche.vistas)[number]);
+---
+
+<Base
+  titulo="Simulación del recuento con los datos de 2023"
+  descripcion="Simulación del recuento de una noche electoral con los datos de las elecciones generales de 2023, para ver cómo funcionarán los paneles el 29N."
+  fase={fase}
+>
+  <section class="hero">
+    <p class="etiqueta">Simulación · datos de 2023</p>
+    <h1>Así será el recuento: una noche simulada</h1>
+    <p class="lead">
+      Reproducimos una noche electoral con los votos de las elecciones generales de 2023, mesa a mesa, para que veas cómo
+      se moverán los paneles el 29N.
+    </p>
+  </section>
+
+  <aside class="aviso aviso--simulacion" role="note">
+    <p>
+      <strong>No son resultados de 2026.</strong> Los votos y los escaños son los de julio de 2023; la hora y el orden en
+      que llegan las mesas son inventados. Sirve para probar cómo se calcula y se muestra el recuento.
+    </p>
+  </aside>
+
+  <form
+    class="controles"
+    data-simulacion
+    data-paso={PASO_MINUTOS}
+    data-inicial={inicial}
+    data-orden-inicial={orden}
+    onsubmit="return false"
+  >
+    <div class="controles-fila">
+      <button type="button" class="boton" data-reproducir aria-pressed="false" hidden>▶ Reproducir</button>
+      <label class="control-deslizador">
+        <span>Momento de la noche</span>
+        <input type="range" min="0" max={noche.minutos.length - 1} value={inicial} step="1" data-deslizador disabled />
+      </label>
+    </div>
+    <p class="reloj" role="status" aria-live="off">
+      <strong data-reloj>{horaSimulada(minutos)}</strong> <span data-tiempo>({tiempoTrasElCierre(minutos)})</span>
+    </p>
+    <div class="controles-fila">
+      <label>
+        <span>Orden en que llegan las mesas</span>
+        <select data-orden disabled>
+          {ORDENES.map((o) => <option value={o} selected={o === orden}>{NOMBRE_ORDEN[o]}</option>)}
+        </select>
+      </label>
+      <label>
+        <span>Velocidad</span>
+        <select data-velocidad disabled>
+          <option value="1200">Lenta</option>
+          <option value="600" selected>Normal</option>
+          <option value="250">Rápida</option>
+        </select>
+      </label>
+    </div>
+    <p class="estado-carga" data-estado-carga role="status">
+      Esta simulación necesita JavaScript para moverse; mientras tanto se muestra el momento de las {horaSimulada(minutos)}.
+    </p>
+  </form>
+
+  <PanelesRecuento paneles={paneles} />
+
+  <h2>Cómo se calcula</h2>
+  <ol class="lista-simple">
+    <li>
+      Se extrapolan <strong>de forma lineal</strong> los votos escrutados de cada circunscripción a todo su censo (votos ×
+      censo ÷ censo escrutado).
+    </li>
+    <li>Se aplica la <strong>barrera del 3 %</strong> de los votos válidos de la circunscripción, blancos incluidos.</li>
+    <li>Los escaños de cada circunscripción se reparten con la <strong>ley D'Hondt</strong>.</li>
+    <li>El resultado general es la suma de las 52 circunscripciones.</li>
+    <li>
+      Una circunscripción entra en la tabla de disputa mientras los votos que quedan por contar (y el voto exterior, que se
+      escruta días después) puedan cambiar su reparto.
+    </li>
+  </ol>
+
+  <script>
+    import '../scripts/simulacion';
+  </script>
+</Base>

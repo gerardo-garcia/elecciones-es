@@ -242,3 +242,262 @@ h2 {
   font-size: 0.9rem;
   color: var(--texto-suave);
 }
+
+/* --- Recuento y simulación ------------------------------------------------------------------------------ */
+
+h3 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.aviso--simulacion {
+  border-color: var(--veda-borde);
+  background: var(--veda-fondo);
+}
+
+.controles {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie);
+}
+
+.controles label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+}
+
+.controles-fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 1rem 1.5rem;
+}
+
+.control-deslizador {
+  flex: 1 1 16rem;
+}
+
+.control-deslizador input {
+  width: 100%;
+}
+
+.controles select {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  background: var(--fondo);
+  color: var(--texto);
+  font: inherit;
+}
+
+.boton {
+  padding: 0.55rem 1rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--acento);
+  color: var(--acento-texto);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.boton[hidden] {
+  display: none;
+}
+
+.reloj {
+  margin: 0.75rem 0;
+  font-size: 1.35rem;
+}
+
+.reloj span {
+  font-size: 1rem;
+  color: var(--texto-suave);
+}
+
+.estado-carga {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+}
+
+.progreso {
+  margin: 1.5rem 0 0.25rem;
+}
+
+.progreso-texto {
+  margin: 0 0 0.35rem;
+  font-size: 1.15rem;
+}
+
+.barra {
+  height: 0.75rem;
+  border-radius: 999px;
+  background: var(--borde);
+  overflow: hidden;
+}
+
+.barra span {
+  display: block;
+  height: 100%;
+  background: var(--acento);
+}
+
+.progreso-detalle {
+  margin: 0.5rem 0 0;
+  color: var(--texto-suave);
+}
+
+.rejilla-sectores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1rem 2rem;
+}
+
+.sectores {
+  margin: 0;
+}
+
+.sectores svg {
+  display: block;
+  width: min(100%, 15rem);
+  margin: 0 auto 0.75rem;
+}
+
+.sectores-valor {
+  font-size: 2.2rem;
+  font-weight: 700;
+  fill: var(--texto);
+}
+
+.sectores-texto {
+  font-size: 0.8rem;
+  fill: var(--texto-suave);
+}
+
+.leyenda {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.leyenda li {
+  display: grid;
+  grid-template-columns: 1rem 1fr auto;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.leyenda small {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+}
+
+.muestra {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 3px;
+  align-self: center;
+}
+
+.leyenda--linea {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+}
+
+.leyenda--linea li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.mapa {
+  display: block;
+  width: 100%;
+  max-width: 56rem;
+  height: auto;
+  margin: 0 auto;
+}
+
+.mapa-rotulo {
+  font-size: 11px;
+  fill: var(--texto-suave);
+}
+
+.nota-suave {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+}
+
+.nota {
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--aviso-borde);
+  border-left-width: 6px;
+  border-radius: var(--radio);
+  background: var(--aviso-fondo);
+}
+
+.tabla-ancha {
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.tabla caption {
+  padding: 0 0 0.5rem;
+  text-align: left;
+  color: var(--texto-suave);
+}
+
+.tabla th,
+.tabla td {
+  padding: 0.55rem 0.6rem;
+  border-bottom: 1px solid var(--borde);
+  text-align: left;
+  vertical-align: top;
+}
+
+.tabla thead th {
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+.tabla tbody th {
+  font-weight: 600;
+}
+
+.tabla .num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.aviso-fila {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--texto-suave);
+}
+
+.detalle {
+  margin: 1.5rem 0;
+}
+
+.detalle summary {
+  cursor: pointer;
+  font-weight: 600;
+}

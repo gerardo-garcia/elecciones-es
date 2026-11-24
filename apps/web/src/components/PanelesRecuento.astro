@@ -1,0 +1,46 @@
+---
+import type { Paneles } from '../lib/recuento/paneles';
+
+/**
+ * Los paneles del recuento. El contenido de cada `data-panel` lo dibuja `lib/recuento` (aquí, en el build, y en el
+ * navegador cuando llegan datos nuevos): la estructura de la página no cambia, solo se sustituye el interior.
+ */
+interface Props {
+  paneles: Paneles;
+}
+const { paneles } = Astro.props;
+---
+
+<div data-panel="resumen" set:html={paneles.resumen} />
+
+<h2>Escaños</h2>
+<div class="rejilla-sectores">
+  <section aria-labelledby="titulo-formaciones">
+    <h3 id="titulo-formaciones">Por formación</h3>
+    <div data-panel="sectoresFormaciones" set:html={paneles.sectoresFormaciones} />
+  </section>
+  <section aria-labelledby="titulo-grupos">
+    <h3 id="titulo-grupos">Agrupando las formaciones territoriales de un mismo partido</h3>
+    <div data-panel="sectoresGrupos" set:html={paneles.sectoresGrupos} />
+    <div data-panel="notaGrupos" set:html={paneles.notaGrupos} />
+  </section>
+</div>
+
+<h2>Mapas</h2>
+<section aria-labelledby="titulo-mapa-ganador">
+  <h3 id="titulo-mapa-ganador">Grupo más votado en cada circunscripción</h3>
+  <div data-panel="mapaGanador" set:html={paneles.mapaGanador} />
+</section>
+<section aria-labelledby="titulo-mapa-escanos">
+  <h3 id="titulo-mapa-escanos">Escaños de cada formación en cada circunscripción</h3>
+  <p class="nota-suave">El tamaño de cada círculo es proporcional a los escaños que reparte la circunscripción.</p>
+  <div data-panel="mapaEscanos" set:html={paneles.mapaEscanos} />
+</section>
+
+<h2>Circunscripciones donde puede cambiar un escaño</h2>
+<div data-panel="disputa" set:html={paneles.disputa} />
+
+<details class="detalle">
+  <summary>Ver todas las circunscripciones en una tabla</summary>
+  <div data-panel="circunscripciones" set:html={paneles.circunscripciones} />
+</details>
