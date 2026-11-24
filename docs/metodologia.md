@@ -189,6 +189,25 @@ mismos dibujos sirven para la simulación y, cuando exista, para la fuente en vi
   disputa conserva 10 filas, todas con el aviso «solo el voto exterior»: en la simulación nunca llega a los estados
   `reducida` ni `sin-vuelco` (esos estados están cubiertos por tests con datos fabricados, y por el backtest sin CERA).
 
+## Anuncios
+
+- **Qué hay y dónde.** Banner adaptable al pie de cada página y dos laterales de 160 × 600 desde 1.400 px de ancho
+  (columna de 60 rem + 2 × 160 px + márgenes), fijos al hacer scroll y ocultos por debajo. Nunca dentro de un panel ni de
+  la tabla. Cada bloque lleva el rótulo «Publicidad». Los laterales no piden anuncio si no caben (`scripts/anuncios.ts`).
+- **Inactivo por defecto.** Sin `ADSENSE_CLIENT` no se carga ningún script de terceros, no hay cookies y `ads.txt` es un
+  comentario. Una configuración a medias o mal escrita hace fallar la construcción en lugar de publicar un anuncio roto.
+- **Titular obligatorio.** Con anuncios hay actividad económica y la LSSI exige identificar al titular; sin sus datos
+  (`titular.json`) la web no se construye.
+- **Consentimiento.** Google exige un gestor de consentimiento certificado para servir anuncios personalizados en la UE
+  y el Reino Unido (desde el 16-ene-2024); se usa el de AdSense («Privacy & messaging»), que se configura en su panel y
+  se carga con el mismo script de AdSense. El botón «Preferencias de publicidad» solo aparece si Google ofrece el mensaje
+  de revocación (`googlefc.showRevocationMessage`); **no está comprobado con una cuenta real**.
+- **Sin comprobar todavía (necesitan cuenta y dominio):** que AdSense acepte el sitio, que cargue el mensaje de
+  consentimiento, el botón de preferencias y si `ads.txt` debe repetirse en `jerrygit.com` con `subdomain=`.
+- **Alojamiento.** Las normas de GitHub Pages no prohíben los anuncios de forma expresa, pero tampoco permiten sitios
+  dirigidos principalmente a transacciones comerciales; un sitio de contenido con anuncios queda en zona gris.
+- La política de privacidad (`/privacidad/`) no ha pasado por un abogado.
+
 ## Limitaciones conocidas
 
 - **La extrapolación lineal supone que lo pendiente se parece a lo escrutado.** Al principio de la noche puede fallar

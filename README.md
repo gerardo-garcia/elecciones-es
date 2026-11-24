@@ -27,7 +27,7 @@ Requiere Node ≥ 22 y pnpm 12 (`corepack enable`).
 
 ```sh
 pnpm install
-pnpm test        # motor (157 tests) y web (54 tests)
+pnpm test        # motor (157 tests) y web (62 tests)
 pnpm typecheck
 pnpm dev         # http://localhost:4321
 pnpm build       # apps/web/dist
@@ -44,6 +44,30 @@ AHORA_FORZADA=2026-11-29T21:00:00+01:00 pnpm build   # fase de recuento
 
 GitHub Pages desde Actions (`.github/workflows/pages.yml`). Hay que activar **Settings → Pages → Source: GitHub
 Actions**. Con dominio propio, definir las variables de repo `SITE_URL` y `BASE_PATH=/`.
+
+## Anuncios (Google AdSense)
+
+La web está preparada para mostrar anuncios, pero **no muestra ni carga nada de terceros mientras no haya ID de AdSense**.
+Un banner al pie de cada página (con el hueco reservado y el rótulo «Publicidad») y, en pantallas de 1.400 px o más, dos
+laterales de 160 × 600 fijos junto a la columna de contenido. Se configuran con variables de repo, como `SITE_URL`
+(Settings → Secrets and variables → Actions → Variables):
+
+| Variable | Valor |
+|---|---|
+| `ADSENSE_CLIENT` | ID de editor, `ca-pub-XXXXXXXXXXXXXXXX`. Sin él, no hay anuncios |
+| `ADSENSE_SLOT_PIE` | ID del bloque de anuncios del pie |
+| `ADSENSE_SLOT_LATERAL` | ID del bloque de los laterales |
+| `ADSENSE_LATERALES` | `false` para quitar los laterales (entonces no hace falta su bloque) |
+
+Con anuncios, **la web no se construye** si faltan nombre, domicilio o contacto en `apps/web/src/data/titular.json`:
+se publican en `/privacidad/` (aviso legal, art. 10 de la LSSI). La política de privacidad cambia sola según haya o no
+anuncios. `ads.txt` se genera con el ID de editor. El consentimiento lo gestiona Google (AdSense → Privacy & messaging);
+el pie ofrece «Preferencias de publicidad» solo si Google expone ese mensaje. Detalles en `docs/metodologia.md`.
+
+Pasos que solo puede hacer el titular: crear la cuenta de AdSense, añadir el sitio, esperar su revisión y activar el
+mensaje de consentimiento; apuntar el dominio (CNAME a `<usuario>.github.io`, dominio en Settings → Pages,
+`SITE_URL=https://dominio` y `BASE_PATH=/`); y, si el sitio es un subdominio, comprobar si Google necesita la línea
+`subdomain=` en el `ads.txt` del dominio principal.
 
 ## Estado
 
