@@ -89,6 +89,7 @@ def convertir(captura, definitivo=False):
         circunscripciones.append(
             {
                 "codigo": codigo,
+                "actualizadoEn": captura.get("actualizados", {}).get(codigo, captura["capturadoEn"]),
                 "nombre": conocidas[codigo],
                 "censo": censo,
                 "censoEscrutado": censo if definitivo else None,
@@ -115,6 +116,9 @@ def convertir(captura, definitivo=False):
                 "cierre": entero(r["votantesCierre"]["numero"]),
             },
         }
+        if "estadisticas" in respuestas["nacional"]:
+            est = cuerpo(respuestas["nacional"]["estadisticas"], "nacional estadisticas")
+            nacional["candidaturas"] = candidaturas(est, "nacional estadisticas")
         suma = sum(c["censo"] for c in circunscripciones)
         if len(circunscripciones) == len(conocidas) and suma != nacional["censo"]:
             raise ErrorCaptura(f"El censo nacional ({nacional['censo']}) no es la suma de las provincias ({suma})")

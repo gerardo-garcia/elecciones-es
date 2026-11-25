@@ -12,3 +12,4 @@ data/snapshots/
 # Borradores personales (correos, notas): no se versionan; el repositorio es público
 borradores/
 __pycache__/
+.datos-vivo/
