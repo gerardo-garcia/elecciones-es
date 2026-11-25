@@ -4,13 +4,12 @@
  * ningún navegador ni se esquiva la protección del sitio. Las lecturas se las envía al receptor local
  * (scripts/infoelectoral/receptor.py), que valida, guarda y convierte.
  *
- * Reparte las peticiones para no activar la protección del sitio («Security Policy Violation»):
- *  - Una sola petición cada vez, separadas 4 s ± 1,5 s.
- *  - Al empezar, un barrido de todas las provincias en lotes de 10 (unos 7 minutos).
- *  - Después, cada ciclo de 2 minutos: el resumen y las estadísticas nacionales y, solo si el resumen nacional ha
- *    cambiado, un lote de 10 provincias en rotación (más escaños primero). El resumen de una provincia se repite cada
- *    4 visitas, no en todas.
- *  - Tope de 400 peticiones por hora.
+ * Una ronda continua, sin esperas entre vueltas:
+ *  - Una sola petición cada vez, con 5 s entre una y la siguiente (12 por minuto, 720 por hora).
+ *  - Cada vuelta lee la información nacional (resumen y estadísticas) al principio y a la mitad, y las 52
+ *    circunscripciones (resumen y estadísticas), de más a menos escaños: 108 peticiones, unos 9 minutos.
+ *  - Al acabar una vuelta empieza la siguiente sin esperar.
+ *  - Tope de 800 peticiones por hora.
  *  - Si hay un fallo (HTML en vez de JSON, 403, 429...): espera 2 min, luego 10 min, y a la tercera para y avisa.
  *    Nunca reintenta en ráfaga.
  * Para pararlo a mano: detenerInfoelectoral()
@@ -32,12 +31,8 @@
     TIPO: 2, // 2 = Congreso
     ID: '202307', // AAAAMM de la convocatoria. Para el 29N: 202611 (hay que confirmarlo en el visor)
     RECEPTOR: 'http://127.0.0.1:8765',
-    CICLO_MS: 120000,
-    PAUSA_MS: 4000,
-    VARIACION_MS: 1500,
-    LOTE: 10,
-    REFRESCO_RESUMEN: 4,
-    TOPE_HORA: 400,
+    PAUSA_MS: 5000,
+    TOPE_HORA: 800,
     ESPERAS_FALLO_MS: [120000, 600000],
     MAX_FALLOS: 3,
   };
@@ -54,26 +49,26 @@
   };
 
   /**
-   * Toda la lógica está aquí y no toca el navegador: lo que necesita (red, tiempo, azar) entra por `entorno`,
+   * Toda la lógica está aquí y no toca el navegador: lo que necesita (red y tiempo) entra por `entorno`,
    * para poder probarla con datos simulados.
-   * entorno: { pedirApi(ruta) -> {estado, cuerpo}, enviar(carga), pausar(ms), ahora(), azar(), log(nivel, texto) }
+   * entorno: { pedirApi(ruta) -> {estado, cuerpo}, enviar(carga), pausar(ms), ahora(), log(nivel, texto) }
    */
   function crearBucle(entorno, config = CONFIG) {
-    const { pedirApi, enviar, pausar, ahora, azar, log } = entorno;
-    const orden = PROVINCIAS.map(([p]) => p);
+    const { pedirApi, enviar, pausar, ahora, log } = entorno;
     const comunidad = Object.fromEntries(PROVINCIAS);
     const q = `tipoConvocatoria=${config.TIPO}&idConvocatoria=${config.ID}`;
     const filtro = (c) => (c === 'nacional' ? '' : `&codCCAA=${comunidad[c]}&codProvincia=${c}`);
+    // Una vuelta: nacional, la primera mitad de las provincias, nacional, la segunda mitad.
+    const provincias = PROVINCIAS.map(([p]) => p);
+    const mitad = Math.ceil(provincias.length / 2);
+    const vuelta = ['nacional', ...provincias.slice(0, mitad), 'nacional', ...provincias.slice(mitad)];
 
     const peticiones = []; // instantes de las peticiones de la última hora
-    const visitas = {};
-    let pendientesInicio = [...orden];
-    let cursor = 0;
-    let ultimoResumenNacional = null;
     let pendientesEnvio = [];
     let fallos = 0;
     let detenido = false;
-    let ciclos = 0;
+    let indice = 0; // posición en la vuelta
+    let vueltas = 0;
 
     const esperarPresupuesto = async () => {
       for (;;) {
@@ -87,7 +82,7 @@
 
     const pedir = async (ruta) => {
       await esperarPresupuesto();
-      await pausar(config.PAUSA_MS + (azar() * 2 - 1) * config.VARIACION_MS);
+      await pausar(config.PAUSA_MS);
       peticiones.push(ahora());
       const r = await pedirApi(ruta);
       if (r.estado !== 200 || !cuerpoValido(r.cuerpo)) {
@@ -124,58 +119,17 @@
       }
     };
 
-    // Lee un lote de provincias (estadísticas siempre; resumen si `conResumen(provincia)`) y lo transmite aunque falle a medias.
-    const leerLote = async (provincias, conResumen) => {
-      const respuestas = {};
-      try {
-        for (const c of provincias) {
-          const t = {};
-          if (conResumen(c)) t.resumen = await pedir(`resumen?${q}${filtro(c)}`);
-          t.estadisticas = await pedir(`estadisticas?${q}${filtro(c)}`);
-          respuestas[c] = t;
-        }
-      } finally {
-        await transmitir(respuestas);
-      }
-    };
-
-    const barridoInicial = async () => {
-      const nacional = {};
-      nacional.resumen = await pedir(`resumen?${q}`);
-      nacional.estadisticas = await pedir(`estadisticas?${q}`);
-      ultimoResumenNacional = nacional.resumen.cuerpo;
-      await transmitir({ nacional });
-      while (pendientesInicio.length > 0) {
-        const lote = pendientesInicio.slice(0, config.LOTE);
-        await leerLote(lote, () => true);
-        pendientesInicio = pendientesInicio.slice(lote.length);
-        lote.forEach((c) => (visitas[c] = 1));
-      }
-    };
-
-    const ciclo = async () => {
-      const nacional = { resumen: await pedir(`resumen?${q}`) };
-      const cambio = nacional.resumen.cuerpo !== ultimoResumenNacional;
-      nacional.estadisticas = await pedir(`estadisticas?${q}`);
-      await transmitir({ nacional });
-      if (cambio) {
-        const lote = [];
-        for (let i = 0; i < config.LOTE; i++) lote.push(orden[(cursor + i) % orden.length]);
-        await leerLote(lote, (c) => (visitas[c] ?? 0) % config.REFRESCO_RESUMEN === 0);
-        cursor = (cursor + config.LOTE) % orden.length;
-        lote.forEach((c) => (visitas[c] = (visitas[c] ?? 0) + 1));
-      } else {
-        log('info', 'Sin cambios en el resumen nacional: no se piden provincias');
-      }
-      ultimoResumenNacional = nacional.resumen.cuerpo;
+    // Un territorio: resumen y estadísticas, y se envían juntos.
+    const leer = async (clave) => {
+      const resumen = await pedir(`resumen?${q}${filtro(clave)}`);
+      const estadisticas = await pedir(`estadisticas?${q}${filtro(clave)}`);
+      await transmitir({ [clave]: { resumen, estadisticas } });
     };
 
     const ejecutar = async () => {
       while (!detenido) {
-        const inicio = ahora();
         try {
-          if (pendientesInicio.length > 0 || ultimoResumenNacional === null) await barridoInicial();
-          else await ciclo();
+          await leer(vuelta[indice]);
           fallos = 0;
         } catch (e) {
           fallos += 1;
@@ -186,11 +140,14 @@
             break;
           }
           await pausar(config.ESPERAS_FALLO_MS[fallos - 1]);
-          continue;
+          continue; // se vuelve a intentar el mismo territorio
         }
-        ciclos += 1;
-        const resto = config.CICLO_MS - (ahora() - inicio);
-        if (resto > 0) await pausar(resto);
+        indice += 1;
+        if (indice >= vuelta.length) {
+          indice = 0;
+          vueltas += 1;
+          log('info', `Vuelta ${vueltas} completa`);
+        }
       }
     };
 
@@ -199,7 +156,7 @@
       detener: () => {
         detenido = true;
       },
-      estado: () => ({ ciclos, fallos, detenido, peticionesUltimaHora: peticiones.length, sinEnviar: pendientesEnvio.length }),
+      estado: () => ({ vueltas, posicion: `${indice}/${vuelta.length}`, fallos, detenido, peticionesUltimaHora: peticiones.length, sinEnviar: pendientesEnvio.length }),
     };
   }
 
@@ -228,7 +185,6 @@
       },
       pausar: (ms) => new Promise((resolver) => setTimeout(resolver, ms)),
       ahora: () => Date.now(),
-      azar: Math.random,
       log: (nivel, texto) => console[nivel === 'error' ? 'error' : nivel === 'aviso' ? 'warn' : 'log'](`[${new Date().toLocaleTimeString()}] ${texto}`),
     });
     window.detenerInfoelectoral = bucle.detener;
