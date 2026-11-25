@@ -49,6 +49,28 @@ class Conversion(unittest.TestCase):
         self.assertIn("Ministerio del Interior", conv.convertir(CAPTURA)["fuente"])
 
 
+class CodigosDeProvincia(unittest.TestCase):
+    def test_la_api_da_las_provincias_de_01_a_09_sin_cero(self):
+        # Barcelona: la API devuelve provincia.cod = "8", y nosotros la pedimos y la guardamos como "08".
+        c = copy.deepcopy(CAPTURA)
+        r = c["respuestas"].pop("28")
+        est = json.loads(r["estadisticas"]["cuerpo"])
+        est["data"]["provincia"]["cod"] = "8"
+        r["estadisticas"]["cuerpo"] = json.dumps(est)
+        c["respuestas"]["08"] = r
+        self.assertEqual(conv.convertir(c)["circunscripciones"][0]["codigo"], "08")
+
+    def test_sigue_rechazando_otra_provincia(self):
+        c = copy.deepcopy(CAPTURA)
+        r = c["respuestas"].pop("28")
+        est = json.loads(r["estadisticas"]["cuerpo"])
+        est["data"]["provincia"]["cod"] = "9"
+        r["estadisticas"]["cuerpo"] = json.dumps(est)
+        c["respuestas"]["08"] = r
+        with self.assertRaisesRegex(conv.ErrorCaptura, "devolvió la provincia"):
+            conv.convertir(c)
+
+
 class Errores(unittest.TestCase):
     def modificada(self, cambia):
         c = copy.deepcopy(CAPTURA)

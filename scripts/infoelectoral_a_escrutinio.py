@@ -83,7 +83,8 @@ def convertir(captura, definitivo=False):
         resumen = cuerpo(r["resumen"], f"{codigo} resumen")["resumen"]
         est = cuerpo(r["estadisticas"], f"{codigo} estadisticas")
         pedida = (est.get("provincia") or {}).get("cod")
-        if pedida != codigo:
+        # La API da el código sin cero a la izquierda para las provincias de 01 a 09 ("8" y no "08").
+        if pedida is None or str(pedida).zfill(2) != codigo:
             raise ErrorCaptura(f"{codigo}: la API devolvió la provincia {pedida!r}")
         censo = entero(resumen["totalCenso"]["numero"])
         circunscripciones.append(

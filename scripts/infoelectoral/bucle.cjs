@@ -106,9 +106,18 @@
       });
       while (pendientesEnvio.length > 0) {
         try {
-          await enviar(pendientesEnvio[0]);
+          const r = await enviar(pendientesEnvio[0]);
           pendientesEnvio.shift();
+          if (r && r.rechazadas && Object.keys(r.rechazadas).length > 0) {
+            log('aviso', `El receptor rechazó ${Object.keys(r.rechazadas).join(', ')}: ${JSON.stringify(r.rechazadas)}`);
+          }
         } catch (e) {
+          if (e.permanente) {
+            // El receptor entiende el envío pero no lo acepta: reenviarlo daría lo mismo y bloquearía los siguientes.
+            log('error', `Envío descartado por el receptor (${e.message})`);
+            pendientesEnvio.shift();
+            continue;
+          }
           log('aviso', `El receptor no ha aceptado el envío (${e.message}); se reintenta en el siguiente`);
           return;
         }
@@ -210,7 +219,12 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(carga),
         });
-        if (!r.ok) throw new Error(`receptor ${r.status}: ${(await r.text()).slice(0, 200)}`);
+        if (!r.ok) {
+          const error = new Error(`receptor ${r.status}: ${(await r.text()).slice(0, 300)}`);
+          error.permanente = r.status >= 400 && r.status < 500;
+          throw error;
+        }
+        return r.json();
       },
       pausar: (ms) => new Promise((resolver) => setTimeout(resolver, ms)),
       ahora: () => Date.now(),

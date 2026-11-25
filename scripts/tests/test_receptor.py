@@ -93,6 +93,19 @@ class Receptor(unittest.TestCase):
         # y el estado interno sigue siendo el bueno: una lectura válida posterior funciona
         self.assertEqual(self.enviar(carga(FIXTURE["respuestas"], "2026-11-29T21:06:00.000Z"))[0], 200)
 
+    def test_un_territorio_malo_no_impide_aceptar_los_demas_del_mismo_envio(self):
+        r = FIXTURE["respuestas"]
+        malo = {"estadisticas": {"estado": 200, "cuerpo": "<html>Security Policy Violation</html>"}, "resumen": r["28"]["resumen"]}
+        codigo, cuerpo, _ = self.enviar(carga({"nacional": r["nacional"], "28": r["28"], "29": malo}))
+        self.assertEqual(codigo, 200)
+        self.assertEqual(cuerpo["circunscripciones"], 1)
+        self.assertEqual(list(cuerpo["rechazadas"]), ["29"])
+        self.assertTrue((self.salida / "rechazados").glob("*.json"))
+
+    def test_si_se_rechaza_todo_responde_422(self):
+        malo = {"29": {"estadisticas": {"estado": 200, "cuerpo": "<html>x</html>"}}}
+        self.assertEqual(self.enviar(carga(malo))[0], 422)
+
     def test_rechaza_basura(self):
         self.assertEqual(self.enviar(b"esto no es json")[0], 422)
         self.assertEqual(self.enviar({"hola": 1})[0], 422)

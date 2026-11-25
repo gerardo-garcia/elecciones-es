@@ -65,27 +65,41 @@ class Estado:
                     raise Rechazo(f"{clave}: respuesta mal formada")
 
     def recibir(self, carga):
+        """Acepta cada territorio por separado: uno malo no impide aceptar los demás del mismo envío."""
         with self.candado:
             try:
                 self._validar_forma(carga)
-                candidato = copy.deepcopy(self.territorios)
-                for clave, partes in carga["respuestas"].items():
-                    destino = candidato.setdefault(clave, {})
+            except Rechazo as e:
+                self._guardar("rechazados", carga, {"motivo": repr(e)})
+                raise
+            candidato = copy.deepcopy(self.territorios)
+            aceptadas, rechazadas, salida = [], {}, None
+            for clave, partes in carga["respuestas"].items():
+                prueba = copy.deepcopy(candidato)
+                destino = prueba.setdefault(clave, {})
+                try:
                     for nombre, respuesta in partes.items():
+                        conv.cuerpo(respuesta, f"{clave} {nombre}")  # cada parte se valida nada más llegar
                         destino[nombre] = respuesta
                         destino[nombre + "En"] = carga["capturadoEn"]
-                salida = self._convertir(candidato, carga)
-            except (Rechazo, conv.ErrorCaptura, KeyError, TypeError) as e:
-                self._guardar("rechazados", carga, {"motivo": repr(e)})
-                raise Rechazo(str(e)) from e
+                    salida = self._convertir(prueba, carga)
+                except (conv.ErrorCaptura, KeyError, TypeError) as e:
+                    rechazadas[clave] = str(e)
+                    continue
+                candidato = prueba
+                aceptadas.append(clave)
+            if rechazadas:
+                self._guardar("rechazados", carga, {"motivo": rechazadas})
+            if not aceptadas:
+                raise Rechazo("; ".join(rechazadas.values()))
             self.territorios = candidato
             self._guardar("crudos", carga)
             escribir_atomico(self.salida / "escrutinio.json", json.dumps(salida, ensure_ascii=False, indent=1) + "\n")
-            if "nacional" in carga["respuestas"] and salida["nacional"]:
+            if "nacional" in aceptadas and salida["nacional"]:
                 fila = {"t": salida["capturadoEn"], "circunscripciones": len(salida["circunscripciones"]), **salida["nacional"]}
                 with open(self.salida / "serie.jsonl", "a") as f:
                     f.write(json.dumps(fila, ensure_ascii=False) + "\n")
-            return {"ok": True, "circunscripciones": len(salida["circunscripciones"])}
+            return {"ok": True, "circunscripciones": len(salida["circunscripciones"]), "rechazadas": rechazadas}
 
     def _convertir(self, territorios, carga):
         """Con lo último de cada territorio que tenga las dos partes (el resumen y las estadísticas) hace el escrutinio."""

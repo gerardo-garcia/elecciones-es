@@ -144,6 +144,38 @@ test('si el receptor no responde no se pierde nada y no se para la lectura', asy
   assert.equal(b.estado().fallos, 0);
 });
 
+test('un rechazo permanente del receptor (4xx) se descarta y no bloquea los envíos siguientes', async () => {
+  const e = entorno();
+  let b;
+  let intentos = 0;
+  e.enviar = async () => {
+    intentos++;
+    if (intentos === 1) {
+      const error = new Error('receptor 422');
+      error.permanente = true;
+      throw error;
+    }
+    if (intentos >= 4) b.detener();
+  };
+  b = crearBucle(e, config());
+  await b.ejecutar();
+  assert.equal(b.estado().sinEnviar, 0);
+  assert.ok(e.logs.some(([n, t]) => n === 'error' && t.includes('descartado')));
+  assert.ok(intentos >= 4); // los envíos siguientes al descartado sí se hicieron
+});
+
+test('avisa de los territorios que el receptor rechaza dentro de un envío aceptado', async () => {
+  const e = entorno();
+  let b;
+  e.enviar = async () => {
+    b.detener();
+    return { ok: true, rechazadas: { '08': 'motivo' } };
+  };
+  b = crearBucle(e, config());
+  await b.ejecutar();
+  assert.ok(e.logs.some(([n, t]) => n === 'aviso' && t.includes('08')));
+});
+
 test('lo que se envía lleva hora, convocatoria y respuestas tal cual', async () => {
   const e = entorno();
   await correr(e, 1);
