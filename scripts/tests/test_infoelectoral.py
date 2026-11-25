@@ -94,8 +94,13 @@ class Errores(unittest.TestCase):
         with self.assertRaisesRegex(conv.ErrorCaptura, "repetida"):
             conv.convertir(self.modificada(cambia))
 
-    def test_respuesta_que_no_es_json(self):
+    def test_pagina_de_bloqueo_html(self):
         c = self.modificada(lambda c: c["respuestas"]["28"]["resumen"].update(cuerpo="<html>Just a moment...</html>"))
+        with self.assertRaisesRegex(conv.ErrorCaptura, "bloqueo"):
+            conv.convertir(c)
+
+    def test_respuesta_que_no_es_json(self):
+        c = self.modificada(lambda c: c["respuestas"]["28"]["resumen"].update(cuerpo="no es json"))
         with self.assertRaisesRegex(conv.ErrorCaptura, "no es JSON"):
             conv.convertir(c)
 

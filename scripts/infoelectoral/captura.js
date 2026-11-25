@@ -10,6 +10,7 @@
 (async () => {
   const TIPO = 2;
   const ID = '202307';
+  const PAUSA_MS = 600;
   // Provincia (código INE) -> código de comunidad que usa la API de Infoelectoral (orden de su visor; si una
   // petición falla, el estado queda en el fichero y el conversor lo avisa).
   const CCAA = {
@@ -30,22 +31,25 @@
     for (const p of provincias) territorios.push({ clave: p, filtro: `&codCCAA=${ccaa}&codProvincia=${p}` });
   }
   const respuestas = {};
-  let siguiente = 0;
-  const trabajador = async () => {
-    while (siguiente < territorios.length) {
-      const { clave, filtro } = territorios[siguiente++];
-      respuestas[clave] = {
-        resumen: await pedir(`resumen?${q}${filtro}`),
-        estadisticas: await pedir(`estadisticas?${q}${filtro}`),
-      };
+  const pausa = (ms) => new Promise((r) => setTimeout(r, ms));
+  let bloqueada = null;
+  // Una petición cada vez y con pausa: más de eso activa la protección del sitio («Security Policy Violation»).
+  // Si llega un bloqueo, se para: insistir solo empeora las cosas.
+  for (const { clave, filtro } of territorios) {
+    const resumen = await pedir(`resumen?${q}${filtro}`);
+    await pausa(PAUSA_MS);
+    const estadisticas = await pedir(`estadisticas?${q}${filtro}`);
+    await pausa(PAUSA_MS);
+    respuestas[clave] = { resumen, estadisticas };
+    if ([resumen, estadisticas].some((r) => r.estado !== 200 || r.cuerpo.trimStart().startsWith('<'))) {
+      bloqueada = clave;
+      break;
     }
-  };
-  await Promise.all([trabajador(), trabajador(), trabajador()]); // pocas peticiones a la vez
+  }
   const captura = { version: 1, capturadoEn: new Date().toISOString(), convocatoria: { tipo: TIPO, id: ID }, respuestas };
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([JSON.stringify(captura)], { type: 'application/json' }));
   a.download = `infoelectoral-${ID}-${captura.capturadoEn.replace(/[:.]/g, '-')}.json`;
   a.click();
-  const mal = Object.entries(respuestas).filter(([, r]) => r.resumen.estado !== 200 || r.estadisticas.estado !== 200);
-  console.log(`Hecho: ${territorios.length} territorios, ${mal.length} con error`, mal.map(([k]) => k));
+  console.log(bloqueada === null ? `Hecho: ${territorios.length} territorios` : `PARADO en ${bloqueada}: respuesta de error o bloqueo. Captura parcial descargada.`);
 })();

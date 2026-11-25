@@ -39,9 +39,12 @@ def entero(texto):
 def cuerpo(respuesta, donde):
     if respuesta.get("estado") != 200:
         raise ErrorCaptura(f"{donde}: la API respondió {respuesta.get('estado')}")
+    texto = respuesta.get("cuerpo", "")
+    if texto.lstrip().startswith("<"):
+        raise ErrorCaptura(f"{donde}: la respuesta es una página HTML (¿bloqueo de la protección del sitio?), no JSON")
     try:
-        datos = json.loads(respuesta["cuerpo"])
-    except (KeyError, json.JSONDecodeError):
+        datos = json.loads(texto)
+    except json.JSONDecodeError:
         raise ErrorCaptura(f"{donde}: la respuesta no es JSON")
     if datos.get("cod") != "200" or "data" not in datos:
         raise ErrorCaptura(f"{donde}: respuesta sin datos ({datos.get('cod')})")
