@@ -177,3 +177,18 @@ test('avisa de los territorios que el receptor rechaza dentro de un envío acept
   await b.ejecutar();
   assert.ok(e.logs.some(([n, t]) => n === 'aviso' && t.includes('08')));
 });
+
+test('los códigos de comunidad coinciden con los que el visor envía a la API para cada provincia', () => {
+  // Fichero: provincia -> código de comunidad del MAPA del visor (prv.geojson). El visor lo traduce al de la API con
+  // la tabla `mappingCCAA` de su map.js: la que sigue es esa tabla (mapa -> API; los demás son iguales).
+  const mapa = require('./fixtures/infoelectoral-provincia-comunidad-mapa.json');
+  const aApi = { 7: 8, 8: 7, 10: 17, 11: 10, 12: 11, 13: 12, 14: 15, 15: 13, 16: 14, 17: 16 };
+  const esperado = Object.fromEntries(Object.entries(mapa).map(([p, c]) => [p, aApi[Number(c)] ?? Number(c)]));
+  const real = Object.fromEntries(PROVINCIAS);
+  assert.deepEqual(real, esperado);
+  // Las tres que dieron bloqueo por pedirlas con el código del mapa o con una suposición:
+  assert.equal(real['30'], 15); // Murcia
+  assert.equal(real['31'], 13); // Navarra
+  assert.deepEqual([real['01'], real['20'], real['48']], [14, 14, 14]); // País Vasco
+  assert.equal(real['28'], 12); // Madrid: es el código de la URL que usa el propio visor
+});

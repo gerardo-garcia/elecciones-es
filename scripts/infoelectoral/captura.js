@@ -11,13 +11,12 @@
   const TIPO = 2;
   const ID = '202307';
   const PAUSA_MS = 600;
-  // Provincia (código INE) -> código de comunidad que usa la API de Infoelectoral (orden de su visor; si una
-  // petición falla, el estado queda en el fichero y el conversor lo avisa).
+  // Comunidad (código de la API, distinto del que usa el mapa del visor) -> provincias (código INE).
   const CCAA = {
     1: ['04', '11', '14', '18', '21', '23', '29', '41'], 2: ['22', '44', '50'], 3: ['33'], 4: ['07'], 5: ['35', '38'],
     6: ['39'], 7: ['02', '13', '16', '19', '45'], 8: ['05', '09', '24', '34', '37', '40', '42', '47', '49'],
-    9: ['08', '17', '25', '43'], 10: ['06', '10'], 11: ['15', '27', '32', '36'], 12: ['28'], 13: ['30'], 14: ['31'],
-    15: ['01', '20', '48'], 16: ['26'], 17: ['03', '12', '46'], 18: ['51'], 19: ['52'],
+    9: ['08', '17', '25', '43'], 10: ['06', '10'], 11: ['15', '27', '32', '36'], 12: ['28'], 13: ['31'], 14: ['01', '20', '48'],
+    15: ['30'], 16: ['26'], 17: ['03', '12', '46'], 18: ['51'], 19: ['52'],
   };
   const base = 'https://infoelectoral.interior.gob.es/min/';
   const cabeceras = { Authorization: 'Basic ' + btoa('apiInfoelectoral:apiInfoelectoralPro') };
