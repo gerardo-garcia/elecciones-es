@@ -11,3 +11,4 @@ data/raw/
 data/snapshots/
 # Borradores personales (correos, notas): no se versionan; el repositorio es público
 borradores/
+__pycache__/
