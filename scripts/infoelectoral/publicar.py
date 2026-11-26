@@ -3,15 +3,14 @@
 
 Lee `.datos-vivo/escrutinio.json` y `.datos-vivo/serie.jsonl` (los escribe receptor.py) y, si han cambiado, los sube a
 la rama `datos-vivo` como un único commit que se reescribe cada vez (la rama no acumula historia: la evolución del
-recuento ya va dentro de `serie.jsonl`, y los crudos se quedan en local). Tras cada empuje se lanza el workflow
-`pages.yml` sobre `main` (`gh workflow run`), que recoge esos ficheros al construir la web. (Un `on: push` sobre
-`datos-vivo` no sirve: ejecutaría el workflow de esa rama, que solo contiene datos, y el entorno de Pages solo admite
-despliegues desde `main`.) Hace falta `gh` con sesión iniciada; con `--sin-lanzar` solo se sube la rama.
+recuento ya va dentro de `serie.jsonl`, y los crudos se quedan en local). La web lee los datos en el navegador directamente de
+esa rama (raw.githubusercontent.com), así que NO hace falta ningún workflow para que lleguen. Opcionalmente (`--lanzar`)
+se lanza `pages.yml` sobre `main` (`gh workflow run`) para refrescar la copia de respaldo que sirve Pages. Hace falta `gh` con sesión iniciada.
 
 Se trabaja en un clon propio dentro de `.datos-vivo/publicacion`, así que el árbol de trabajo del proyecto no se toca.
 El único destino posible del empuje es `refs/heads/datos-vivo`: está fijado en el código.
 
-Uso:  python3 -I scripts/infoelectoral/publicar.py [--una-vez] [--sin-lanzar] [--intervalo 300] [--datos .datos-vivo] [--remoto URL]
+Uso:  python3 -I scripts/infoelectoral/publicar.py [--una-vez] [--lanzar] [--intervalo 300] [--datos .datos-vivo] [--remoto URL]
 """
 
 import argparse
@@ -108,7 +107,7 @@ def main(argv=None):
     ap.add_argument('--remoto', default=None, help='URL del remoto (por defecto, el origin de este repositorio)')
     ap.add_argument('--intervalo', type=int, default=300, help='segundos entre publicaciones (mínimo 120)')
     ap.add_argument('--una-vez', action='store_true')
-    ap.add_argument('--sin-lanzar', action='store_true', help='solo sube la rama; no lanza la construcción de la web')
+    ap.add_argument('--lanzar', action='store_true', help='tras subir, lanza pages.yml sobre main (refresca la copia de respaldo)')
     a = ap.parse_args(argv)
     if a.intervalo < 120:
         ap.error('--intervalo: mínimo 120 s (cada publicación reconstruye la web)')
@@ -119,7 +118,7 @@ def main(argv=None):
         marca = time.strftime('%H:%M:%S')
         try:
             subido = publicar(datos, clon, remoto)
-            if subido and not a.sin_lanzar:
+            if subido and a.lanzar:
                 lanzar_construccion()
             print(f'{marca} {"publicado" if subido else "sin cambios"}', flush=True)
         except ErrorPublicacion as ex:
