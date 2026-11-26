@@ -1,7 +1,12 @@
 ---
 import { ruta } from '../lib/formato';
-// PLACEHOLDER: aquí irán los paneles del recuento en directo (sectores, mapas y tabla de disputa).
-// Los dibujos ya existen (lib/recuento, usados por /simulacion/); falta la fuente de datos en vivo.
+import { renderPaneles } from '../lib/recuento/paneles';
+import { vistaDesdeVivo } from '../lib/recuento/vivo';
+import { referenciasVivo } from '../lib/recuento/vivo-config';
+import PanelesRecuento from './PanelesRecuento.astro';
+
+// Vista inicial sin datos: la estructura de los paneles. El script de cliente la rellena en cuanto llega el escrutinio.
+const paneles = renderPaneles(vistaDesdeVivo(null, referenciasVivo()).vista);
 ---
 
 <section class="hero">
@@ -12,10 +17,16 @@ import { ruta } from '../lib/formato';
   </p>
 </section>
 
-<div class="estado" data-estado="esperando" role="status">
+<div class="estado" data-estado="esperando" data-vivo-espera role="status">
   <strong>Estamos preparando esta pantalla.</strong> En cuanto haya datos del escrutinio aparecerán aquí los paneles del
   recuento. Mientras tanto, puedes ver el <a href={ruta('simulacion/')}>ejemplo de recuento</a>, una noche simulada con los datos de 2023
   (no son resultados de 2026), para saber cómo se moverán.
+</div>
+
+<p class="nota-suave" data-vivo-estado role="status" aria-live="polite" hidden></p>
+<p class="nota-suave" data-vivo-aviso hidden></p>
+<div data-recuento-vivo hidden>
+  <PanelesRecuento paneles={paneles} />
 </div>
 
 <h2>Cómo calculamos</h2>
@@ -28,3 +39,7 @@ import { ruta } from '../lib/formato';
   <li>Repartimos los escaños de cada circunscripción con la <strong>ley D'Hondt</strong>.</li>
   <li>El resultado general es la suma de los escaños de las 52 circunscripciones.</li>
 </ol>
+
+<script>
+  import '../scripts/recuento-vivo';
+</script>
