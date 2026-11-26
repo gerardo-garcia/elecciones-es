@@ -6,11 +6,15 @@
 import { NOMBRES_PANEL, renderPaneles } from '../lib/recuento/paneles';
 import { antiguedadMinutos, leerDatosVivo, vistaDesdeVivo, type DatosVivo } from '../lib/recuento/vivo';
 import { referenciasVivo } from '../lib/recuento/vivo-config';
+import { CIERRE_COLEGIOS } from '../lib/reloj';
 
 const FUENTE_PRINCIPAL = 'https://raw.githubusercontent.com/gerardo-garcia/elecciones-es/datos-vivo/escrutinio.json';
 const CADA_MS = 60_000;
 /** A partir de aquí se avisa de que el dato puede estar atrasado respecto a la realidad. */
 const DATO_VIEJO_MIN = 15;
+
+/** Ensayo: con `?ensayo` en la URL se aceptan datos anteriores al cierre de colegios (p. ej. los de 2023 en la rama). */
+const ENSAYO = new URLSearchParams(location.search).has('ensayo');
 
 const raiz = document.querySelector<HTMLElement>('[data-recuento-vivo]');
 if (raiz) iniciar(raiz);
@@ -69,6 +73,11 @@ function iniciar(raiz: HTMLElement) {
     if (!datos) {
       if (ultima === null) decir(estado, 'Todavía no hay datos del escrutinio o no se han podido cargar. Se vuelve a intentar cada minuto.');
       else decir(estado, `No se han podido cargar datos nuevos. Se muestran los de las ${ultima}.`);
+      return;
+    }
+    // Lo publicado antes del cierre de los colegios no es del 29N (p. ej. restos de un ensayo): se ignora.
+    if (!ENSAYO && Date.parse(datos.capturadoEn) < CIERRE_COLEGIOS) {
+      decir(estado, 'Todavía no hay datos del escrutinio. Se vuelve a comprobar cada minuto.');
       return;
     }
     if (!pintar(datos)) {
