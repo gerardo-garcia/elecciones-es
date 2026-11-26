@@ -29,7 +29,9 @@
 
   const CONFIG = {
     TIPO: 2, // 2 = Congreso
-    ID: '202307', // AAAAMM de la convocatoria. Para el 29N: 202611 (hay que confirmarlo en el visor)
+    // AAAAMM de la convocatoria. Por defecto la del 29N (se espera 202611; hay que confirmarla cuando aparezca en el
+    // visor). Para un ensayo, antes de pegar el bucle:  INFOELECTORAL_ID = '202307'
+    ID: (typeof globalThis !== 'undefined' && globalThis.INFOELECTORAL_ID) || '202611',
     RECEPTOR: 'http://127.0.0.1:8765',
     PAUSA_MS: 5000,
     TOPE_HORA: 800,

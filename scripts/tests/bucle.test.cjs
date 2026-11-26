@@ -1,7 +1,9 @@
 // Pruebas del bucle de lectura con red y reloj simulados:  node --test scripts/tests/bucle.test.cjs
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { crearBucle, PROVINCIAS, CONFIG } = require('../infoelectoral/bucle.cjs');
+const { crearBucle, PROVINCIAS, CONFIG: CONFIG_BASE } = require('../infoelectoral/bucle.cjs');
+// Los datos de prueba son de 2023.
+const CONFIG = { ...CONFIG_BASE, ID: '202307' };
 
 const OK = JSON.stringify({ cod: '200', data: {} });
 const VUELTA = 2 + 52 * 2 + 2; // nacional ×2 (resumen y estadísticas) + 52 provincias ×2

@@ -6,9 +6,10 @@ respaldo en `/datos-vivo/` del propio sitio). Ningún workflow interviene en el 
 
 ## Antes (con margen, no el mismo día)
 
-1. Confirmar en el visor el código de la convocatoria del 29N (se espera `202611`) y ponerlo en `CONFIG.ID` de
-   `scripts/infoelectoral/bucle.cjs`. Tipo 2 = Congreso.
-2. Ensayo completo con `202307` (2023) de principio a fin, incluida la lectura de la web con `/recuento/?ensayo`
+1. Confirmar en el visor el código de la convocatoria del 29N. El bucle usa `202611` por defecto (el código es `AAAAMM`,
+   como `202307`), pero el 26-nov todavía no estaba en la lista de convocatorias: comprobarlo cuando aparezca. Si es otro,
+   escribir en la consola antes de pegar el bucle: `INFOELECTORAL_ID = 'XXXXXX'`. Tipo 2 = Congreso.
+2. Ensayo completo con `202307` (2023; en la consola, antes de pegar el bucle: `INFOELECTORAL_ID = '202307'`) de principio a fin, incluida la lectura de la web con `/recuento/?ensayo`
    (sin `?ensayo` la web ignora lo publicado antes del cierre de colegios).
 3. Máquina de la noche: enchufada, sin suspensión, con red estable, sesión de `gh` y de `git` con permiso de escritura
    en `datos-vivo`. Pestaña de Infoelectoral visible (no minimizada: el navegador frena las pestañas ocultas).
