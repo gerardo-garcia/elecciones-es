@@ -50,6 +50,19 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+      # Datos en vivo del recuento: los publica scripts/infoelectoral/publicar.py en la rama `datos-vivo` y lanza este workflow. Si aún no existe
+      # (o no hay recuento), la web se construye sin ellos.
+      - name: Datos en vivo
+        run: |
+          if git ls-remote --exit-code --heads origin datos-vivo >/dev/null; then
+            git fetch --depth 1 origin datos-vivo
+            mkdir -p apps/web/public/datos-vivo
+            for f in escrutinio.json serie.jsonl; do
+              git show "FETCH_HEAD:$f" > "apps/web/public/datos-vivo/$f" || rm -f "apps/web/public/datos-vivo/$f"
+            done
+          else
+            echo "Sin rama datos-vivo: se construye sin datos en vivo"
+          fi
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
       - run: pnpm build

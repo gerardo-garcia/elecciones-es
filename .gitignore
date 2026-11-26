@@ -13,3 +13,5 @@ data/snapshots/
 borradores/
 __pycache__/
 .datos-vivo/
+# Datos en vivo que el workflow trae de la rama datos-vivo
+apps/web/public/datos-vivo/
