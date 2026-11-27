@@ -44,14 +44,14 @@ function iniciar(raiz: HTMLElement) {
 
   const pintar = (datos: DatosVivo) => {
     const { vista, estimado, descartadas } = vistaDesdeVivo(datos, ref);
-    if (!vista.circunscripciones.some((c) => c.estado !== 'sin-datos')) return false; // todavía sin escrutinio
+    if (!vista.circunscripciones.some((c) => c.estado !== 'sin-datos')) return Object.keys(descartadas).length > 0 ? 'sin-datos' : false;
     const paneles = renderPaneles(vista);
     for (const nombre of NOMBRES_PANEL) {
       const destino = raiz.querySelector(`[data-panel="${nombre}"]`);
       if (destino) destino.innerHTML = paneles[nombre];
     }
     const notas: string[] = [];
-    if (estimado) notas.push('El porcentaje de censo escrutado es una estimación a partir de la participación de 2023.');
+    if (estimado) notas.push('El porcentaje de censo escrutado es una estimación a partir de la participación al cierre de los colegios de esta elección.');
     const n = Object.keys(descartadas).length;
     if (n > 0) notas.push(`${n} circunscripción(es) no se muestran porque sus datos no son válidos.`);
     decir(aviso, notas.join(' '));
@@ -80,7 +80,12 @@ function iniciar(raiz: HTMLElement) {
       decir(estado, 'Todavía no hay datos del escrutinio. Se vuelve a comprobar cada minuto.');
       return;
     }
-    if (!pintar(datos)) {
+    const pintado = pintar(datos);
+    if (pintado === 'sin-datos') {
+      decir(estado, 'No tenemos datos suficientes para calcular el recuento: la fuente oficial todavía no da toda la información necesaria. Se vuelve a comprobar cada minuto.');
+      return;
+    }
+    if (!pintado) {
       decir(estado, 'Todavía no hay votos escrutados. Se vuelve a comprobar cada minuto.');
       return;
     }

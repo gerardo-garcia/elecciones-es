@@ -127,5 +127,20 @@ class Errores(unittest.TestCase):
             conv.convertir(c)
 
 
-if __name__ == "__main__":
+class CierreTest(unittest.TestCase):
+    def test_deduce_el_censo_de_las_mesas_de_los_votantes_al_cierre_y_su_porcentaje(self):
+        # Madrid 2023: 3.594.693 votantes al cierre = 74,15 % del censo sin voto exterior (4.848.000 aprox.).
+        votantes, censo = conv.cierre({"votantesCierre": {"numero": 3594693, "porcentaje": "74,15"}})
+        self.assertEqual(votantes, 3594693)
+        self.assertAlmostEqual(censo, 4848000, delta=1000)
+
+    def test_sin_datos_al_cierre_no_inventa_nada(self):
+        self.assertEqual(conv.cierre({}), (None, None))
+        self.assertEqual(conv.cierre({"votantesCierre": {"numero": 0, "porcentaje": "0"}}), (None, None))
+        self.assertEqual(conv.cierre({"votantesCierre": {"numero": 5, "porcentaje": "0"}}), (5, None))
+        self.assertEqual(conv.cierre({"votantesCierre": {"numero": 5}}), (5, None))
+
+
+
+if __name__ == '__main__':
     unittest.main()

@@ -7,8 +7,9 @@ motor: por circunscripción, censo, votos en blanco y votos y escaños de cada c
 La captura es un dato externo: solo se lee, nunca se ejecuta. Si algo no cuadra (respuesta con error, provincia que no
 es la pedida, votos negativos, circunscripciones repetidas o desconocidas), el script termina con error y no escribe.
 
-Sin `--definitivo`, `censoEscrutado` queda a null: la API no dice qué parte del censo ya se ha escrutado y hay que
-averiguarlo la noche del 29N. Con `--definitivo` (resultados finales) es igual al censo.
+Sin `--definitivo`, `censoEscrutado` queda a null: la API no dice qué parte del censo ya se ha escrutado. La web lo
+estima con la participación al cierre de los colegios de la propia elección (`votantesCierre` y `censoMesas`, que salen
+del resumen); si no están, no hay datos. Con `--definitivo` (resultados finales) es igual al censo.
 
 Fuente de los datos: Ministerio del Interior, Infoelectoral (reutilización autorizada citando el origen).
 """
@@ -34,6 +35,32 @@ def entero(texto):
     if n < 0:
         raise ErrorCaptura(f"Número negativo: {texto!r}")
     return n
+
+
+def porcentaje(texto):
+    """'74,15' -> 74.15 (la API da los porcentajes como texto con coma decimal)."""
+    try:
+        return float(str(texto).replace(",", "."))
+    except ValueError:
+        return None
+
+
+def cierre(resumen):
+    """Participación al cierre de los colegios (votantesCierre): sus votantes y el censo de las mesas que se deduce.
+
+    La API da `votantesCierre` como número y como porcentaje del censo SIN voto exterior; de los dos sale ese censo
+    (sin CERA), que no aparece en ningún otro campo. Devuelve (votantes, censo_mesas), con None si falta o no se puede
+    deducir: así la web dirá que no hay datos en vez de inventarlos.
+    """
+    v = resumen.get("votantesCierre") or {}
+    try:
+        votantes = entero(v["numero"])
+    except (KeyError, ErrorCaptura):
+        return None, None
+    pct = porcentaje(v.get("porcentaje"))
+    if votantes <= 0 or not pct or pct <= 0:
+        return (votantes or None), None
+    return votantes, round(votantes * 100 / pct)
 
 
 def cuerpo(respuesta, donde):
@@ -87,6 +114,7 @@ def convertir(captura, definitivo=False):
         if pedida is None or str(pedida).zfill(2) != codigo:
             raise ErrorCaptura(f"{codigo}: la API devolvió la provincia {pedida!r}")
         censo = entero(resumen["totalCenso"]["numero"])
+        votantes_cierre, censo_mesas = cierre(resumen)
         circunscripciones.append(
             {
                 "codigo": codigo,
@@ -94,6 +122,8 @@ def convertir(captura, definitivo=False):
                 "nombre": conocidas[codigo],
                 "censo": censo,
                 "censoEscrutado": censo if definitivo else None,
+                "censoMesas": censo_mesas,
+                "votantesCierre": votantes_cierre,
                 "votantes": entero(resumen["votantes"]["numero"]),
                 "nulos": entero(resumen["votosNulos"]["numero"]),
                 "blancos": entero(resumen["votosBlanco"]["numero"]),

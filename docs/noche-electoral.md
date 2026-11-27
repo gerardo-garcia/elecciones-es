@@ -35,9 +35,16 @@ Firefox pide una vez permiso para hablar con `127.0.0.1`: aceptar. Una vuelta so
   5 minutos en llegar por la caché de GitHub.
 - **`raw` no responde**: la web usa sola la copia de `/datos-vivo/`; para refrescarla, `gh workflow run pages.yml --ref main`.
 
-## Incógnitas que solo se resuelven con datos reales
+## Solo datos de 2026
 
-- Si la API da el censo escrutado mientras se cuenta. Si no, la web lo **estima** con la participación de 2023 y lo avisa.
-- Si `censo` sigue incluyendo el voto exterior (CERA): la web lo resta con el CERA de 2023.
+La web no usa ningún dato de otra elección. Si a la fuente le falta algo, la circunscripción queda sin datos y la web lo
+dice («No tenemos datos suficientes…»):
+
+- **Censo de las mesas** (sin voto exterior): el conversor lo deduce de `votantesCierre` (número y porcentaje) de cada
+  provincia. Sin él, no hay datos de esa circunscripción.
+- **Censo escrutado**: la API no lo da (comprobado en el ensayo del 26-nov). Se estima como votantes escrutados ÷
+  participación al cierre de los colegios de esta elección, y la web avisa de que es una estimación. Sin participación al
+  cierre, no hay datos.
+- **Voto exterior (CERA)**: no se estima el pendiente; la tabla de disputa no avisa de los escaños que solo podría mover él.
 
 Fuente: Ministerio del Interior (Infoelectoral). Hay que citarla y mostrar la hora de actualización (ya lo hace la web).

@@ -32,7 +32,7 @@ describe('vistaDesdeVivo', () => {
     expect(r.vista.circunscripciones.every((c) => c.estado === 'sin-datos')).toBe(true);
   });
 
-  it('si la fuente no da el censo escrutado lo estima con la participación anterior y lo avisa', () => {
+  it('si la fuente no da el censo escrutado lo estima con la participación al cierre de esta elección y lo avisa', () => {
     const d = datos();
     for (const c of d.circunscripciones) {
       c.censoEscrutado = null;
@@ -42,7 +42,7 @@ describe('vistaDesdeVivo', () => {
     }
     const r = vistaDesdeVivo(d, ref);
     expect(r.estimado).toBe(true);
-    // Con la mitad de los votos y la misma participación se estima algo menos de la mitad del censo (el CERA no vota en mesa).
+    // Con la mitad de los votos y la participación al cierre de la propia elección se estima en torno a la mitad del censo.
     expect(r.vista.porcentajeCensoNacional).toBeGreaterThan(0.4);
     expect(r.vista.porcentajeCensoNacional).toBeLessThan(0.6);
     expect(r.vista.escanosAsignados).toBe(350);
@@ -58,6 +58,25 @@ describe('vistaDesdeVivo', () => {
     expect(r.descartadas['99']).toMatch(/desconocida/);
     expect(Object.keys(r.descartadas)).toHaveLength(2);
     expect(r.vista.circunscripciones).toHaveLength(52);
+  });
+
+  it('sin censo de las mesas o sin participación al cierre dice que no hay datos y no usa otra elección', () => {
+    const sinMesas = datos();
+    for (const c of sinMesas.circunscripciones) c.censoMesas = null;
+    const a = vistaDesdeVivo(sinMesas, ref);
+    expect(Object.keys(a.descartadas)).toHaveLength(52);
+    expect(a.vista.escanosAsignados).toBe(0);
+    expect(a.vista.porcentajeCensoNacional).toBe(0);
+
+    const sinCierre = datos();
+    for (const c of sinCierre.circunscripciones) {
+      c.censoEscrutado = null;
+      c.votantesCierre = null;
+    }
+    const b = vistaDesdeVivo(sinCierre, ref);
+    expect(Object.values(b.descartadas).every((m) => /participación al cierre/.test(m))).toBe(true);
+    expect(b.vista.escanosAsignados).toBe(0);
+    expect(b.estimado).toBe(false);
   });
 
   it('el censo escrutado no puede superar el de las mesas (se recorta)', () => {

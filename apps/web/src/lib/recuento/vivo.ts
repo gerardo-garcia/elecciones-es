@@ -18,6 +18,10 @@ export interface CircunscripcionVivo {
   actualizadoEn?: string;
   /** Censo total de la circunscripción, CERA incluido, tal como lo da Infoelectoral. */
   censo: number;
+  /** Censo de las mesas (sin voto exterior), deducido por el conversor de la participación al cierre. */
+  censoMesas?: number | null;
+  /** Votantes al cierre de los colegios en esta elección (avance de participación). */
+  votantesCierre?: number | null;
   /** Censo de las mesas escrutadas, si la fuente lo da (null si no). */
   censoEscrutado: number | null;
   votantes: number;
@@ -36,17 +40,13 @@ export interface DatosVivo {
 
 export interface ReferenciasVivo {
   circunscripciones: Circunscripcion[];
-  /** Censo del voto exterior (CERA) por circunscripción: se resta del censo total para tener el de las mesas. */
-  censoCera: Record<string, number>;
-  /** Participación de la elección anterior por circunscripción (votantes / electores): estima el censo escrutado. */
-  participacionReferencia: Record<string, number>;
   agrupador: Agrupador;
   ceraEsperados?: Record<string, number>;
 }
 
 export interface ResultadoVivo {
   vista: VistaRecuento;
-  /** true si el censo escrutado de alguna circunscripción se ha estimado (la fuente no lo da). */
+  /** true si el censo escrutado de alguna circunscripción se ha estimado (la fuente no lo da) con la participación al cierre. */
   estimado: boolean;
   /** Circunscripciones cuyos datos no se han podido usar, con el motivo. */
   descartadas: Record<string, string>;
@@ -69,25 +69,29 @@ export function vistaDesdeVivo(datos: DatosVivo | null, ref: ReferenciasVivo): R
   const descartadas: Record<string, string> = {};
   let estimado = false;
   const censoMesas: Record<string, number> = {};
-  for (const c of ref.circunscripciones) censoMesas[c.codigo] = Number.NaN;
+  const conocidas = new Set(ref.circunscripciones.map((c) => c.codigo));
 
+  // Solo se usan datos de esta elección. Lo que falte se descarta y se dice: nunca se rellena con otra elección.
   for (const c of datos?.circunscripciones ?? []) {
-    const cera = ref.censoCera[c.codigo];
-    if (cera === undefined) {
+    if (!conocidas.has(c.codigo)) {
       descartadas[c.codigo] = 'circunscripción desconocida';
       continue;
     }
-    const censo = c.censo - cera;
-    censoMesas[c.codigo] = censo;
     if (!(c.votantes > 0)) continue; // todavía sin votos escrutados
+    const censo = c.censoMesas;
+    if (!(censo && censo > 0)) {
+      descartadas[c.codigo] = 'la fuente aún no da el censo de las mesas (sin voto exterior)';
+      continue;
+    }
+    censoMesas[c.codigo] = censo;
     let escrutado = c.censoEscrutado;
     if (escrutado === null || escrutado === undefined) {
-      const p = ref.participacionReferencia[c.codigo];
-      if (!(p && p > 0)) {
-        descartadas[c.codigo] = 'no hay censo escrutado ni participación de referencia para estimarlo';
+      const cierre = c.votantesCierre;
+      if (!(cierre && cierre > 0)) {
+        descartadas[c.codigo] = 'la fuente aún no da ni el censo escrutado ni la participación al cierre';
         continue;
       }
-      escrutado = c.votantes / p;
+      escrutado = (c.votantes * censo) / cierre; // votantes escrutados ÷ participación al cierre de esta elección
       estimado = true;
     }
     escrutado = Math.min(escrutado, censo);
@@ -107,7 +111,8 @@ export function vistaDesdeVivo(datos: DatosVivo | null, ref: ReferenciasVivo): R
     escrutinios.push(e);
   }
 
-  const total = ref.circunscripciones.reduce((s, c) => s + (Number.isNaN(censoMesas[c.codigo]) ? 0 : (censoMesas[c.codigo] as number)), 0);
+  // Porcentaje del censo escrutado: solo sobre las circunscripciones de las que hay censo de las mesas.
+  const total = Object.values(censoMesas).reduce((s, n) => s + n, 0);
   const hechos = escrutinios.reduce((s, e) => s + e.censoEscrutado, 0);
   const resultados = proyectarInstantanea(ref.circunscripciones, { minutos: 0, porcentajeCenso: 0, escrutinios });
   const vista = construirVista(resultados, {
