@@ -1,0 +1,9 @@
+[Unit]
+Description=Elecciones 29N: reconstruir la web a las 20:06
+
+[Timer]
+OnCalendar=2026-11-29 20:06:00 Europe/Madrid
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target

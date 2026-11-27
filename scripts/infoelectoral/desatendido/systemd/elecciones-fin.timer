@@ -1,0 +1,9 @@
+[Unit]
+Description=Elecciones 29N: parar el bucle a las 03:00 del 30N
+
+[Timer]
+OnCalendar=2026-11-30 03:00:00 Europe/Madrid
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target

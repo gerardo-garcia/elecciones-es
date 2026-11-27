@@ -114,7 +114,7 @@ def main(argv=None):
     ap.add_argument('--lanzar', action='store_true', help='tras subir, lanza pages.yml sobre main (refresca la copia de respaldo)')
     a = ap.parse_args(argv)
     if a.intervalo < 120:
-        ap.error('--intervalo: mínimo 120 s (cada publicación reconstruye la web)')
+        ap.error('--intervalo: mínimo 120 s (no tiene sentido más a menudo: GitHub guarda en caché la copia de raw 5 min)')
     datos = Path(a.datos)
     clon = datos / 'publicacion'
     remoto = a.remoto or url_remoto()

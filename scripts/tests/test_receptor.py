@@ -71,6 +71,14 @@ class Receptor(unittest.TestCase):
         self.enviar(carga({"nacional": FIXTURE["respuestas"]["nacional"]}, "2026-11-29T21:02:00.000Z"))
         self.assertEqual(len((self.salida / "serie.jsonl").read_text().splitlines()), 2)
 
+    def test_el_registro_del_bucle_va_a_registro_log_en_una_linea(self):
+        self.assertEqual(self.enviar("aviso uno\ndos".encode(), ruta="/registro")[0], 200)
+        self.assertEqual(self.enviar(b"x", origen="https://otra.web", ruta="/registro")[0], 403)
+        self.assertEqual(self.enviar(b"x" * 5000, ruta="/registro")[0], 413)
+        lineas = (self.salida / "registro.log").read_text().splitlines()
+        self.assertEqual(len(lineas), 1)
+        self.assertTrue(lineas[0].endswith(" aviso uno dos"))
+
     def test_rechaza_otro_origen(self):
         self.assertEqual(self.enviar(carga(FIXTURE["respuestas"]), origen="https://otra.web")[0], 403)
         self.assertEqual(self.enviar(carga(FIXTURE["respuestas"]), origen=None)[0], 403)

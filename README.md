@@ -102,8 +102,9 @@ aún son marcadores de posición), paneles del recuento (sectores, mapas, tabla 
 como «Ejemplo de recuento» (`/simulacion/`) dentro del histórico (`/historico/`), que además guarda el recuento final de
 las generales de abril y noviembre de 2019 y julio de 2023 (`/historico/generales-…/`), y CI/Pages.
 
-Recuento en directo: lectura de Infoelectoral desde un navegador, receptor y publicador locales, y paneles que leen la
-rama `datos-vivo` (ver [`docs/noche-electoral.md`](docs/noche-electoral.md)).
+Recuento en directo: lectura de Infoelectoral desde un navegador (también sin nadie delante, con temporizadores de
+systemd), receptor y publicador locales, y paneles que leen la rama `datos-vivo` (ver
+[`docs/noche-electoral.md`](docs/noche-electoral.md)).
 
 Pendiente: ensayo completo y confirmar el código de convocatoria del 29N, archivar en el histórico el análisis del 29N y
 blog de encuestas.

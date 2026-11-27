@@ -1,0 +1,9 @@
+# Receptor de las lecturas del bucle (escribe en .datos-vivo/). Lo arranca elecciones-29n.target.
+[Unit]
+Description=Elecciones 29N: receptor local de Infoelectoral
+
+[Service]
+WorkingDirectory=%h/github/elecciones-es
+ExecStart=/usr/bin/python3 -I scripts/infoelectoral/receptor.py
+Restart=always
+RestartSec=10

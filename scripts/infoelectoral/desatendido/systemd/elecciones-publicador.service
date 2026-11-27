@@ -1,0 +1,9 @@
+# Publicador: sube .datos-vivo/ a la rama datos-vivo (nunca a main) cada 2 min.
+[Unit]
+Description=Elecciones 29N: publicador de la rama datos-vivo
+
+[Service]
+WorkingDirectory=%h/github/elecciones-es
+ExecStart=/usr/bin/python3 -I scripts/infoelectoral/publicar.py --intervalo 120
+Restart=always
+RestartSec=30

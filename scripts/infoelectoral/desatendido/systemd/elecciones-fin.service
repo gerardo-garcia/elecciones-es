@@ -1,0 +1,7 @@
+# Para el bucle (cierra Firefox) cuando el recuento ya ha terminado. Receptor y publicador siguen, sin trabajo.
+[Unit]
+Description=Elecciones 29N: parar el bucle de Infoelectoral
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl --user stop elecciones-firefox.service

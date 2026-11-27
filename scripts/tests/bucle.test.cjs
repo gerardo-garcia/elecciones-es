@@ -194,3 +194,14 @@ test('los códigos de comunidad coinciden con los que el visor envía a la API p
   assert.deepEqual([real['01'], real['20'], real['48']], [14, 14, 14]); // País Vasco
   assert.equal(real['28'], 12); // Madrid: es el código de la URL que usa el propio visor
 });
+
+test('elige la convocatoria de 2026 más reciente de la lista de la API, o ninguna', () => {
+  const { elegirConvocatoria } = require('../infoelectoral/bucle.cjs');
+  const lista = (...cods) => JSON.stringify({ cod: '200', data: cods.map((cod) => ({ cod, tipoConvocatoria: 2 })) });
+  assert.equal(elegirConvocatoria(lista('202307', '201911', '201904', '201606')), null);
+  assert.equal(elegirConvocatoria(lista('202611', '202307')), '202611');
+  assert.equal(elegirConvocatoria(lista('202605', '202611', '202307')), '202611');
+  assert.equal(elegirConvocatoria('<html>bloqueo</html>'), null);
+  assert.equal(elegirConvocatoria(JSON.stringify({ cod: '500' })), null);
+  assert.equal(CONFIG_BASE.ID, 'auto');
+});

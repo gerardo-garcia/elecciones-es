@@ -1,8 +1,12 @@
 /**
  * Bucle de lectura de Infoelectoral para la noche electoral. Se pega en la consola (F12) de una pestaña de
- * https://infoelectoral.interior.gob.es/ y la deja abierta y visible. Lo ejecuta tu navegador normal: no se automatiza
- * ningún navegador ni se esquiva la protección del sitio. Las lecturas se las envía al receptor local
+ * https://infoelectoral.interior.gob.es/ y la deja abierta y visible, o lo carga sin nadie delante la extensión de
+ * scripts/infoelectoral/desatendido/. Lo ejecuta un Firefox normal: no se automatiza el navegador (ni WebDriver ni
+ * control remoto) ni se esquiva la protección del sitio. Las lecturas se las envía al receptor local
  * (scripts/infoelectoral/receptor.py), que valida, guarda y convierte.
+ *
+ * Busca solo la convocatoria de 2026 en la API (INFOELECTORAL_ID = 'AAAAMM' para fijar otra) y, con
+ * INFOELECTORAL_INICIO = 'fecha ISO', no pide nada hasta esa hora.
  *
  * Una ronda continua, sin esperas entre vueltas:
  *  - Una sola petición cada vez, con 5 s entre una y la siguiente (12 por minuto, 720 por hora).
@@ -11,7 +15,7 @@
  *  - Al acabar una vuelta empieza la siguiente sin esperar.
  *  - Tope de 800 peticiones por hora.
  *  - Si hay un fallo (HTML en vez de JSON, 403, 429...): espera 2 min, luego 10 min, y a la tercera para y avisa.
- *    Nunca reintenta en ráfaga.
+ *    Nunca reintenta en ráfaga. Sin nadie delante, tras parar lo vuelve a intentar una sola vez cada 20 min.
  * Para pararlo a mano: detenerInfoelectoral()
  *
  * Fuente de los datos: Ministerio del Interior, Infoelectoral (reutilización autorizada citando el origen).
@@ -29,9 +33,9 @@
 
   const CONFIG = {
     TIPO: 2, // 2 = Congreso
-    // AAAAMM de la convocatoria. Por defecto la del 29N (se espera 202611; hay que confirmarla cuando aparezca en el
-    // visor). Para un ensayo, antes de pegar el bucle:  INFOELECTORAL_ID = '202307'
-    ID: (typeof globalThis !== 'undefined' && globalThis.INFOELECTORAL_ID) || '202611',
+    // AAAAMM de la convocatoria. Por defecto 'auto': la de 2026 que liste la API (se mira cada 2 min hasta que aparezca).
+    // Para un ensayo, antes del bucle:  INFOELECTORAL_ID = '202307'
+    ID: (typeof globalThis !== 'undefined' && globalThis.INFOELECTORAL_ID) || 'auto',
     RECEPTOR: 'http://127.0.0.1:8765',
     PAUSA_MS: 5000,
     TOPE_HORA: 800,
@@ -162,18 +166,57 @@
     };
   }
 
+  /** De la lista de convocatorias de la API, la más reciente cuyo código empieza por `prefijo` (o null si no hay). */
+  function elegirConvocatoria(cuerpo, prefijo = '2026') {
+    let datos;
+    try {
+      datos = JSON.parse(cuerpo);
+    } catch {
+      return null;
+    }
+    const codigos = (Array.isArray(datos && datos.data) ? datos.data : [])
+      .map((c) => String((c && c.cod) || ''))
+      .filter((c) => /^\d{6}$/.test(c) && c.startsWith(prefijo))
+      .sort();
+    return codigos.length > 0 ? codigos[codigos.length - 1] : null;
+  }
+
   if (typeof module !== 'undefined') {
-    module.exports = { crearBucle, PROVINCIAS, CONFIG };
+    module.exports = { crearBucle, elegirConvocatoria, PROVINCIAS, CONFIG };
   } else if (typeof document !== 'undefined') {
+    // Una sola instancia por página (por si el script se carga dos veces).
+    if (window.estadoInfoelectoral) return;
     const base = 'https://infoelectoral.interior.gob.es/min/';
     const cabeceras = { Authorization: 'Basic ' + btoa('apiInfoelectoral:apiInfoelectoralPro') };
-    const bucle = crearBucle({
-      pedirApi: async (ruta) => {
-        const r = await fetch(base + ruta, { headers: cabeceras });
-        return { estado: r.status, cuerpo: await r.text() };
-      },
+    // Sin nadie delante (extensión de scripts/infoelectoral/desatendido): el registro va también al receptor.
+    const registroAlReceptor = globalThis.INFOELECTORAL_REGISTRO === true;
+    // Instante de arranque (ISO 8601); antes no se pide nada.
+    const inicio = globalThis.INFOELECTORAL_INICIO ? Date.parse(globalThis.INFOELECTORAL_INICIO) : 0;
+    const pausar = (ms) => new Promise((resolver) => setTimeout(resolver, ms));
+    const log = (nivel, texto) => {
+      const linea = `[${new Date().toLocaleTimeString()}] ${texto}`;
+      console[nivel === 'error' ? 'error' : nivel === 'aviso' ? 'warn' : 'log'](linea);
+      if (registroAlReceptor) {
+        red(`${CONFIG.RECEPTOR}/registro`, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: `${nivel} ${texto}` }).catch(() => {});
+      }
+    };
+    // Dentro de la extensión, las peticiones se hacen como la propia página (content.fetch), igual que desde la consola.
+    const red = typeof content !== 'undefined' && content && typeof content.fetch === 'function' ? content.fetch.bind(content) : fetch;
+    const pedirApi = async (ruta) => {
+      const r = await red(base + ruta, { headers: cabeceras });
+      return { estado: r.status, cuerpo: await r.text() };
+    };
+    let bucle = null;
+    let paradaManual = false;
+    window.detenerInfoelectoral = () => {
+      paradaManual = true;
+      if (bucle) bucle.detener();
+    };
+    window.estadoInfoelectoral = () => (bucle ? bucle.estado() : { esperando: true });
+    const entorno = {
+      pedirApi,
       enviar: async (carga) => {
-        const r = await fetch(`${CONFIG.RECEPTOR}/captura`, {
+        const r = await red(`${CONFIG.RECEPTOR}/captura`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(carga),
@@ -185,13 +228,38 @@
         }
         return r.json();
       },
-      pausar: (ms) => new Promise((resolver) => setTimeout(resolver, ms)),
+      pausar,
       ahora: () => Date.now(),
-      log: (nivel, texto) => console[nivel === 'error' ? 'error' : nivel === 'aviso' ? 'warn' : 'log'](`[${new Date().toLocaleTimeString()}] ${texto}`),
-    });
-    window.detenerInfoelectoral = bucle.detener;
-    window.estadoInfoelectoral = bucle.estado;
-    console.log('Bucle de Infoelectoral en marcha. Para pararlo: detenerInfoelectoral(). Estado: estadoInfoelectoral()');
-    bucle.ejecutar();
+      log,
+    };
+    const arrancar = async () => {
+      if (Date.now() < inicio) log('info', `Bucle de Infoelectoral cargado: empieza a las ${new Date(inicio).toLocaleString()}`);
+      while (!paradaManual && Date.now() < inicio) await pausar(Math.min(inicio - Date.now(), 60000));
+      let id = CONFIG.ID;
+      while (!paradaManual && id === 'auto') {
+        let r = null;
+        try {
+          r = await pedirApi(`convocatorias?tipoConvocatoria=${CONFIG.TIPO}`);
+        } catch (e) {
+          log('aviso', `No se pudo leer la lista de convocatorias (${e.message})`);
+        }
+        const elegida = r && r.estado === 200 ? elegirConvocatoria(r.cuerpo) : null;
+        if (elegida) id = elegida;
+        else {
+          log('aviso', `La convocatoria de 2026 aún no aparece en la API${r ? ` (estado ${r.estado})` : ''}: vuelvo a mirar en 2 min`);
+          await pausar(120000);
+        }
+      }
+      while (!paradaManual) {
+        log('info', `Bucle de Infoelectoral en marcha, convocatoria ${id}. Para pararlo: detenerInfoelectoral(). Estado: estadoInfoelectoral()`);
+        bucle = crearBucle(entorno, { ...CONFIG, ID: id });
+        await bucle.ejecutar();
+        if (paradaManual || !registroAlReceptor) break;
+        // Sin nadie delante: tras una parada por fallos, un único intento cada 20 min (nunca en ráfaga).
+        log('aviso', 'Vuelvo a intentarlo dentro de 20 min');
+        await pausar(1200000);
+      }
+    };
+    arrancar();
   }
 })();

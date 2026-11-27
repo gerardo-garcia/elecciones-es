@@ -11,6 +11,7 @@ navegador puede escribirle). Cada envío se valida con el conversor antes de ace
   rechazados/...json    cada envío rechazado, con el motivo
   escrutinio.json       el último estado combinado: lo más reciente de cada circunscripción, con su hora
   serie.jsonl           una línea por lectura nacional (hora, totales y escaños por candidatura) para la evolución
+  registro.log          lo que anota el bucle cuando funciona sin nadie delante (POST /registro, texto)
 
 Fuente de los datos: Ministerio del Interior, Infoelectoral (reutilización autorizada citando el origen).
 """
@@ -22,6 +23,7 @@ import pathlib
 import re
 import sys
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 AQUI = pathlib.Path(__file__).resolve().parent
@@ -30,6 +32,7 @@ import infoelectoral_a_escrutinio as conv  # noqa: E402
 
 ORIGEN = "https://infoelectoral.interior.gob.es"
 MAX_BYTES = 8_000_000
+MAX_REGISTRO = 2000
 PARTES = ("resumen", "estadisticas")
 
 
@@ -120,6 +123,13 @@ class Estado:
         }
         return conv.convertir(captura, definitivo=self.definitivo)
 
+    def registrar(self, texto):
+        linea = " ".join(str(texto).split())[:MAX_REGISTRO]
+        marca = time.strftime("%Y-%m-%dT%H:%M:%S%z")
+        with self.candado, open(self.salida / "registro.log", "a", encoding="utf-8") as f:
+            f.write(f"{marca} {linea}\n")
+        sys.stderr.write(f"bucle: {linea}\n")
+
     def _guardar(self, carpeta, carga, extra=None):
         marca = re.sub(r"[^0-9A-Za-z-]", "-", str(carga.get("capturadoEn", "sin-hora")) if isinstance(carga, dict) else "sin-hora")
         contenido = dict(carga) if isinstance(carga, dict) else {"carga": str(carga)[:1000]}
@@ -161,10 +171,20 @@ def manejador(estado):
             self.end_headers()
 
         def do_POST(self):
-            if self.path != "/captura":
+            if self.path not in ("/captura", "/registro"):
                 return self._responder(404, {"ok": False})
             if not self._origen_valido():
                 return self._responder(403, {"ok": False, "error": "origen no permitido"})
+            if self.path == "/registro":
+                # Registro del bucle cuando no hay nadie delante del navegador: una línea de texto, a registro.log.
+                try:
+                    n = int(self.headers.get("Content-Length", ""))
+                except ValueError:
+                    n = 0
+                if not 0 < n <= MAX_REGISTRO:
+                    return self._responder(413, {"ok": False}, cors=True)
+                estado.registrar(self.rfile.read(n).decode("utf-8", "replace"))
+                return self._responder(200, {"ok": True}, cors=True)
             try:
                 n = int(self.headers.get("Content-Length", ""))
             except ValueError:

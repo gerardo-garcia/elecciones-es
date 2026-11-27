@@ -1,0 +1,12 @@
+# Firefox Developer Edition con el bucle (scripts/infoelectoral/desatendido/firefox.py), en la sesión gráfica abierta.
+# Toma DISPLAY del entorno del gestor de usuario de systemd (systemctl --user show-environment).
+[Unit]
+Description=Elecciones 29N: Firefox con el bucle de Infoelectoral
+After=elecciones-receptor.service
+
+[Service]
+WorkingDirectory=%h/github/elecciones-es
+Environment=XAUTHORITY=%h/.Xauthority
+ExecStart=/usr/bin/python3 -I scripts/infoelectoral/desatendido/firefox.py
+Restart=on-failure
+RestartSec=60

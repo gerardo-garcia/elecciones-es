@@ -1,0 +1,11 @@
+# Arranca todo el 29N a las 19:45 (el bucle no pide nada hasta las 20:00).
+[Unit]
+Description=Elecciones 29N: arranque del recuento en directo
+
+[Timer]
+OnCalendar=2026-11-29 19:45:00 Europe/Madrid
+Unit=elecciones-29n.target
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target
