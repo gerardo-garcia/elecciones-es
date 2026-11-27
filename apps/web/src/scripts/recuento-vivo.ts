@@ -4,7 +4,7 @@
  * propia web. Nunca inventa datos: si no hay ninguno válido lo dice, y si el último es viejo, lo avisa.
  */
 import { NOMBRES_PANEL, renderPaneles } from '../lib/recuento/paneles';
-import { antiguedadMinutos, leerDatosVivo, vistaDesdeVivo, type DatosVivo } from '../lib/recuento/vivo';
+import { antiguedadMinutos, esDe2026, leerDatosVivo, vistaDesdeVivo, type DatosVivo } from '../lib/recuento/vivo';
 import { referenciasVivo } from '../lib/recuento/vivo-config';
 import { CIERRE_COLEGIOS } from '../lib/reloj';
 
@@ -13,7 +13,10 @@ const CADA_MS = 60_000;
 /** A partir de aquí se avisa de que el dato puede estar atrasado respecto a la realidad. */
 const DATO_VIEJO_MIN = 15;
 
-/** Ensayo: con `?ensayo` en la URL se aceptan datos anteriores al cierre de colegios (p. ej. los de 2023 en la rama). */
+/**
+ * Ensayo: con `?ensayo` en la URL se aceptan datos de otra convocatoria o anteriores al cierre de colegios. Sin él, solo
+ * datos de las generales de 2026 capturados tras el cierre: un ensayo con 2023 nunca se muestra como escrutinio de 2026.
+ */
 const ENSAYO = new URLSearchParams(location.search).has('ensayo');
 
 const raiz = document.querySelector<HTMLElement>('[data-recuento-vivo]');
@@ -75,8 +78,8 @@ function iniciar(raiz: HTMLElement) {
       else decir(estado, `No se han podido cargar datos nuevos. Se muestran los de las ${ultima}.`);
       return;
     }
-    // Lo publicado antes del cierre de los colegios no es del 29N (p. ej. restos de un ensayo): se ignora.
-    if (!ENSAYO && Date.parse(datos.capturadoEn) < CIERRE_COLEGIOS) {
+    // Lo que no es de 2026 o es anterior al cierre de los colegios (restos de un ensayo) se ignora.
+    if (!ENSAYO && (!esDe2026(datos) || Date.parse(datos.capturadoEn) < CIERRE_COLEGIOS)) {
       decir(estado, 'Todavía no hay datos del escrutinio. Se vuelve a comprobar cada minuto.');
       return;
     }

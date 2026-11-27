@@ -17,7 +17,7 @@ def git(cwd, *a):
 
 
 def escrutinio(t='2026-11-29T20:30:00Z'):
-    return {'version': 1, 'completa': True, 'capturadoEn': t, 'circunscripciones': [{'codigo': f'{i:02d}'} for i in range(1, 53)]}
+    return {'version': 1, 'completa': True, 'capturadoEn': t, 'convocatoria': {'tipo': 2, 'id': '202611'}, 'circunscripciones': [{'codigo': f'{i:02d}'} for i in range(1, 53)]}
 
 
 class PublicarTest(unittest.TestCase):
@@ -81,6 +81,13 @@ class PublicarTest(unittest.TestCase):
         with self.assertRaises(pub.ErrorPublicacion):
             self.publicar()
         self.assertNotEqual(git(self.remoto, 'branch', '--list', 'datos-vivo'), 'datos-vivo')
+
+    def test_no_publica_otra_convocatoria_salvo_en_ensayo(self):
+        e = escrutinio(); e['convocatoria'] = {'tipo': 2, 'id': '202307'}
+        self.escribir(e)
+        with self.assertRaisesRegex(pub.ErrorPublicacion, '2026'):
+            self.publicar()
+        self.assertTrue(pub.publicar(self.datos, self.clon, str(self.remoto), ensayo=True))
 
     def test_no_publica_si_la_serie_tiene_una_linea_rota(self):
         self.escribir(escrutinio(), '{"t":1}\nnada\n')

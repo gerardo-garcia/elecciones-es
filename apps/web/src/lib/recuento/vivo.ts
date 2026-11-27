@@ -31,6 +31,8 @@ export interface CircunscripcionVivo {
 
 export interface DatosVivo {
   version: number;
+  /** Convocatoria de Infoelectoral: tipo 2 = Congreso; id AAAAMM. */
+  convocatoria: { tipo: number; id: string };
   capturadoEn: string;
   definitivo: boolean;
   completa: boolean;
@@ -61,6 +63,8 @@ export function leerDatosVivo(bruto: unknown): DatosVivo {
   if (d.version !== 1) throw new ErrorFormato(`Versión de formato no soportada: ${String(d.version)}`);
   if (typeof d.capturadoEn !== 'string' || Number.isNaN(Date.parse(d.capturadoEn))) throw new ErrorFormato('Falta la hora de captura');
   if (!Array.isArray(d.circunscripciones)) throw new ErrorFormato('Faltan las circunscripciones');
+  const conv = d.convocatoria;
+  if (!conv || typeof conv.id !== 'string' || typeof conv.tipo !== 'number') throw new ErrorFormato('Falta la convocatoria');
   return { ...(d as DatosVivo), definitivo: Boolean(d.definitivo), completa: Boolean(d.completa) };
 }
 
@@ -121,6 +125,14 @@ export function vistaDesdeVivo(datos: DatosVivo | null, ref: ReferenciasVivo): R
     ...(ref.ceraEsperados ? { ceraEsperados: ref.ceraEsperados } : {}),
   });
   return { vista, estimado, descartadas };
+}
+
+/**
+ * Solo se muestran datos de las generales de 2026 (Congreso, convocatoria de 2026). Los ensayos con otras elecciones
+ * (2023) nunca deben aparecer como escrutinio de 2026, aunque se hayan publicado en la misma rama.
+ */
+export function esDe2026(datos: DatosVivo): boolean {
+  return datos.convocatoria.tipo === 2 && datos.convocatoria.id.startsWith('2026');
 }
 
 /** Minutos que hace del dato respecto a `ahora`, para avisar de que está desactualizado. */

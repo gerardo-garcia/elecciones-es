@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import definitivo from './fixtures/escrutinio-2023-definitivo.json';
-import { antiguedadMinutos, ErrorFormato, leerDatosVivo, vistaDesdeVivo, type DatosVivo } from './vivo';
+import { antiguedadMinutos, ErrorFormato, esDe2026, leerDatosVivo, vistaDesdeVivo, type DatosVivo } from './vivo';
 import { circunscripcionesDe2023 } from '../simulacion';
 import { referenciasVivo } from './vivo-config';
 
@@ -93,10 +93,21 @@ describe('leerDatosVivo', () => {
     expect(() => leerDatosVivo({ version: 2 })).toThrow(/Versión/);
     expect(() => leerDatosVivo({ version: 1, capturadoEn: 'ayer', circunscripciones: [] })).toThrow(/hora/);
     expect(() => leerDatosVivo({ version: 1, capturadoEn: '2026-11-29T20:00:00Z' })).toThrow(/circunscripciones/);
+    expect(() => leerDatosVivo({ version: 1, capturadoEn: '2026-11-29T20:00:00Z', circunscripciones: [] })).toThrow(/convocatoria/);
   });
   it('mide la antigüedad del dato', () => {
-    const d = leerDatosVivo({ version: 1, capturadoEn: '2026-11-29T20:00:00Z', circunscripciones: [] });
+    const d = leerDatosVivo({ version: 1, capturadoEn: '2026-11-29T20:00:00Z', convocatoria: { tipo: 2, id: '202611' }, circunscripciones: [] });
     expect(antiguedadMinutos(d, Date.parse('2026-11-29T20:12:00Z'))).toBe(12);
     expect(antiguedadMinutos(d, Date.parse('2026-11-29T19:00:00Z'))).toBe(0);
+  });
+});
+
+describe('esDe2026', () => {
+  const con = (tipo: number, id: string) => leerDatosVivo({ version: 1, capturadoEn: '2026-11-29T20:00:00Z', convocatoria: { tipo, id }, circunscripciones: [] });
+  it('solo acepta el Congreso de 2026: un ensayo con 2023 nunca pasa por escrutinio de 2026', () => {
+    expect(esDe2026(con(2, '202611'))).toBe(true);
+    expect(esDe2026(con(2, '202307'))).toBe(false);
+    expect(esDe2026(con(3, '202611'))).toBe(false);
+    expect(esDe2026(leerDatosVivo(definitivo))).toBe(false); // el fixture es el ensayo de 2023
   });
 });

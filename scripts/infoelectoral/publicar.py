@@ -10,7 +10,7 @@ se lanza `pages.yml` sobre `main` (`gh workflow run`) para refrescar la copia de
 Se trabaja en un clon propio dentro de `.datos-vivo/publicacion`, así que el árbol de trabajo del proyecto no se toca.
 El único destino posible del empuje es `refs/heads/datos-vivo`: está fijado en el código.
 
-Uso:  python3 -I scripts/infoelectoral/publicar.py [--una-vez] [--lanzar] [--intervalo 300] [--datos .datos-vivo] [--remoto URL]
+Uso:  python3 -I scripts/infoelectoral/publicar.py [--una-vez] [--ensayo] [--lanzar] [--intervalo 300] [--datos .datos-vivo] [--remoto URL]
 """
 
 import argparse
@@ -40,13 +40,16 @@ def url_remoto():
     return git(RAIZ, 'remote', 'get-url', 'origin').stdout.strip()
 
 
-def validar(datos):
+def validar(datos, ensayo=False):
     """El escrutinio que se publica tiene que ser legible y completo, o no se publica nada."""
     ruta = datos / 'escrutinio.json'
     try:
         e = json.loads(ruta.read_text(encoding='utf-8'))
     except (OSError, ValueError) as ex:
         raise ErrorPublicacion(f'{ruta}: no se puede leer ({ex})')
+    conv = e.get('convocatoria') or {}
+    if not ensayo and not (conv.get('tipo') == 2 and str(conv.get('id', '')).startswith('2026')):
+        raise ErrorPublicacion(f"la convocatoria {conv.get('id')!r} no es la de 2026: no se publica (para un ensayo, --ensayo)")
     if e.get('version') != 1 or not e.get('completa') or len(e.get('circunscripciones', [])) != 52:
         raise ErrorPublicacion('el escrutinio no es completo (versión 1 y 52 circunscripciones): no se publica')
     serie = datos / 'serie.jsonl'
@@ -72,9 +75,9 @@ def preparar_clon(clon, remoto):
         git(clon, 'remote', 'set-url', 'origin', remoto)
 
 
-def publicar(datos, clon, remoto):
+def publicar(datos, clon, remoto, ensayo=False):
     """Devuelve True si ha subido algo, False si no había cambios."""
-    e = validar(datos)
+    e = validar(datos, ensayo)
     preparar_clon(clon, remoto)
     for f in FICHEROS:
         origen = datos / f
@@ -107,6 +110,7 @@ def main(argv=None):
     ap.add_argument('--remoto', default=None, help='URL del remoto (por defecto, el origin de este repositorio)')
     ap.add_argument('--intervalo', type=int, default=300, help='segundos entre publicaciones (mínimo 120)')
     ap.add_argument('--una-vez', action='store_true')
+    ap.add_argument('--ensayo', action='store_true', help='permite publicar otra convocatoria (p. ej. 2023); la web la ignora salvo con ?ensayo')
     ap.add_argument('--lanzar', action='store_true', help='tras subir, lanza pages.yml sobre main (refresca la copia de respaldo)')
     a = ap.parse_args(argv)
     if a.intervalo < 120:
@@ -117,7 +121,7 @@ def main(argv=None):
     while True:
         marca = time.strftime('%H:%M:%S')
         try:
-            subido = publicar(datos, clon, remoto)
+            subido = publicar(datos, clon, remoto, a.ensayo)
             if subido and a.lanzar:
                 lanzar_construccion()
             print(f'{marca} {"publicado" if subido else "sin cambios"}', flush=True)

@@ -13,7 +13,9 @@ respaldo en `/datos-vivo/` del propio sitio). Ningún workflow interviene en el 
    (sin `?ensayo` la web ignora lo publicado antes del cierre de colegios).
 3. Máquina de la noche: enchufada, sin suspensión, con red estable, sesión de `gh` y de `git` con permiso de escritura
    en `datos-vivo`. Pestaña de Infoelectoral visible (no minimizada: el navegador frena las pestañas ocultas).
-4. Dejar fuera datos de ensayos: empezar con un directorio limpio (`rm -rf .datos-vivo`).
+4. Dejar fuera datos de ensayos: empezar con un directorio limpio (`rm -rf .datos-vivo`). **Los datos de un ensayo con
+   2023 nunca se usan para 2026**: el publicador se niega a subir una convocatoria que no sea de 2026 (salvo
+   `--ensayo`) y la web ignora cualquier dato que no sea del Congreso de 2026 capturado tras el cierre (salvo `?ensayo`).
 
 ## Arranque (antes de las 20:00; tres terminales)
 
